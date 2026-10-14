@@ -1,12 +1,11 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { STAGES } from '../content/system';
 
 /* L'instrument tourne derrière le décor. Importé dynamiquement et seulement
    là où il peut réellement tourner : un téléphone ne télécharge jamais ces
    ~260 Ko pour un objet qu'il n'afficherait pas. */
-const Sculpture = lazy(() => import('./Sculpture'));
+const Atelier = lazy(() => import('./Atelier'));
 
-function useSculptureAllowed(): boolean {
+function useAtelierAllowed(): boolean {
   const [ok, setOk] = useState(false);
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -78,20 +77,20 @@ function Panel({
 /** Requêtes locales réelles du marché POLIVIA — aucune marque de moteur. */
 const QUERIES = ['couvreur sens', 'électricien joigny', 'paysagiste antibes'];
 
-export default function Stage() {
-  const sculpture = useSculptureAllowed();
+export default function Stage({ scroll }: { scroll: React.RefObject<number> }) {
+  const atelier = useAtelierAllowed();
 
   return (
     <div className="stage" aria-hidden="true">
       {/* --- décor, du plus lointain au plus proche --- */}
       <div className="layer layer-bokeh" style={{ '--d': 1 } as React.CSSProperties} />
 
-      {/* L'instrument : la profondeur du hero, pas son sujet. Il tourne
-          derrière le navigateur et les panneaux. */}
-      <div className="layer layer-sculpture" style={{ '--d': 4 } as React.CSSProperties}>
-        {sculpture && (
+      {/* L'Atelier : la scène photoréaliste. C'est elle le sujet du hero —
+          l'ordinateur, le verre, la pierre et la lumière de studio. */}
+      <div className="layer layer-atelier">
+        {atelier && (
           <Suspense fallback={null}>
-            <Sculpture />
+            <Atelier scroll={scroll} />
           </Suspense>
         )}
       </div>
@@ -99,35 +98,6 @@ export default function Stage() {
       <div className="layer layer-glow" style={{ '--d': 2.5 } as React.CSSProperties} />
 
       <div className="stage-3d">
-        {/* L'appareil : le site qu'on livre, mis en scène. */}
-        <div className="float float-device" style={{ '--d': 7 } as React.CSSProperties}>
-          <div className="device">
-            <div className="device-bar">
-              <span className="dot" />
-              <span className="dot" />
-              <span className="dot" />
-              <span className="device-url" />
-            </div>
-            <div className="device-screen">
-              <div className="mini-nav">
-                <span className="mini-mark" />
-                <span className="mini-links">
-                  <i /><i /><i /><i />
-                </span>
-              </div>
-              <div className="mini-hero">
-                <p className="mini-eyebrow">Maison &amp; rénovation</p>
-                <h3 className="mini-title">
-                  L’artisanat,
-                  <br />
-                  <em>sans compromis.</em>
-                </h3>
-                <span className="mini-cta">Demander un devis</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* La recherche locale : l'entrée du parcours d'acquisition. */}
         <Panel depth={11} className="float-search" label="Recherche locale">
           <div className="search-field">
@@ -194,17 +164,6 @@ export default function Stage() {
           <p className="track-v">Impressions · Clics · Demandes</p>
         </Panel>
 
-        {/* Les étapes, en pastilles — même source que la section plus bas. */}
-        <Panel depth={6} className="float-chain" label="Les étapes">
-          <ol className="chain">
-            {STAGES.slice(0, 4).map((st, i) => (
-              <li key={st.key}>
-                <span className="chain-n">{String(i + 1).padStart(2, '0')}</span>
-                {st.name}
-              </li>
-            ))}
-          </ol>
-        </Panel>
       </div>
 
       {/* Le premier plan ferme la profondeur : feuillage et pierre en bas. */}

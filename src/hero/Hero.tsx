@@ -10,6 +10,7 @@ const MARKS = ['Sites haut de gamme', 'Référencement local', 'Plus de demandes
 
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
+  const scroll = useRef(0);
   const [lit, setLit] = useState(false);
 
   useEffect(() => {
@@ -54,7 +55,7 @@ export default function Hero() {
           : Promise.resolve();
 
         gsap.set('[data-h-line] > span', { yPercent: 115 });
-        gsap.set('.panel-glass, .float-device .device, .layer-foreground', { opacity: 0 });
+        gsap.set('.panel-glass, .layer-foreground', { opacity: 0 });
 
         fonts.then(() => {
           gsap
@@ -65,17 +66,6 @@ export default function Hero() {
             .from('[data-h-cta] > *', { opacity: 0, y: 14, duration: 0.7, stagger: 0.08 }, 0.65)
             .from('[data-h-marks] > li', { opacity: 0, y: 10, duration: 0.6, stagger: 0.06 }, 0.85)
             // La scène se monte ensuite, du plus loin au plus près.
-            .to(
-              '.float-device .device',
-              { opacity: 1, duration: 1.1, ease: 'power2.out' },
-              0.35,
-            )
-            .fromTo(
-              '.float-device .device',
-              { y: 26, scale: 0.97 },
-              { y: 0, scale: 1, duration: 1.3, ease: 'expo.out' },
-              0.35,
-            )
             .to(
               '.panel-glass',
               { opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power2.out' },
@@ -102,6 +92,7 @@ export default function Hero() {
         const h = el.offsetHeight || 1;
         const p = Math.min(Math.max(window.scrollY / h, 0), 1);
         el.style.setProperty('--sy', p.toFixed(4));
+        scroll.current = p;
       };
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
@@ -118,7 +109,7 @@ export default function Hero() {
 
   return (
     <section className="hero world-ink" ref={root} data-lit={lit} data-scrub>
-      <Stage />
+      <Stage scroll={scroll} />
 
       <div className="wrap hero-in">
         <div className="hero-copy">

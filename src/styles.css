@@ -451,7 +451,7 @@ button {
     transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: opacity, transform;
 }
-[data-reveal][data-shown='true'] {
+[data-anim='on'] [data-reveal][data-shown='true'] {
   opacity: 1;
   transform: none;
   will-change: auto;
@@ -692,9 +692,9 @@ button {
 
 /* --- panneau de recherche -------------------------------------------- */
 .float-search {
-  top: 10%;
-  left: 51%;
-  width: min(22vw, 282px);
+  top: 9%;
+  left: 54%;
+  width: min(20vw, 258px);
 }
 .search-field {
   display: flex;
@@ -751,8 +751,8 @@ button {
 
 /* --- panneau des gains ------------------------------------------------ */
 .float-gains {
-  top: 44%;
-  right: 1.5%;
+  bottom: 12%;
+  right: 2%;
   width: min(18vw, 228px);
 }
 .gain-rows {
@@ -777,8 +777,8 @@ button {
 
 /* --- panneau de suivi (remplace la carte « +236 % » de la maquette) --- */
 .float-track {
-  top: 11%;
-  right: 3%;
+  top: 8%;
+  right: 2%;
   width: min(18vw, 220px);
 }
 .track-k {
@@ -2060,21 +2060,20 @@ a.fc-v:hover {
 /* L'instrument WebGL, placé entre le décor et les objets mis en scène.
    Calé à droite pour que ses anneaux encadrent le navigateur sans jamais
    passer derrière la colonne de texte. */
-.layer-sculpture {
-  inset: auto;
-  top: 50%;
-  left: 52%;
-  width: min(46vw, 640px);
-  aspect-ratio: 1;
-  translate: 0 -50%;
-  opacity: 0.85;
+/* La scène occupe la moitié droite du cadre, pleine hauteur : c'est le sujet
+   du hero, plus un élément de décor. Elle ne porte aucune transformation de
+   parallaxe — sa caméra fait ce travail en 3D, bien mieux. */
+.layer-atelier {
+  position: absolute;
+  inset: 0 0 0 28%;
+  pointer-events: none;
 }
-.layer-sculpture canvas {
+.layer-atelier canvas {
   width: 100% !important;
   height: 100% !important;
 }
 @media (max-width: 900px) {
-  .layer-sculpture {
+  .layer-atelier {
     display: none;
   }
 }
@@ -2271,7 +2270,7 @@ a.fc-v:hover {
 /* --- révélations ------------------------------------------------------ */
 /* Le titre se dévoile derrière un cache qui glisse, plutôt que d'apparaître
    en fondu : la lettre reste nette du début à la fin. */
-[data-reveal] {
+[data-anim='on'] [data-reveal] {
   opacity: 0;
   transform: translateY(18px);
   transition:
@@ -2279,7 +2278,7 @@ a.fc-v:hover {
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
-[data-reveal][data-shown='true'] {
+[data-anim='on'] [data-reveal][data-shown='true'] {
   opacity: 1;
   transform: none;
   will-change: auto;
@@ -2566,10 +2565,10 @@ a.fc-v:hover {
 /* --- les cartes se dévoilent par un volet ----------------------------- */
 /* Un volet qui s'ouvre tient le regard mieux qu'un fondu, et la carte reste
    nette pendant toute la révélation. */
-.offer-grid > li,
-.work-grid > li,
-.ai-grid > li,
-.stages li {
+[data-anim='on'] .offer-grid > li,
+[data-anim='on'] .work-grid > li,
+[data-anim='on'] .ai-grid > li,
+[data-anim='on'] .stages li {
   clip-path: inset(0 0 100% 0);
   transition:
     clip-path 0.85s cubic-bezier(0.22, 1, 0.36, 1),
@@ -2605,10 +2604,10 @@ a.fc-v:hover {
   .float {
     opacity: 1;
   }
-  .offer-grid > li,
-  .work-grid > li,
-  .ai-grid > li,
-  .stages li {
+  [data-anim='on'] .offer-grid > li,
+  [data-anim='on'] .work-grid > li,
+  [data-anim='on'] .ai-grid > li,
+  [data-anim='on'] .stages li {
     clip-path: none;
   }
 }

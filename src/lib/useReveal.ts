@@ -9,6 +9,12 @@ import { useEffect } from 'react';
  */
 export function useReveal(): void {
   useEffect(() => {
+    /* On n'arme l'état caché qu'ici, une fois le script en vie. Sans ce
+       drapeau, une erreur de script ou un navigateur sans IntersectionObserver
+       laissait les cartes définitivement invisibles : le contenu disparaissait
+       au lieu de simplement ne pas s'animer. */
+    document.documentElement.dataset.anim = 'on';
+
     const nodes = document.querySelectorAll<HTMLElement>('[data-reveal]:not([data-shown])');
     if (!nodes.length) return;
 
