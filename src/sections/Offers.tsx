@@ -52,7 +52,7 @@ export default function Offers() {
               key={o.slug}
               className={`offer card${o.featured ? ' offer-featured' : ''}`}
               data-reveal
-              data-reveal-delay={i * 100}
+              style={{ '--i': i } as React.CSSProperties}
             >
               {o.featured && <span className="offer-flag small">Le plus demandé</span>}
 

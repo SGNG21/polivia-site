@@ -131,7 +131,8 @@ export default function Stage() {
               <path d="m20 20-3.5-3.5" strokeLinecap="round" />
             </svg>
             <span className="search-typed">
-              plombier auxerre<span className="caret" />
+              <span className="typed-text">plombier auxerre</span>
+              <span className="caret" />
             </span>
           </div>
           <ul className="search-rows">

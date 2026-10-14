@@ -21,7 +21,7 @@ export default function Work() {
 
         <ul className="work-grid">
           {projects.map((p, i) => (
-            <li key={p.slug} className="work" data-reveal data-reveal-delay={(i % 3) * 100}>
+            <li key={p.slug} className="work" data-reveal style={{ '--i': i % 3 } as React.CSSProperties}>
               <div className="work-plate">
                 {p.shot ? (
                   <img src={p.shot} alt={`Site réalisé pour ${p.name}`} loading="lazy" decoding="async" />

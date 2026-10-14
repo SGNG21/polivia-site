@@ -2087,3 +2087,361 @@ a.fc-v:hover {
 .num-eur {
   margin-left: 0.2em;
 }
+
+/* ===========================================================================
+   MOUVEMENT
+
+   Trois registres, et un seul principe : rien ne bouge sous le texte qu'on
+   est en train de lire.
+     · dérive      — les objets flottants respirent, en continu, désynchronisés
+     · révélation  — ce qui entre dans le cadre se dévoile, une seule fois
+     · réaction    — ce qu'on survole répond
+
+   Tout passe par `transform` et `opacity`, les deux seules propriétés que le
+   compositeur sait animer sans repasser par la mise en page.
+   =========================================================================== */
+
+/* --- dérive ----------------------------------------------------------- */
+@keyframes drift {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  50% {
+    translate: var(--dx, 0) var(--dy, -12px);
+    rotate: var(--dr, 0deg);
+  }
+}
+
+/* Chaque panneau a sa propre période et son propre retard : la composition
+   ne se resynchronise jamais, ce qui est précisément ce qui la rend vivante
+   plutôt que mécanique. La dérive s'applique au conteneur intérieur pour ne
+   pas écraser la transformation de parallaxe portée par `.float`. */
+.panel-glass,
+.device {
+  animation: drift var(--drift, 13s) ease-in-out infinite;
+  animation-delay: var(--drift-delay, 0s);
+}
+.float-search.panel-glass {
+  --drift: 11s;
+  --drift-delay: -2s;
+  --dx: 5px;
+  --dy: -14px;
+  --dr: 0.35deg;
+}
+.float-track.panel-glass {
+  --drift: 15s;
+  --drift-delay: -6s;
+  --dx: -6px;
+  --dy: -10px;
+  --dr: -0.3deg;
+}
+.float-gains.panel-glass {
+  --drift: 13s;
+  --drift-delay: -9s;
+  --dx: 4px;
+  --dy: -16px;
+  --dr: 0.25deg;
+}
+.float-chain.panel-glass {
+  --drift: 17s;
+  --drift-delay: -4s;
+  --dx: -5px;
+  --dy: -9px;
+  --dr: -0.2deg;
+}
+.float-device .device {
+  --drift: 19s;
+  --drift-delay: -7s;
+  --dx: 0px;
+  --dy: -10px;
+  --dr: 0.12deg;
+}
+
+/* Le halo du décor respire avec elles. */
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.78;
+    scale: 1;
+  }
+  50% {
+    opacity: 1;
+    scale: 1.045;
+  }
+}
+.layer-glow {
+  animation: breathe 16s ease-in-out infinite;
+}
+
+/* Un éclat traverse lentement le filet d'or des panneaux. */
+@keyframes sheen {
+  0% {
+    opacity: 0;
+    translate: -60% 0;
+  }
+  18%,
+  26% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0;
+    translate: 160% 0;
+  }
+}
+.panel-glass {
+  position: relative;
+  overflow: hidden;
+}
+.panel-glass::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 42%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 227, 162, 0.09), transparent);
+  animation: sheen var(--sheen, 9s) ease-in-out infinite;
+  animation-delay: var(--sheen-delay, 0s);
+}
+.float-search.panel-glass::after {
+  --sheen: 8s;
+  --sheen-delay: -1s;
+}
+.float-track.panel-glass::after {
+  --sheen: 11s;
+  --sheen-delay: -5s;
+}
+.float-gains.panel-glass::after {
+  --sheen: 9.5s;
+  --sheen-delay: -3s;
+}
+.float-chain.panel-glass::after {
+  --sheen: 12s;
+  --sheen-delay: -7s;
+}
+
+/* --- la requête s'écrit ----------------------------------------------- */
+/* Le texte est masqué par un cache qui recule : on voit la frappe sans
+   toucher au DOM, donc sans faire travailler le fil principal. */
+@keyframes typing {
+  0%,
+  6% {
+    width: 0;
+  }
+  38%,
+  72% {
+    width: 100%;
+  }
+  86%,
+  100% {
+    width: 0;
+  }
+}
+.search-typed {
+  display: inline-flex;
+  align-items: baseline;
+}
+.search-typed .typed-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  animation: typing 9s steps(22, end) infinite;
+}
+
+/* --- la courbe se trace ----------------------------------------------- */
+.spark path {
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+}
+[data-shown='true'] .spark path,
+.float-track .spark path {
+  animation: draw 2.4s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* --- révélations ------------------------------------------------------ */
+/* Le titre se dévoile derrière un cache qui glisse, plutôt que d'apparaître
+   en fondu : la lettre reste nette du début à la fin. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+[data-reveal][data-shown='true'] {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+.section-head h2 {
+  -webkit-mask-image: linear-gradient(100deg, #000 33%, transparent 66%);
+  mask-image: linear-gradient(100deg, #000 33%, transparent 66%);
+  -webkit-mask-size: 300% 100%;
+  mask-size: 300% 100%;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+  transition: mask-position 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+[data-shown='true'] .section-head h2,
+.section-head[data-shown='true'] h2 {
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+}
+
+/* Les cartes et lignes d'une même grille entrent en cascade. */
+.stages li,
+.offer-grid > li,
+.work-grid > li,
+.ai-grid > li,
+.pact-stances li,
+.after-work li,
+.constat-list li,
+.commitments-grid li {
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* --- réaction --------------------------------------------------------- */
+.work-plate,
+.offer,
+.stages li,
+.ai-grid > li {
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.45s ease,
+    background 0.45s ease;
+}
+.work:hover .work-plate,
+.offer:hover,
+.ai-grid > li:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 28px 60px -34px rgba(0, 0, 0, 0.9),
+    0 0 42px -18px var(--gold-glow);
+}
+.stages li:hover {
+  transform: translateY(-3px);
+}
+
+/* Le filet d'or s'allume sous le curseur. */
+.offer:hover,
+.ai-grid > li:hover,
+.panel-glass:hover {
+  border-color: rgba(232, 190, 126, 0.5);
+}
+
+/* Les liens de navigation se soulignent par la gauche. */
+.nav-links a {
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 1px;
+  background: var(--gold);
+  scale: 0 1;
+  transform-origin: left;
+  transition: scale 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-links a:hover::after {
+  scale: 1 1;
+}
+
+/* Le bouton principal s'illumine au survol. */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  translate: -140% 0;
+  transition: translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-primary:hover::after {
+  translate: 320% 0;
+}
+
+/* --- rien de tout cela sans consentement au mouvement ----------------- */
+@media (prefers-reduced-motion: reduce) {
+  .panel-glass,
+  .device,
+  .layer-glow,
+  .panel-glass::after,
+  .search-typed .typed-text,
+  .spark path {
+    animation: none !important;
+  }
+  .spark path {
+    stroke-dashoffset: 0;
+  }
+  .search-typed .typed-text {
+    width: auto;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  .section-head h2 {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* Le décor lui-même dérive, très lentement — c'est ce qui fait vivre le hero
+   sur téléphone, où toute la scène 3D est masquée et où il ne resterait
+   sinon qu'une image fixe. Une seule transformation sur une seule couche :
+   le compositeur s'en occupe, le fil principal n'est jamais sollicité. */
+@keyframes pan {
+  0% {
+    scale: 1.06;
+    translate: -1.2% -0.8%;
+  }
+  50% {
+    scale: 1.12;
+    translate: 1.4% 1%;
+  }
+  100% {
+    scale: 1.06;
+    translate: -1.2% -0.8%;
+  }
+}
+.layer-bokeh {
+  animation: pan 44s ease-in-out infinite;
+}
+
+@media (max-width: 900px) {
+  /* Sur téléphone le décor est la seule chose qui bouge : on lui donne un peu
+     plus d'amplitude et de présence pour que le hero respire. */
+  .layer-bokeh {
+    opacity: 0.6;
+    animation-duration: 32s;
+  }
+  .layer-glow {
+    animation-duration: 11s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer-bokeh {
+    animation: none !important;
+  }
+}

@@ -43,7 +43,7 @@ export default function Pact() {
 
           <ul className="pact-stances">
             {pact.stances.map((s, i) => (
-              <li key={s.head} data-reveal data-reveal-delay={i * 110}>
+              <li key={s.head} data-reveal style={{ '--i': i } as React.CSSProperties}>
                 <h3 className="t-h3">{s.head}</h3>
                 <p className="body-muted">{s.body}</p>
               </li>

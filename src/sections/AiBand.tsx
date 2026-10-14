@@ -27,7 +27,7 @@ export default function AiBand() {
 
         <ul className="ai-grid">
           {ai.map((a, i) => (
-            <li key={a.name} className="card" data-reveal data-reveal-delay={i * 100}>
+            <li key={a.name} className="card" data-reveal style={{ '--i': i } as React.CSSProperties}>
               <span className={`status status-${a.status}`}>{label[a.status]}</span>
               <h3 className="t-h3">{a.name}</h3>
               <p className="body-muted small">{a.body}</p>

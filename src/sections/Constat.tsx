@@ -29,7 +29,7 @@ export default function Constat() {
 
         <ul className="constat-list">
           {losses.map((l, i) => (
-            <li key={l.head} data-reveal data-reveal-delay={120 + i * 90}>
+            <li key={l.head} data-reveal style={{ '--i': i } as React.CSSProperties}>
               <h3 className="t-h3">{l.head}</h3>
               <p className="body-muted">{l.body}</p>
             </li>

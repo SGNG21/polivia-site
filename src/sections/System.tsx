@@ -26,7 +26,7 @@ export default function System() {
 
         <ol className="stages">
           {STAGES.map((s, i) => (
-            <li key={s.key} data-reveal data-reveal-delay={(i % 4) * 90}>
+            <li key={s.key} data-reveal style={{ '--i': i % 4 } as React.CSSProperties}>
               <span className="stage-n data" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}
               </span>

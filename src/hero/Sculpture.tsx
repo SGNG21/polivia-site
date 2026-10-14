@@ -9,9 +9,9 @@
    Chargé dynamiquement et seulement là où il peut tourner (voir Stage.tsx) :
    un téléphone ne télécharge jamais ces ~260 Ko.
    =========================================================================== */
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, Lightformer } from '@react-three/drei';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 // Three nested, open architectural rings: a crafted acquisition engine,
@@ -21,50 +21,46 @@ function Instrument() {
   const inner = useRef<THREE.Group>(null);
   const outer = useRef<THREE.Group>(null);
   const gems = useMemo(() => Array.from({length:9},(_,i)=>({a:i*Math.PI*2/9,r:1.7+(i%3)*0.11})),[]);
-  const { invalidate } = useThree();
-
   /* Le canvas est en `pointer-events: none` (il vit sous le texte), donc R3F
-     ne reçoit aucun événement et son `pointer` resterait figé. On écoute la
-     fenêtre et on réveille la boucle nous-mêmes. */
+     ne reçoit aucun événement et son `pointer` resterait figé : on écoute la
+     fenêtre. */
   const pointer = useRef({ x: 0, y: 0 });
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
       pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1;
       pointer.current.y = -((e.clientY / window.innerHeight) * 2 - 1);
-      invalidate();
     };
-    const onScroll = () => invalidate();
     window.addEventListener('pointermove', onMove, { passive: true });
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, [invalidate]);
+    return () => window.removeEventListener('pointermove', onMove);
+  }, []);
 
   /* Rendu à la demande. La rotation perpétuelle d'origine brûlait du GPU en
      continu sur une page que personne ne regarde la plupart du temps — et
      empêchait toute capture, le navigateur n'atteignant jamais un état stable.
      Ici l'objet suit le pointeur, s'amortit, puis se tait. */
-  useFrame((_state, delta) => {
-    let moving = false;
+  /* L'instrument tourne en continu : c'est ce qui donne vie au hero. Le coût
+     est contenu en amont, pas ici — la boucle entière est coupée dès que la
+     scène quitte l'écran ou que l'onglet passe en arrière-plan (voir le
+     frameloop plus bas). Tourner devant personne, c'est ça qu'il fallait
+     supprimer, pas le mouvement. */
+  useFrame((state, delta) => {
     const d = Math.min(delta, 0.05);
+    const t = state.clock.getElapsedTime();
 
     if (assembly.current) {
-      const ty = 0.3 + pointer.current.x * 0.16;
-      const tx = -0.23 + pointer.current.y * 0.12;
-      assembly.current.rotation.y = THREE.MathUtils.damp(assembly.current.rotation.y, ty, 2.2, d);
-      assembly.current.rotation.x = THREE.MathUtils.damp(assembly.current.rotation.x, tx, 2.2, d);
-      moving =
-        Math.abs(assembly.current.rotation.y - ty) > 0.0006 ||
-        Math.abs(assembly.current.rotation.x - tx) > 0.0006;
+      // Dérive lente de fond, à laquelle s'ajoute l'attraction du pointeur.
+      const ty = 0.3 + Math.sin(t * 0.14) * 0.28 + pointer.current.x * 0.2;
+      const tx = -0.23 + Math.cos(t * 0.11) * 0.09 + pointer.current.y * 0.13;
+      assembly.current.rotation.y = THREE.MathUtils.damp(assembly.current.rotation.y, ty, 1.6, d);
+      assembly.current.rotation.x = THREE.MathUtils.damp(assembly.current.rotation.x, tx, 1.6, d);
+      // Respiration : l'objet avance et recule imperceptiblement.
+      assembly.current.position.z = Math.sin(t * 0.23) * 0.22;
+      assembly.current.position.y = Math.sin(t * 0.31) * 0.08;
     }
-    // Les anneaux dérivent tant que l'ensemble bouge, puis se figent.
-    if (moving) {
-      if (inner.current) inner.current.rotation.z += d * 0.22;
-      if (outer.current) outer.current.rotation.z -= d * 0.1;
-      invalidate();
-    }
+    // Les anneaux tournent à des vitesses incommensurables : la figure ne se
+    // répète jamais tout à fait.
+    if (inner.current) inner.current.rotation.z = t * 0.085;
+    if (outer.current) outer.current.rotation.z = -t * 0.037;
   });
   return <group ref={assembly} rotation={[-0.25,0.28,0]}>
       <group ref={outer}>
@@ -81,8 +77,27 @@ function Instrument() {
       <pointLight color="#ef8d4c" intensity={18} distance={5}/>
   </group>
 }
+/** Tourne tant qu'on la regarde, dort dès qu'on ne la regarde plus. */
+function useAwake(): boolean {
+  const [awake, setAwake] = useState(true);
+  useEffect(() => {
+    const onVis = () => setAwake(!document.hidden);
+    document.addEventListener('visibilitychange', onVis);
+    const host = document.querySelector('.layer-sculpture');
+    if (!host) return () => document.removeEventListener('visibilitychange', onVis);
+    const io = new IntersectionObserver(([e]) => setAwake(!!e?.isIntersecting && !document.hidden));
+    io.observe(host);
+    return () => {
+      document.removeEventListener('visibilitychange', onVis);
+      io.disconnect();
+    };
+  }, []);
+  return awake;
+}
+
 export default function Sculpture() {
-  return <Canvas frameloop="demand" camera={{position:[0,0,7.8],fov:36}} dpr={[1,1.5]} gl={{alpha:true,antialias:true,powerPreference:'high-performance'}}>
+  const awake = useAwake();
+  return <Canvas frameloop={awake ? 'always' : 'never'} camera={{position:[0,0,7.8],fov:36}} dpr={[1,1.5]} gl={{alpha:true,antialias:true,powerPreference:'high-performance'}}>
     <ambientLight intensity={0.32}/><directionalLight position={[4,6,6]} color="#ffe6c7" intensity={3}/><directionalLight position={[-6,-3,3]} color="#9bbbc3" intensity={2}/>
     <Environment resolution={128}><Lightformer form="rect" position={[0,6,2]} rotation={[-Math.PI/2,0,0]} scale={[12,5,1]} intensity={7}/><Lightformer form="rect" position={[5,1,4]} scale={[3,10,1]} intensity={6} color="#f6b77f"/><Lightformer form="rect" position={[-4,-1,3]} scale={[3,8,1]} intensity={5} color="#d9eaf2"/></Environment>
     <Instrument />

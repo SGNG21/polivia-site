@@ -49,7 +49,7 @@ export default function AfterLaunch() {
         <div className="after-grid">
           <ul className="after-work">
             {WORK.map((w, i) => (
-              <li key={w.head} data-reveal data-reveal-delay={i * 90}>
+              <li key={w.head} data-reveal style={{ '--i': i } as React.CSSProperties}>
                 <h3 className="t-h3">{w.head}</h3>
                 <p className="body-muted small">{w.body}</p>
               </li>
