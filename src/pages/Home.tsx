@@ -13,10 +13,13 @@ import Seo, { OrgSchema } from '../components/Seo';
 import { useReveal } from '../lib/useReveal';
 
 /**
- * The page's rhythm, deliberately: graphite for the film, the problem and the
- * method; ivory for the commercial moment and for the human one; graphite
- * again to close. Two worlds, five switches — the light sections are where a
- * visitor has to read carefully, the dark ones are where they look.
+ * Un seul monde — noir profond et or — comme la direction artistique validée.
+ * Le rythme se fait par la lumière : les sections « relevées » portent un fond
+ * légèrement plus clair et un halo, les autres restent dans le noir.
+ *
+ * L'ordre sert la vente : on impressionne, on nomme le problème, on montre la
+ * méthode, on donne les prix, on prouve, on explique le suivi, on se présente,
+ * on s'engage, on demande.
  */
 export default function Home() {
   useReveal();

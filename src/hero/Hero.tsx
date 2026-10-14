@@ -1,143 +1,173 @@
-import { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'wouter';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { detectTier, type Tier } from '../lib/capability';
+import Stage from './Stage';
 import { brand } from '../content/site';
+import { prefersReducedMotion } from '../lib/capability';
 
-const AssemblyCanvas = lazy(() => import('./Assembly'));
-
-gsap.registerPlugin(ScrollTrigger);
-
-/**
- * The three narrative beats. They run as a caption track beside the sculpture
- * and never gate the commercial message: the headline, the CTA and the phone
- * are in the first paint and stay put while this plays. A visitor who scrolls
- * at once, or who has reduced motion on, loses nothing but the performance.
- */
-const BEATS = [
-  { text: 'C’est beau, non ?', tone: 'show' },
-  { text: 'Mais votre entreprise n’a pas besoin de 3D.', tone: 'turn' },
-  { text: 'Elle a besoin de clients.', tone: 'land' },
-] as const;
+/** Les quatre promesses sous les boutons, comme dans la maquette validée. */
+const MARKS = ['Sites haut de gamme', 'Référencement local', 'Plus de demandes', 'Suivi et évolution'];
 
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
-  const morph = useRef(0);
-  const scroll = useRef(0);
-  const [tier, setTier] = useState<Tier | null>(null);
-  const [beat, setBeat] = useState(-1);
-
-  useEffect(() => setTier(detectTier()), []);
+  const [lit, setLit] = useState(false);
 
   useEffect(() => {
     const el = root.current;
     if (!el) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // Reduced motion gets the conclusion, not the performance.
-    if (reduced) {
-      morph.current = 1;
-      setBeat(BEATS.length - 1);
-      return;
-    }
+    const reduced = prefersReducedMotion();
+    setLit(true);
 
     const ctx = gsap.context(() => {
-      const fonts = document.fonts
-        ? Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1200))])
-        : Promise.resolve();
+      /* --- parallaxe : une seule écoute, deux variables CSS -------------
+         Les couches lisent --px / --py et se décalent proportionnellement à
+         leur profondeur. Rien ne repasse par React, donc aucun rendu par
+         image ; le navigateur ne compose que des transformations. */
+      let raf = 0;
+      let tx = 0;
+      let ty = 0;
+      let cx = 0;
+      let cy = 0;
 
-      gsap.set('[data-h-line] > span', { yPercent: 112 });
+      const tick = () => {
+        cx += (tx - cx) * 0.08;
+        cy += (ty - cy) * 0.08;
+        el.style.setProperty('--px', cx.toFixed(4));
+        el.style.setProperty('--py', cy.toFixed(4));
+        raf = Math.abs(tx - cx) > 0.0005 || Math.abs(ty - cy) > 0.0005 ? requestAnimationFrame(tick) : 0;
+      };
 
-      fonts.then(() => {
-        gsap
-          .timeline({ defaults: { ease: 'expo.out' } })
-          .to('[data-h-line] > span', { yPercent: 0, duration: 1.1, stagger: 0.085 })
-          .from('[data-h-sub]', { y: 18, opacity: 0, duration: 0.8 }, 0.35)
-          .from('[data-h-cta] > *', { y: 14, opacity: 0, duration: 0.7, stagger: 0.08 }, 0.5)
-          .from('[data-h-note]', { opacity: 0, duration: 0.8 }, 0.75);
+      const onMove = (e: PointerEvent) => {
+        tx = (e.clientX / window.innerWidth) * 2 - 1;
+        ty = (e.clientY / window.innerHeight) * 2 - 1;
+        if (!raf) raf = requestAnimationFrame(tick);
+      };
 
-        // The sculpture's own film: crown, hesitation, sequence.
-        // Positions are absolute seconds on the timeline. Relative ones were
-        // measured against empty `.to({}, {duration})` spacers, which GSAP
-        // collapses — the three beats fired within 200ms of each other.
-        gsap
-          .timeline({ delay: 1.2 })
-          .call(() => setBeat(0), undefined, 0)
-          .call(() => setBeat(1), undefined, 2.8)
-          .to(morph, { current: 1, duration: 2.2, ease: 'power3.inOut' }, 3.1)
-          .call(() => setBeat(2), undefined, 4.7);
-      });
+      if (!reduced && window.matchMedia('(pointer: fine)').matches) {
+        window.addEventListener('pointermove', onMove, { passive: true });
+      }
 
-      // Scroll owns the camera once the film is over.
-      ScrollTrigger.create({
-        trigger: el,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-        onUpdate: (self) => {
-          scroll.current = self.progress;
-        },
-      });
+      /* --- entrée orchestrée ------------------------------------------- */
+      if (!reduced) {
+        const fonts = document.fonts
+          ? Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1200))])
+          : Promise.resolve();
+
+        gsap.set('[data-h-line] > span', { yPercent: 115 });
+        gsap.set('.float, .layer-foreground', { opacity: 0 });
+
+        fonts.then(() => {
+          gsap
+            .timeline({ defaults: { ease: 'expo.out' } })
+            .to('[data-h-line] > span', { yPercent: 0, duration: 1.2, stagger: 0.09 })
+            .from('[data-h-eyebrow]', { opacity: 0, x: -12, duration: 0.8 }, 0.1)
+            .from('[data-h-sub]', { opacity: 0, y: 16, duration: 0.8 }, 0.5)
+            .from('[data-h-cta] > *', { opacity: 0, y: 14, duration: 0.7, stagger: 0.08 }, 0.65)
+            .from('[data-h-marks] > li', { opacity: 0, y: 10, duration: 0.6, stagger: 0.06 }, 0.85)
+            // La scène se monte ensuite, du plus loin au plus près.
+            .to(
+              '.float-device',
+              { opacity: 1, duration: 1.1, ease: 'power2.out' },
+              0.35,
+            )
+            .fromTo(
+              '.float-device .device',
+              { y: 26, scale: 0.97 },
+              { y: 0, scale: 1, duration: 1.3, ease: 'expo.out' },
+              0.35,
+            )
+            .to(
+              '.panel-glass',
+              { opacity: 1, duration: 0.9, stagger: 0.12, ease: 'power2.out' },
+              0.7,
+            )
+            .fromTo(
+              '.panel-glass',
+              { y: 22 },
+              { y: 0, duration: 1.1, stagger: 0.12, ease: 'expo.out' },
+              0.7,
+            )
+            .to('.layer-foreground', { opacity: 1, duration: 1.2 }, 0.2);
+        });
+      }
+
+      /* --- travelling au scroll ----------------------------------------
+         Une simple écoute passive, pas ScrollTrigger. Le plugin ne servait
+         qu'à produire une progression de 0 à 1 ; en contrepartie son
+         `refresh()` écrit directement dans `scrollTop` pour mesurer, et
+         quand la hauteur du document change pendant cette mesure — polices,
+         images, sections révélées — il ne restitue pas la bonne position :
+         la page s'ouvrait cinq mille pixels plus bas. */
+      const onScroll = () => {
+        const h = el.offsetHeight || 1;
+        const p = Math.min(Math.max(window.scrollY / h, 0), 1);
+        el.style.setProperty('--sy', p.toFixed(4));
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      return () => {
+        window.removeEventListener('pointermove', onMove);
+        window.removeEventListener('scroll', onScroll);
+        if (raf) cancelAnimationFrame(raf);
+      };
     }, el);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section className="hero world-ink" ref={root}>
-      <div className="hero-stage">
-        {tier === null || tier === 'poster' ? (
-          <div className="hero-poster" aria-hidden="true" />
-        ) : (
-          <Suspense fallback={<div className="hero-poster" aria-hidden="true" />}>
-            <AssemblyCanvas tier={tier} morph={morph} scroll={scroll} />
-          </Suspense>
-        )}
-      </div>
+    <section className="hero world-ink" ref={root} data-lit={lit}>
+      <Stage />
 
       <div className="wrap hero-in">
         <div className="hero-copy">
+          <p className="hero-eyebrow" data-h-eyebrow>
+            Sites web · Référencement · Acquisition clients
+          </p>
+
           <h1 className="t-hero hero-title">
             <span data-h-line>
-              <span>Un site qui va</span>
+              <span>Le beau attire.</span>
             </span>
             <span data-h-line>
-              <span>chercher vos clients.</span>
+              <span className="em">Le résultat</span>
+            </span>
+            <span data-h-line>
+              <span className="em">fait la différence.</span>
             </span>
           </h1>
 
           <p className="lede hero-lede" data-h-sub>
-            POLIVIA construit le système qui rend votre entreprise visible, puis transforme
-            cette visibilité en demandes. Pour les artisans et les entreprises de l’Yonne et de
-            la Côte d’Azur.
+            POLIVIA conçoit des sites premium pour les artisans et les entreprises de l’Yonne
+            et de la Côte d’Azur, puis construit autour le système qui les rend visibles et
+            transforme ces visiteurs en demandes.
           </p>
 
           <div className="hero-cta" data-h-cta>
             <Link href="/contact" className="btn btn-primary btn-lg">
-              Demander un devis
+              Discutons de votre projet
             </Link>
-            <a href="#systeme" className="btn btn-quiet btn-lg">
-              Voir comment
+            <a href="#realisations" className="btn btn-quiet btn-lg">
+              <span className="play" aria-hidden="true" />
+              Voir nos réalisations
             </a>
           </div>
 
-          <p className="hero-note small" data-h-note>
+          <ul className="hero-marks" data-h-marks>
+            {MARKS.map((m) => (
+              <li key={m}>
+                <span className="mark-ico" aria-hidden="true" />
+                {m}
+              </li>
+            ))}
+          </ul>
+
+          <p className="hero-note small">
             <span className="pulse" aria-hidden="true" />
             Yonne (89) et Côte d’Azur (06) — réponse sous {brand.responseTime}
           </p>
         </div>
-
-        {/* The caption track. Decorative by design: the same argument is made
-            in the headline above and in the section below, so a screen reader
-            is not handed a three-line monologue. */}
-        <p className="hero-beats" aria-hidden="true">
-          {BEATS.map((b, i) => (
-            <span key={b.text} className="beat" data-tone={b.tone} data-on={beat === i}>
-              {b.text}
-            </span>
-          ))}
-        </p>
       </div>
     </section>
   );

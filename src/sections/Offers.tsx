@@ -1,11 +1,32 @@
 import { Link } from 'wouter';
 import { offers, maintenance, audit } from '../content/site';
 
-const euros = new Intl.NumberFormat('fr-FR', {
-  style: 'currency',
-  currency: 'EUR',
-  maximumFractionDigits: 0,
-});
+const nf = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 });
+
+/**
+ * Le prix, composé pièce par pièce.
+ *
+ * `Intl` insère une espace fine insécable comme séparateur de milliers et
+ * avant l'euro. Dans une police monospace chaque espace occupe une cellule
+ * pleine, ce qui disloque « 1 490 € ». On remplace donc ces espaces par des
+ * éléments à largeur choisie plutôt que de corriger après coup au
+ * `word-spacing`, qui écrasait aussi l'espace après « dès ».
+ */
+function Price({ amount }: { amount: number }) {
+  return (
+    <>
+      {nf.formatToParts(amount).map((part, i) =>
+        part.type === 'group' ? (
+          <span className="num-group" key={i} />
+        ) : (
+          <span key={i}>{part.value}</span>
+        ),
+      )}
+      <span className="num-eur">€</span>
+    </>
+  );
+}
+
 
 /**
  * Anchor prices, visible. The brief is explicit: an artisan will not move
@@ -41,8 +62,8 @@ export default function Offers() {
               </div>
 
               <p className="offer-price data">
-                {o.price.from && <span className="offer-from">dès&nbsp;</span>}
-                {euros.format(o.price.amount)}
+                {o.price.from && <span className="offer-from">dès</span>}
+                <Price amount={o.price.amount} />
                 {o.price.then && <span className="offer-then"> puis {o.price.then}</span>}
               </p>
               {o.commitment && <p className="offer-commit small">{o.commitment}</p>}
@@ -81,7 +102,7 @@ export default function Offers() {
                     <span className="pr-body small">{m.body}</span>
                   </span>
                   <span className="pr-price data">
-                    {euros.format(m.price)}
+                    <Price amount={m.price} />
                     <span className="pr-per">/mois</span>
                   </span>
                 </li>
@@ -92,7 +113,9 @@ export default function Offers() {
           <div className="aside-block aside-audit" data-reveal data-reveal-delay={120}>
             <p className="marker">Pour les TPE et PME</p>
             <h3 className="t-h3">{audit.name}</h3>
-            <p className="aside-price data">{euros.format(audit.price)}</p>
+            <p className="aside-price data">
+              <Price amount={audit.price} />
+            </p>
             <p className="body-muted small">{audit.body}</p>
             <ul className="ticks small">
               {audit.includes.map((inc) => (

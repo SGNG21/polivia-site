@@ -1,4 +1,5 @@
 @import '@fontsource-variable/fraunces/wght.css';
+@import '@fontsource-variable/fraunces/wght-italic.css';
 @import '@fontsource-variable/hanken-grotesk/wght.css';
 @import '@fontsource/spline-sans-mono/400.css';
 @import '@fontsource/spline-sans-mono/500.css';
@@ -12,29 +13,43 @@
    =========================================================================== */
 
 :root {
-  /* --- graphite world -------------------------------------------------- */
-  --ink: #111419;          /* Graphite — the ground */
-  --ink-raised: #1a1f26;   /* lifted surface */
-  --ink-card: #232a32;     /* Ardoise — card, hover */
-  --ink-line: #2d353f;     /* hairline */
-  --ink-fg: #f4f0e8;       /* Ivoire */
-  --ink-muted: #a3aab4;
-  --ink-faint: #8a94a1;
+  /* ===========================================================================
+     Palette relevée au pixel sur references/polivia-design-valide.png.
+     Un seul monde : noir profond, lumière chaude, or champagne.
+     La maquette validée ne contient aucune section claire.
+     =========================================================================== */
 
-  /* --- ivory world ----------------------------------------------------- */
-  --stone: #f4f0e8;        /* Ivoire */
-  --stone-raised: #fbf9f4;
-  --stone-sunk: #e8e2d6;
-  --stone-line: #d2cabb;
-  --stone-fg: #111419;     /* Graphite */
-  --stone-muted: #5a6068;
+  /* --- ground ---------------------------------------------------------- */
+  --ink: #060605;          /* la référence mesure #000–#030201 */
+  --ink-raised: #0b0a09;   /* bande légèrement relevée */
+  --ink-card: #100e0b;     /* carte opaque */
+  --ink-line: #241f18;     /* filet neutre */
+  --ink-fg: #f2efe9;
+  --ink-muted: #b6bab8;
+  --ink-faint: #8a8d8a;
 
-  /* --- metals ---------------------------------------------------------- */
-  --copper: #b87345;       /* Cuivre */
-  --copper-light: #e3b58d; /* Champagne */
-  --copper-deep: #8f5631;
-  --steel: #8794a3;
-  --copper-glow: rgba(184, 115, 69, 0.2);
+  /* `world-stone` existe encore dans le balisage : on le redéfinit en bande
+     sombre relevée plutôt que de toucher à chaque composant. */
+  --stone: #0a0908;
+  --stone-raised: #110f0c;
+  --stone-sunk: #0d0b09;
+  --stone-line: #2a2219;
+  --stone-fg: #f2efe9;
+  --stone-muted: #b6bab8;
+
+  /* --- or -------------------------------------------------------------- */
+  --gold: #e8be7e;         /* titre italique de la référence : #eec27b */
+  --gold-bright: #ffe3a2;  /* éclats les plus lumineux relevés */
+  --gold-deep: #b8863f;
+  --gold-edge: rgba(232, 190, 126, 0.26); /* filet des cartes de verre */
+  --gold-glow: rgba(232, 190, 126, 0.16);
+
+  /* Rétrocompatibilité : le code existant parle encore de cuivre. */
+  --copper: var(--gold);
+  --copper-light: var(--gold-bright);
+  --copper-deep: var(--gold-deep);
+  --copper-glow: var(--gold-glow);
+  --steel: #9aa0a2;
 
   /* --- type ------------------------------------------------------------ */
   --display: 'Fraunces Variable', 'Hoefler Text', Georgia, serif;
@@ -42,13 +57,11 @@
   --mono: 'Spline Sans Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* --- measure --------------------------------------------------------- */
-  --wrap: 1180px;
+  --wrap: 1240px;
   --wrap-tight: 760px;
   --gutter: clamp(20px, 5vw, 60px);
   --r: 4px;
-  --r-lg: 10px;
-
-  /* Vertical rhythm: one knob drives every section's breathing room. */
+  --r-lg: 14px;
   --band: clamp(72px, 10vw, 140px);
 }
 
@@ -160,28 +173,27 @@ button {
   --line: var(--ink-line);
   --surface: var(--ink-raised);
   --card: var(--ink-card);
-  --accent: var(--copper-light);
+  --accent: var(--gold);
 }
 .world-stone {
   background: var(--stone);
   color: var(--stone-fg);
   --fg: var(--stone-fg);
   --muted: var(--stone-muted);
-  --faint: #8a8578;
+  --faint: var(--ink-faint);
   --line: var(--stone-line);
   --surface: var(--stone-raised);
   --card: var(--stone-raised);
-  --accent: var(--copper-deep);
+  --accent: var(--gold);
 }
 
 /* The seam between worlds is a machined bevel, not a hard cut. */
-.seam-to-stone {
-  height: clamp(40px, 6vw, 88px);
-  background: linear-gradient(180deg, var(--ink), var(--stone));
-}
+/* Between two near-identical darks a gradient ramp is invisible; a thread of
+   warm light reads as a seam and keeps the sections from merging. */
+.seam-to-stone,
 .seam-to-ink {
-  height: clamp(40px, 6vw, 88px);
-  background: linear-gradient(180deg, var(--stone), var(--ink));
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-edge) 28%, var(--gold-edge) 72%, transparent);
 }
 
 /* --- type scale ------------------------------------------------------- */
@@ -279,29 +291,32 @@ button {
     color 0.22s ease;
 }
 .btn-primary {
-  --btn-bg: var(--copper);
-  --btn-fg: #170e05;
+  background: linear-gradient(180deg, #f6dda8, var(--gold) 52%, #d9ad68);
+  color: #17120a;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    0 10px 28px -14px var(--copper-glow);
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 14px 34px -16px rgba(232, 190, 126, 0.5);
 }
 .btn-primary:hover {
-  --btn-bg: var(--copper-light);
+  background: linear-gradient(180deg, #fde9bd, var(--gold-bright) 52%, #e2bb7b);
   transform: translateY(-2px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 18px 38px -16px var(--copper-glow);
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 20px 44px -16px rgba(232, 190, 126, 0.55);
 }
 .btn-primary:active {
-  --btn-bg: var(--copper-deep);
+  background: linear-gradient(180deg, var(--gold), var(--gold-deep));
   transform: translateY(0);
 }
 .btn-quiet {
-  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--ink-fg);
+  box-shadow: inset 0 0 0 1px var(--gold-edge);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(8px);
 }
 .btn-quiet:hover {
-  box-shadow: inset 0 0 0 1px var(--accent);
-  color: var(--accent);
+  box-shadow: inset 0 0 0 1px rgba(232, 190, 126, 0.6);
+  color: var(--gold-bright);
   transform: translateY(-2px);
 }
 .btn-lg {
@@ -449,203 +464,524 @@ button {
 }
 
 /* ===========================================================================
-   HERO — « L'Atelier »
+   HERO — d'après references/polivia-design-valide.png
 
-   The sculpture is centred and the copy sits over it in a left column. The
-   caption track runs along the bottom right so the three beats never cross
-   the headline, and the CTA keeps its own clear band whatever the film does.
+   Profondeur : décor en bokeh → halos → appareil mis en scène → panneaux de
+   verre → premier plan. Chaque couche porte une profondeur `--d` et se décale
+   avec le pointeur (--px/--py) et le scroll (--sy). La colonne de texte, elle,
+   ne bouge jamais : on ne déplace pas ce qui se lit.
    =========================================================================== */
 .hero {
   position: relative;
   isolation: isolate;
-  min-height: min(94svh, 900px);
+  min-height: min(100svh, 980px);
   display: flex;
   align-items: center;
-  padding-block: clamp(56px, 9vh, 120px) clamp(60px, 10vh, 120px);
+  padding-block: clamp(70px, 11vh, 130px) clamp(56px, 9vh, 110px);
   overflow: hidden;
+  background: var(--ink);
+  --px: 0;
+  --py: 0;
+  --sy: 0;
 }
 
-.hero-stage {
+/* --- la scène -------------------------------------------------------- */
+.stage {
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
+  perspective: 1400px;
+  perspective-origin: 62% 46%;
 }
 
-.stage-host,
-.hero-poster {
+.layer {
   position: absolute;
-  inset: 0;
-}
-
-/* Ambient light lives in CSS. A reflector floor in WebGL would cost a whole
-   extra scene render every frame and read no better than this. */
-.hero-stage::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(44vw 40vw at 62% 26%, rgba(184, 115, 69, 0.2), transparent 64%),
-    radial-gradient(38vw 32vw at 14% 76%, rgba(90, 116, 160, 0.1), transparent 66%);
-}
-
-/* The copy column is darkened behind so the headline holds whatever passes
-   under it — a scrim, not a box. */
-.hero-in::before {
-  content: '';
-  position: absolute;
-  inset: -20% -10% -20% -50vw;
-  z-index: -1;
-  background: linear-gradient(100deg, var(--ink) 44%, rgba(17, 20, 25, 0.92) 58%, rgba(17, 20, 25, 0.45) 70%, transparent 84%);
-  pointer-events: none;
-}
-
-/* A real frame of the same scene, rendered once at build-review time. It
-   stands in wherever WebGL is not run: phones, reduced motion, no WebGL, and
-   for the first paint before the canvas has anything to show. */
-.hero-poster {
-  background-image: url('/hero-poster.webp');
-  background-size: cover;
-  background-position: 72% center;
+  inset: -6%;
   background-repeat: no-repeat;
-  background-color: var(--ink);
+  will-change: transform;
+  transform: translate3d(
+    calc(var(--px) * var(--d) * -5px),
+    calc((var(--py) * var(--d) * -3px) + (var(--sy) * var(--d) * -7px)),
+    0
+  );
+}
+
+.layer-bokeh {
+  background-image: url('/hero-bokeh.webp');
+  background-size: cover;
+  background-position: 58% 42%;
+  opacity: 0.9;
+}
+
+/* Halos peints en CSS : ils suivent le pointeur plus vite que la photo, ce
+   qui donne la sensation que la lumière est devant le décor. */
+.layer-glow {
+  background-image:
+    radial-gradient(34vw 30vw at 66% 30%, rgba(232, 190, 126, 0.17), transparent 68%),
+    radial-gradient(26vw 24vw at 88% 66%, rgba(255, 227, 162, 0.1), transparent 70%),
+    radial-gradient(30vw 26vw at 18% 78%, rgba(184, 134, 63, 0.08), transparent 72%);
+}
+
+/* Premier plan : la bande de feuillage et de pierre qui ferme la profondeur.
+   Masquée en haut pour qu'elle n'apparaisse qu'en bas de cadre. */
+.layer-foreground {
+  background-image: url('/hero-foreground.webp');
+  background-size: cover;
+  background-position: 20% 100%;
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(180deg, transparent 52%, #000 94%);
+  mask-image: linear-gradient(180deg, transparent 52%, #000 94%);
+}
+
+/* Le texte doit tenir quoi qu'il se passe derrière : un voile, pas un cadre. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(100deg, var(--ink) 36%, rgba(6, 6, 5, 0.9) 50%, rgba(6, 6, 5, 0.34) 64%, transparent 80%),
+    linear-gradient(180deg, rgba(6, 6, 5, 0.8), transparent 26%);
 }
 
 .hero-in {
   position: relative;
+  z-index: 2;
   width: 100%;
-  display: grid;
-  gap: clamp(28px, 5vh, 56px);
 }
 
+/* --- les objets flottants -------------------------------------------- */
+.stage-3d {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.float {
+  position: absolute;
+  will-change: transform;
+  transform: translate3d(
+      calc(var(--px) * var(--d) * -4px),
+      calc((var(--py) * var(--d) * -2.6px) + (var(--sy) * var(--d) * -9px)),
+      0
+    )
+    rotateY(calc(var(--px) * -1.1deg)) rotateX(calc(var(--py) * 0.7deg));
+}
+
+/* La matière des panneaux de la référence : verre noir, filet d'or, halo. */
+.panel-glass {
+  background:
+    linear-gradient(155deg, rgba(28, 24, 18, 0.82), rgba(10, 9, 7, 0.88));
+  backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid var(--gold-edge);
+  border-radius: var(--r-lg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 227, 162, 0.14),
+    0 30px 70px -40px rgba(0, 0, 0, 0.95),
+    0 0 44px -16px var(--gold-glow);
+  padding: 16px 18px;
+  color: var(--ink-fg);
+}
+
+/* --- l'appareil ------------------------------------------------------- */
+.float-device {
+  top: 52%;
+  left: 53%;
+  width: min(38vw, 520px);
+  translate: 0 -48%;
+}
+.device {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(232, 190, 126, 0.2);
+  background: #0a0908;
+  box-shadow:
+    0 50px 110px -48px rgba(0, 0, 0, 1),
+    0 0 70px -24px var(--gold-glow);
+}
+.device-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 12px;
+  background: #141210;
+  border-bottom: 1px solid rgba(232, 190, 126, 0.12);
+}
+.device-bar .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #37322b;
+}
+.device-url {
+  flex: 1;
+  height: 13px;
+  margin-left: 10px;
+  border-radius: 999px;
+  background: #221e19;
+}
+.device-screen {
+  aspect-ratio: 16 / 10;
+  position: relative;
+  background:
+    radial-gradient(70% 90% at 70% 15%, rgba(232, 190, 126, 0.16), transparent 62%),
+    linear-gradient(170deg, #15120e, #080706);
+  padding: clamp(12px, 1.6vw, 20px);
+  display: flex;
+  flex-direction: column;
+}
+.mini-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mini-mark {
+  width: 46px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--gold);
+  opacity: 0.85;
+}
+.mini-links {
+  display: flex;
+  gap: 10px;
+}
+.mini-links i {
+  width: 24px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(242, 239, 233, 0.26);
+}
+.mini-hero {
+  margin-top: auto;
+}
+.mini-eyebrow {
+  font-family: var(--mono);
+  font-size: clamp(6px, 0.72vw, 9px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.mini-title {
+  font-family: var(--display);
+  font-size: clamp(15px, 2.3vw, 30px);
+  font-weight: 560;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: #f6f2ea;
+}
+.mini-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+.mini-cta {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold-deep));
+  color: #17120a;
+  font-size: clamp(7px, 0.82vw, 11px);
+  font-weight: 700;
+}
+
+/* --- panneau de recherche -------------------------------------------- */
+.float-search {
+  top: 10%;
+  left: 51%;
+  width: min(22vw, 282px);
+}
+.search-field {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  background: rgba(246, 243, 237, 0.95);
+  color: #1a1713;
+  font-size: 13px;
+}
+.search-field .ico {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: #6b6358;
+}
+.search-typed {
+  font-weight: 560;
+}
+.caret {
+  display: inline-block;
+  width: 1.5px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.14em;
+  background: #1a1713;
+  animation: caret 1.1s steps(1) infinite;
+}
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+.search-rows {
+  display: grid;
+  gap: 2px;
+  margin-top: 8px;
+}
+.search-rows li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 4px;
+  font-size: 12.5px;
+  color: var(--ink-muted);
+}
+.search-rows .ico {
+  width: 13px;
+  height: 13px;
+  flex: none;
+  color: var(--ink-faint);
+}
+
+/* --- panneau des gains ------------------------------------------------ */
+.float-gains {
+  top: 44%;
+  right: 1.5%;
+  width: min(18vw, 228px);
+}
+.gain-rows {
+  display: grid;
+  gap: 13px;
+}
+.gain-rows li {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 13px;
+  color: var(--ink-fg);
+}
+.gain-ico {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--gold-edge);
+  background: radial-gradient(circle at 34% 30%, rgba(255, 227, 162, 0.3), transparent 68%);
+}
+
+/* --- panneau de suivi (remplace la carte « +236 % » de la maquette) --- */
+.float-track {
+  top: 11%;
+  right: 3%;
+  width: min(18vw, 220px);
+}
+.track-k {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.spark {
+  width: 100%;
+  height: 34px;
+  margin: 8px 0 6px;
+}
+.track-v {
+  font-size: 12px;
+  color: var(--gold);
+}
+
+/* --- pastilles d'étapes ---------------------------------------------- */
+.float-chain {
+  bottom: 9%;
+  left: 54%;
+  width: min(22vw, 282px);
+  padding: 13px 15px;
+}
+.chain {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.chain li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-edge);
+  font-size: 11.5px;
+  color: var(--ink-muted);
+}
+.chain-n {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--gold);
+}
+
+/* --- la colonne de texte --------------------------------------------- */
 .hero-copy {
   max-width: 40rem;
 }
 
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: clamp(16px, 2vw, 24px);
+}
+
 .hero-title {
   display: grid;
-  max-width: 15ch;
+  max-width: 17ch;
+  font-size: clamp(2.2rem, 4.5vw, 3.9rem);
 }
-/* Each line is its own clipping window so the entrance is a reveal from
-   behind the baseline, not a fade. The padding keeps Fraunces's ascenders
-   out of the clip — at 0.97 line-height the mask cuts the caps — and the
-   negative margin gives the space back so the rhythm is unchanged. */
+/* Chaque ligne a sa propre fenêtre de découpe : l'entrée est une levée
+   derrière la ligne de base, pas un fondu. La marge intérieure garde les
+   ascendantes de Fraunces hors de la coupe, la marge négative rend la place. */
 .hero-title [data-h-line] {
   display: block;
   overflow: hidden;
-  padding-block: 0.14em;
-  margin-block: -0.07em;
+  padding-block: 0.15em;
+  margin-block: -0.075em;
 }
 .hero-title [data-h-line] > span {
   display: block;
   will-change: transform;
 }
+/* La bascule de la maquette : la seconde proposition passe en italique or. */
+.hero-title .em {
+  font-style: italic;
+  color: var(--gold);
+  font-variation-settings: 'SOFT' 0, 'WONK' 1;
+}
 
 .hero-lede {
-  margin-top: clamp(20px, 2.6vw, 28px);
-  max-width: 46ch;
+  margin-top: clamp(20px, 2.6vw, 30px);
+  max-width: 44ch;
+  color: var(--ink-muted);
 }
 
 .hero-cta {
   display: flex;
   flex-wrap: wrap;
   gap: 13px;
-  margin-top: clamp(26px, 3.4vw, 36px);
+  margin-top: clamp(26px, 3.4vw, 38px);
+}
+.play {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  position: relative;
+}
+.play::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0;
+  height: 0;
+  border-left: 6px solid currentColor;
+  border-block: 4px solid transparent;
+  translate: 1px 0;
+}
+
+.hero-marks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(14px, 2.4vw, 32px);
+  margin-top: clamp(26px, 3.4vw, 40px);
+  padding-top: clamp(20px, 2.6vw, 28px);
+  border-top: 1px solid rgba(232, 190, 126, 0.14);
+}
+.hero-marks li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.86rem;
+  color: var(--ink-muted);
+}
+.mark-ico {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--gold-edge);
+  background: radial-gradient(circle at 34% 30%, rgba(255, 227, 162, 0.34), transparent 70%);
 }
 
 .hero-note {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 22px;
   color: var(--ink-faint);
 }
-
-/* --- the caption track ------------------------------------------------ */
-.hero-beats {
-  position: relative;
-  justify-self: end;
-  display: grid;
-  min-height: 2.6em;
-  max-width: 24ch;
-  text-align: right;
-}
-/* The beats share one cell, so the outgoing line must be gone before the
-   next arrives: a symmetric cross-fade stacks two different sentences on top
-   of each other and neither can be read. Out is quick, in is delayed. */
-.hero-beats .beat {
-  grid-area: 1 / 1;
-  font-family: var(--display);
-  font-size: clamp(1.05rem, 1.9vw, 1.5rem);
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-  color: var(--ink-muted);
-  opacity: 0;
-  transform: translateY(9px);
-  transition:
-    opacity 0.22s ease-in,
-    transform 0.22s ease-in,
-    color 0.5s ease;
-}
-.hero-beats .beat[data-on='true'] {
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s,
-    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s,
-    color 0.5s ease;
-}
-/* The last beat is the one that matters, so it is the one that gets colour. */
-.hero-beats .beat[data-tone='land'] {
-  color: var(--copper-light);
-}
-
 .pulse {
   width: 7px;
   height: 7px;
   flex: none;
   border-radius: 50%;
-  background: var(--copper);
+  background: var(--gold);
   animation: pulse 2.6s ease-out infinite;
 }
 @keyframes pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(184, 115, 69, 0.45);
+    box-shadow: 0 0 0 0 rgba(232, 190, 126, 0.45);
   }
   70% {
-    box-shadow: 0 0 0 9px rgba(184, 115, 69, 0);
+    box-shadow: 0 0 0 9px rgba(232, 190, 126, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(184, 115, 69, 0);
+    box-shadow: 0 0 0 0 rgba(232, 190, 126, 0);
+  }
+}
+
+/* --- adaptations ------------------------------------------------------ */
+@media (max-width: 1180px) {
+  .float-search {
+    left: 36%;
+    width: min(30vw, 280px);
+  }
+  .float-chain {
+    display: none;
   }
 }
 
 @media (max-width: 900px) {
   .hero {
     min-height: auto;
-    padding-block: 40px 52px;
+    padding-block: 44px 56px;
   }
-  /* On a phone the hero is typography. The still frame drops to a metallic
-     glint in the bottom corner rather than a second composition fighting the
-     headline and the buttons for the same 390 pixels. */
-  .hero-stage {
-    opacity: 0.34;
+  /* Sur téléphone la scène redevient un décor : les panneaux qui ne tiennent
+     pas en 390 pixels disparaissent, le bokeh reste. On ne réduit pas la
+     composition desktop, on en compose une autre. */
+  .stage-3d,
+  .layer-foreground {
+    display: none;
   }
-  .hero-poster {
-    background-size: 165% auto;
-    background-position: 88% 92%;
+  .layer-bokeh {
+    opacity: 0.5;
+    background-position: 70% 30%;
   }
-  .hero-in::before {
-    background: linear-gradient(180deg, rgba(17, 20, 25, 0.9) 60%, transparent);
-    inset: -30% -50vw;
+  .hero::before {
+    background: linear-gradient(180deg, rgba(6, 6, 5, 0.84) 54%, var(--ink) 92%);
   }
   .hero-title {
-    max-width: 13ch;
+    max-width: 12ch;
   }
-  .hero-beats {
-    justify-self: start;
-    text-align: left;
-    max-width: 28ch;
+  .hero-marks {
+    gap: 10px 18px;
   }
 }
 
@@ -658,6 +994,18 @@ button {
     width: 100%;
   }
 }
+
+/* Sans mouvement : la scène est posée, rien ne suit le pointeur. */
+@media (prefers-reduced-motion: reduce) {
+  .layer,
+  .float {
+    transform: none;
+  }
+  .caret {
+    animation: none;
+  }
+}
+
 
 /* ===========================================================================
    NAV
@@ -869,10 +1217,6 @@ button {
   color: var(--stone-muted);
 }
 .offer-price {
-  /* In a monospace face the narrow no-break space Intl puts before € and
-     between thousands occupies a full cell, which tears the price apart.
-     Pulling the word-spacing back restores a typographic gap. */
-  word-spacing: -0.3em;
   font-size: clamp(1.9rem, 3.4vw, 2.5rem);
   font-weight: 500;
   line-height: 1;
@@ -880,12 +1224,14 @@ button {
   margin-top: 2px;
 }
 .offer-from {
+  margin-right: 0.4em;
   font-family: var(--body);
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--stone-muted);
 }
 .offer-then {
+  word-spacing: normal;
   display: block;
   font-family: var(--body);
   font-size: 0.95rem;
@@ -951,7 +1297,6 @@ button {
   --accent: var(--copper-light);
 }
 .aside-price {
-  word-spacing: -0.3em;
   font-size: clamp(1.8rem, 3vw, 2.3rem);
   font-weight: 500;
   line-height: 1;
@@ -982,12 +1327,12 @@ button {
   max-width: 44ch;
 }
 .pr-price {
-  word-spacing: -0.3em;
   font-size: 1.3rem;
   font-weight: 500;
   white-space: nowrap;
 }
 .pr-per {
+  margin-left: 0.1em;
   font-family: var(--body);
   font-size: 0.82rem;
   color: var(--stone-muted);
@@ -1709,4 +2054,36 @@ a.fc-v:hover {
   margin-top: 16px;
   color: var(--stone-muted);
   max-width: 62ch;
+}
+
+/* L'instrument WebGL, placé entre le décor et les objets mis en scène.
+   Calé à droite pour que ses anneaux encadrent le navigateur sans jamais
+   passer derrière la colonne de texte. */
+.layer-sculpture {
+  inset: auto;
+  top: 50%;
+  left: 52%;
+  width: min(46vw, 640px);
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  opacity: 0.85;
+}
+.layer-sculpture canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+@media (max-width: 900px) {
+  .layer-sculpture {
+    display: none;
+  }
+}
+
+/* Les séparateurs du prix, composés plutôt que subis : une largeur choisie
+   là où Intl mettait une espace fine que le monospace rendait trop large. */
+.num-group {
+  display: inline-block;
+  width: 0.26em;
+}
+.num-eur {
+  margin-left: 0.2em;
 }
