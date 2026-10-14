@@ -573,6 +573,7 @@ button {
 
 /* La matière des panneaux de la référence : verre noir, filet d'or, halo. */
 .panel-glass {
+  height: 100%;
   background:
     linear-gradient(155deg, rgba(28, 24, 18, 0.82), rgba(10, 9, 7, 0.88));
   backdrop-filter: blur(14px) saturate(130%);
@@ -2123,28 +2124,28 @@ a.fc-v:hover {
   animation: drift var(--drift, 13s) ease-in-out infinite;
   animation-delay: var(--drift-delay, 0s);
 }
-.float-search.panel-glass {
+.float-search .panel-glass {
   --drift: 11s;
   --drift-delay: -2s;
   --dx: 5px;
   --dy: -14px;
   --dr: 0.35deg;
 }
-.float-track.panel-glass {
+.float-track .panel-glass {
   --drift: 15s;
   --drift-delay: -6s;
   --dx: -6px;
   --dy: -10px;
   --dr: -0.3deg;
 }
-.float-gains.panel-glass {
+.float-gains .panel-glass {
   --drift: 13s;
   --drift-delay: -9s;
   --dx: 4px;
   --dy: -16px;
   --dr: 0.25deg;
 }
-.float-chain.panel-glass {
+.float-chain .panel-glass {
   --drift: 17s;
   --drift-delay: -4s;
   --dx: -5px;
@@ -2206,19 +2207,19 @@ a.fc-v:hover {
   animation: sheen var(--sheen, 9s) ease-in-out infinite;
   animation-delay: var(--sheen-delay, 0s);
 }
-.float-search.panel-glass::after {
+.float-search .panel-glass::after {
   --sheen: 8s;
   --sheen-delay: -1s;
 }
-.float-track.panel-glass::after {
+.float-track .panel-glass::after {
   --sheen: 11s;
   --sheen-delay: -5s;
 }
-.float-gains.panel-glass::after {
+.float-gains .panel-glass::after {
   --sheen: 9.5s;
   --sheen-delay: -3s;
 }
-.float-chain.panel-glass::after {
+.float-chain .panel-glass::after {
   --sheen: 12s;
   --sheen-delay: -7s;
 }
@@ -2443,5 +2444,171 @@ a.fc-v:hover {
 @media (prefers-reduced-motion: reduce) {
   .layer-bokeh {
     animation: none !important;
+  }
+}
+
+/* ===========================================================================
+   DÉFILEMENT
+
+   `--p` va de 0 à 1 pendant qu'une section traverse la fenêtre (voir
+   lib/useScrub.ts). Ce qu'on en fait reste lié à la lecture : on souligne la
+   progression, on ne détourne jamais le défilement et on ne retarde jamais un
+   contenu. Tout est en `transform` et `opacity`.
+   =========================================================================== */
+
+/* --- la chaîne se met sous tension ------------------------------------ */
+.system {
+  position: relative;
+}
+.stages-rail {
+  position: relative;
+  height: 1px;
+  margin-top: clamp(38px, 5vw, 60px);
+  background: var(--ink-line);
+  overflow: hidden;
+}
+/* Le trait d'or avance au rythme du défilement : la chaîne se parcourt. */
+.stages-rail-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--gold-deep), var(--gold-bright) 60%, var(--gold));
+  transform-origin: left;
+  scale: clamp(0, calc((var(--p, 0) - 0.08) * 1.9), 1) 1;
+  box-shadow: 0 0 14px 1px var(--gold-glow);
+}
+.stages {
+  position: relative;
+  margin-top: 0;
+}
+/* Un éclat traverse la grille, allumant les cartes sur son passage. */
+.stages-sweep {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -30%;
+  width: 34%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(60% 50% at 50% 50%, rgba(255, 227, 162, 0.1), transparent 70%);
+  translate: calc(clamp(0, calc((var(--p, 0) - 0.08) * 1.9), 1) * 330%) 0;
+}
+
+/* --- le hero se disperse quand on le quitte --------------------------- */
+/* Chaque objet part dans sa direction propre : la composition s'ouvre au
+   lieu de simplement glisser vers le haut. */
+.float-search {
+  --ox: -90px;
+  --oy: -40px;
+}
+.float-track {
+  --ox: 110px;
+  --oy: -70px;
+}
+.float-gains {
+  --ox: 130px;
+  --oy: 30px;
+}
+.float-chain {
+  --ox: -70px;
+  --oy: 80px;
+}
+.float-device {
+  --ox: 40px;
+  --oy: 20px;
+}
+.float {
+  transform: translate3d(
+      calc(
+        (var(--px) * var(--d) * -4px) + (var(--sy) * var(--ox, 0px))
+      ),
+      calc(
+        (var(--py) * var(--d) * -2.6px) + (var(--sy) * var(--d) * -9px) +
+          (var(--sy) * var(--oy, 0px))
+      ),
+      0
+    )
+    rotateY(calc(var(--px) * -1.1deg)) rotateX(calc(var(--py) * 0.7deg))
+    scale(calc(1 - var(--sy) * 0.08));
+  opacity: calc(1 - var(--sy) * 0.65);
+}
+
+/* --- la couture entre sections s'allume ------------------------------- */
+.seam-to-stone,
+.seam-to-ink {
+  position: relative;
+  overflow: hidden;
+}
+.seam-to-stone::after,
+.seam-to-ink::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 26%;
+  background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+  translate: -100% 0;
+  animation: seam 5.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes seam {
+  0%,
+  62% {
+    translate: -110% 0;
+    opacity: 0;
+  }
+  68% {
+    opacity: 0.85;
+  }
+  100% {
+    translate: 420% 0;
+    opacity: 0;
+  }
+}
+
+/* --- les cartes se dévoilent par un volet ----------------------------- */
+/* Un volet qui s'ouvre tient le regard mieux qu'un fondu, et la carte reste
+   nette pendant toute la révélation. */
+.offer-grid > li,
+.work-grid > li,
+.ai-grid > li,
+.stages li {
+  clip-path: inset(0 0 100% 0);
+  transition:
+    clip-path 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.45s ease;
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+.offer-grid > li[data-shown='true'],
+.work-grid > li[data-shown='true'],
+.ai-grid > li[data-shown='true'],
+.stages li[data-shown='true'] {
+  clip-path: inset(0 0 0 0);
+}
+/* Le survol ne doit pas réintroduire le volet, sinon la carte se referme. */
+.offer:hover,
+.work:hover .work-plate,
+.ai-grid > li:hover,
+.stages li:hover {
+  transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stages-rail-fill {
+    scale: 1 1;
+  }
+  .stages-sweep,
+  .seam-to-stone::after,
+  .seam-to-ink::after {
+    display: none;
+  }
+  .float {
+    opacity: 1;
+  }
+  .offer-grid > li,
+  .work-grid > li,
+  .ai-grid > li,
+  .stages li {
+    clip-path: none;
   }
 }

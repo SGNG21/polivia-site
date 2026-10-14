@@ -11,6 +11,7 @@ import Commitments from '../sections/Commitments';
 import FinalCta from '../sections/FinalCta';
 import Seo, { OrgSchema } from '../components/Seo';
 import { useReveal } from '../lib/useReveal';
+import { useScrub } from '../lib/useScrub';
 
 /**
  * Un seul monde — noir profond et or — comme la direction artistique validée.
@@ -23,6 +24,7 @@ import { useReveal } from '../lib/useReveal';
  */
 export default function Home() {
   useReveal();
+  useScrub();
   return (
     <>
       <Seo

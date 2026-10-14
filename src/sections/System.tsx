@@ -11,7 +11,7 @@ import { STAGES } from '../content/system';
  */
 export default function System() {
   return (
-    <section className="world-ink band system" id="systeme" aria-labelledby="sys-h">
+    <section className="world-ink band system" id="systeme" aria-labelledby="sys-h" data-scrub>
       <div className="wrap">
         <div className="section-head wide" data-reveal>
           <p className="marker">Le système d’acquisition</p>
@@ -24,7 +24,15 @@ export default function System() {
           </p>
         </div>
 
+        {/* Le rail et l'éclat se remplissent au défilement : la chaîne se met
+            sous tension à mesure qu'on la parcourt. Décoratifs — la liste
+            ci-dessous se lit entièrement sans eux. */}
+        <div className="stages-rail" aria-hidden="true">
+          <span className="stages-rail-fill" />
+        </div>
+
         <ol className="stages">
+          <span className="stages-sweep" aria-hidden="true" />
           {STAGES.map((s, i) => (
             <li key={s.key} data-reveal style={{ '--i': i % 4 } as React.CSSProperties}>
               <span className="stage-n data" aria-hidden="true">

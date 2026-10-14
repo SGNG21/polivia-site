@@ -58,14 +58,19 @@ function Panel({
   children: React.ReactNode;
   label?: string;
 }) {
+  /* Deux éléments, deux responsabilités. `.float` porte le placement, la
+     parallaxe et la dispersion au défilement : la feuille de style en est
+     seule maîtresse. `.panel-glass` porte la matière et l'entrée, animée par
+     GSAP. Quand les deux vivaient sur le même nœud, le `transform` en ligne
+     laissé par GSAP écrasait définitivement la parallaxe. */
   return (
     <div
-      className={`float panel-glass ${className}`}
+      className={`float ${className}`}
       style={{ '--d': depth } as React.CSSProperties}
       aria-label={label}
       role={label ? 'group' : undefined}
     >
-      {children}
+      <div className="panel-glass">{children}</div>
     </div>
   );
 }

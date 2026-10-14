@@ -54,7 +54,7 @@ export default function Hero() {
           : Promise.resolve();
 
         gsap.set('[data-h-line] > span', { yPercent: 115 });
-        gsap.set('.float, .layer-foreground', { opacity: 0 });
+        gsap.set('.panel-glass, .float-device .device, .layer-foreground', { opacity: 0 });
 
         fonts.then(() => {
           gsap
@@ -66,7 +66,7 @@ export default function Hero() {
             .from('[data-h-marks] > li', { opacity: 0, y: 10, duration: 0.6, stagger: 0.06 }, 0.85)
             // La scène se monte ensuite, du plus loin au plus près.
             .to(
-              '.float-device',
+              '.float-device .device',
               { opacity: 1, duration: 1.1, ease: 'power2.out' },
               0.35,
             )
@@ -117,7 +117,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="hero world-ink" ref={root} data-lit={lit}>
+    <section className="hero world-ink" ref={root} data-lit={lit} data-scrub>
       <Stage />
 
       <div className="wrap hero-in">
