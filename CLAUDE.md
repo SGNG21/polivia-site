@@ -93,7 +93,39 @@ rôle "reviewer" ne modifie jamais le code qu'il évalue. Rien n'existait avant 
   alors que l'URL réelle existe désormais.
 - **Supabase** : CLI non installée, aucun projet lié dans ce dépôt. `QuoteForm.tsx` est câblé pour y
   poster via `VITE_FORM_ENDPOINT`, mais la variable n'est configurée nulle part dans cette session.
-- **Frappe CRM** et **n8n** : aucune trace dans ce dépôt (ni code, ni env), aucun MCP connecté cette
-  session. Connecter l'un ou l'autre demande une URL + un jeton que seul le propriétaire détient —
-  accès sensible, à ne configurer qu'avec son accord explicite et un scope minimal.
+- **n8n** : connecté le 2026-11-20 (instance `n8n.audit-ia-pro.fr`, projet personnel unique, 0 credential
+  au départ). Workflow `POLIVIA — Intake formulaire site` créé, testé (3 cas synthétiques), **activé** —
+  URL de prod `https://n8n.audit-ia-pro.fr/webhook/polivia-site-intake`, mais **inaccessible depuis
+  l'extérieur** : un Basic Auth Caddy en amont de n8n répond 403 avant même d'atteindre le workflow.
+  `VITE_FORM_ENDPOINT` ne peut donc pas être câblé tant que ce mot de passe applicatif n'est pas levé ou
+  transmis — en dehors de ma main, à traiter avec le propriétaire. Trois workflows préexistants, inactifs,
+  nommés "Workflow de preuve ICOS × n8n local" (17/11) : hors périmètre, non touchés.
+- **Frappe CRM** et **ERPNext** : annoncés "déjà installés" par le propriétaire le 2026-11-20. Vérifié
+  (`ToolSearch` sur "frappe erpnext crm") : **aucun MCP ni accès API pour l'un ou l'autre dans cette
+  session**. Statut réel : **non vérifiable depuis cette session**, pas "non vérifié par oubli" — il
+  manque une URL d'instance + un jeton, que je ne dois ni deviner ni demander à saisir moi-même (accès
+  sensible, cf. `docs/v8/docs/06_FRAPPE_N8N_FACTURATION_SUPPORT.md` pour la politique déjà écrite). Pas
+  de CRM concurrent à construire tant que ce point n'est pas résolu avec le propriétaire ; le payload du
+  formulaire studio/devis (`src/sections/Studio.tsx`, `QuoteForm.tsx`) est déjà structuré pour pouvoir
+  alimenter un futur pipeline `prospect → opportunité → devis` sans réécriture, le jour où l'accès existe.
 - **Stripe** : aucune clé, aucune intégration dans ce dépôt. TEST uniquement si/quand construit.
+
+## Politique de sélection des outils (ECC / Agentic Council / Superpowers)
+Condensé du mandat du 2026-11-20, pour ne pas le relire en entier à chaque session :
+- **Claude agit seul** sur tout problème simple ou déjà tranché — pas d'agent pour une tâche qu'un
+  diff direct résout.
+- **Agentic Council** (ciblé, jamais tous les rôles à la fois) uniquement pour une décision
+  d'architecture majeure, un risque de sécurité/conformité critique, ou un choix technique difficile
+  à défaire. Rôles utiles à POLIVIA : Architect, Artisan, Advocate, Tuner, Guardian, Cipher, Skeptic,
+  Operator, Herald.
+- **Superpowers** quand ses méthodes (TDD, debug systématique, brainstorming, revue de code) aident
+  réellement — pas en symbole.
+- **ECC** (plugin `ecc@ecc`, chargé cette session — 39 plugins / 836 skills / 138 agents au dernier
+  `/reload-plugins`) : à mobiliser à la demande sur une tâche précise (build-fix, review, tests),
+  jamais activé en bloc.
+- Ne jamais lancer plusieurs frameworks d'orchestration en parallèle sur le même travail.
+- Accord explicite du propriétaire requis avant : dépense, intervention sur une instance de
+  production, migration destructive, suppression importante, changement majeur de permissions,
+  données clients réelles dans un nouveau service, modification de Frappe/n8n/ERPNext déjà
+  exploités, exposition réseau supplémentaire, changement substantiel des offres commerciales,
+  publication publique.
