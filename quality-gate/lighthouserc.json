@@ -3,6 +3,7 @@
   "ci": {
     "collect": {
       "staticDistDir": "dist",
+      "url": ["http://localhost/index.html", "http://localhost/contact.html"],
       "numberOfRuns": 3
     },
     "assert": {

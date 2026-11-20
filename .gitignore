@@ -8,3 +8,4 @@ dist-ssr
 .playwright-mcp
 .vercel
 tsconfig.tsbuildinfo
+.lighthouseci

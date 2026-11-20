@@ -48,4 +48,5 @@ jobs:
         with:
           name: lighthouse-reports
           path: .lighthouseci/
-          if-no-files-found: ignore
+          include-hidden-files: true
+          if-no-files-found: warn
