@@ -6,6 +6,7 @@ const links = [
   { href: '/#audit', label: "L'audit gratuit" },
   { href: '/#realisations', label: 'Notre différence' },
   { href: '/#offres', label: 'Nos offres' },
+  { href: '/#atelier', label: 'Créer mon site' },
   { href: '/#transition', label: 'Déjà engagé ?' },
   { href: '/a-propos', label: 'À propos' },
 ];
