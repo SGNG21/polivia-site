@@ -5,6 +5,7 @@ const links = [
   { href: '/#audit', label: "Auditer mon site" },
   { href: '/#offres', label: 'Les offres' },
   { href: '/realisations', label: 'Réalisations' },
+  { href: '/#transition', label: 'Préparer ma transition' },
   { href: '/contact', label: 'Préparer mon projet' },
   { href: '/mentions-legales', label: 'Mentions légales' },
   { href: '/confidentialite', label: 'Confidentialité' },

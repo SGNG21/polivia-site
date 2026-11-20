@@ -333,3 +333,18 @@ export const pact = {
     },
   ],
 } as const;
+
+export const transition = {
+  eyebrow: '06 / PRÉPARER LA SUITE',
+  title: ['Déjà engagé ailleurs ?', 'Préparons votre liberté digitale.'] as const,
+  body: 'Votre contrat actuel ne doit pas vous empêcher de préparer la suite. Dites-nous ce dont votre entreprise a besoin : nous étudierons votre situation, votre site et une possible transition, à votre rythme.',
+  promise: [
+    'Diagnostic et préparation sans engagement',
+    'Maquette premium possible avant décision',
+    'Respect de vos contrats et de votre calendrier',
+  ],
+  quote: '« Votre fidélité, nous voulons la mériter. Pas vous l’imposer. »',
+  cardBadge: 'DEMANDE GRATUITE',
+  cardTitle: 'Parlons de votre projet.',
+  cardNote: 'Remplissez ces quelques champs. Aucune résiliation automatique de votre prestataire actuel.',
+} as const;

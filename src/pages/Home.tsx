@@ -4,6 +4,7 @@ import FreeAudit from '../sections/FreeAudit';
 import Work from '../sections/Work';
 import Pricing from '../sections/Pricing';
 import Method from '../sections/Method';
+import Transition from '../sections/Transition';
 import Manifesto from '../sections/Manifesto';
 import Faq from '../sections/Faq';
 import Seo, { OrgSchema } from '../components/Seo';
@@ -11,10 +12,9 @@ import { useReveal } from '../lib/useReveal';
 
 /**
  * Structure reprise du prototype V5 validé le 2026-11-20
- * (references/polivia-v5-signature). Deux sections du prototype restent à
+ * (references/polivia-v5-signature). Une section du prototype reste à
  * construire : 05 "Le Studio POLIVIA" (configurateur multi-étapes avec
- * aperçu live) et 06 "Déjà engagé ailleurs" (formulaire de transition
- * concurrent) — des lots à part entière, pas branchés dans cette passe.
+ * aperçu live) — un lot à part entière, pas branché dans cette passe.
  */
 export default function Home() {
   useReveal();
@@ -33,6 +33,7 @@ export default function Home() {
       <Work />
       <Pricing />
       <Method />
+      <Transition />
       <Faq />
       <Manifesto />
     </>
