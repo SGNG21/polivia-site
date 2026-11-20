@@ -129,3 +129,25 @@ Condensé du mandat du 2026-11-20, pour ne pas le relire en entier à chaque ses
   données clients réelles dans un nouveau service, modification de Frappe/n8n/ERPNext déjà
   exploités, exposition réseau supplémentaire, changement substantiel des offres commerciales,
   publication publique.
+
+## Site Factory — état (mis à jour le 2026-11-20)
+- **Où** : moteur en construction dans un worktree isolé de Digitalos2,
+  `~/Documents/Geoffrey Pro/repos/Digitalos2-factory-pilot` (branche locale `polivia/factory-pilot`,
+  non poussée). La copie principale de Digitalos2 (branche `deploy/vercel`) et son `premium-starter`
+  ne sont pas touchés : l'ancien pipeline et le cockpit en dépendent.
+- **Défauts trouvés dans l'usine Digitalos2 existante** (à ne pas réutiliser tels quels) :
+  monopage seulement ; `run-pipeline.mjs` réécrit le starter partagé à chaque run (aucune isolation
+  par projet) ; `public/hero.jpg` et `og.jpg` sont des fichiers texte, pas des images (image cassée
+  + og:image invalide, invisible pour le gate) ; `next@15.1.6` vulnérable ; données d'exemple avec
+  téléphone/adresse d'apparence réelle et mention « Artisan certifié » inventée ; aucune
+  persistance de job ni historique. Le cockpit simule l'avancement sans Supabase.
+- **Cible du pilote** : `factory/` (moteur) + `factory/template/` (gabarit Next multi-pages) :
+  brief validé → id stable → `projects/<id>/` (project.json + events.jsonl + spec + site isolé)
+  → install → build → tests (liens, orphelins, canonicals, sitemap) → gate → Lighthouse → rapport,
+  avec reprise des étapes échouées. Pilote = entreprise fictive marquée démo, domaine `.example`,
+  aucun téléphone ni adresse de rue inventés.
+- **CI polivia-site** : réelle depuis le 2026-11-20. Gate déterministe : PASS en CI. Lighthouse :
+  premier run en échec, causé par un vrai bug d'hydratation en 404 sur les URLs `.html` (corrigé
+  dans `src/main.tsx`) ; mesuré en local après correctif : perf 1, best-practices 1, SEO 1,
+  a11y 0,96 sur accueil et contact. **Ouvert** : 23 couleurs de texte sous 4,5:1 dans la feuille V5,
+  à corriger avant validation finale (un remplacement global abîmerait les sections sombres).
