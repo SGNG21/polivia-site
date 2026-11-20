@@ -46,5 +46,5 @@ function slice(html: string, tag: 'head' | 'body'): string {
 export { routes } from './App';
 /* Re-exported so the prerender step can write llms.txt and the sitemap from
    the same content the pages render, instead of a hand-kept copy. */
-export { brand, offers, audit, maintenance, projects } from './content/site';
+export { brand, pricing, audit, projects } from './content/site';
 export { STAGES } from './content/system';

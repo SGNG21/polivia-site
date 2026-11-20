@@ -1,83 +1,40 @@
-import { Link } from 'wouter';
-import { brand, phoneDisplay } from '../content/site';
+import { manifesto, brand } from '../content/site';
 import { Wordmark } from './Nav';
 
-const columns = [
-  {
-    head: 'Offres',
-    items: [
-      { href: '/site-essentiel', label: 'Site Essentiel' },
-      { href: '/site-sur-mesure', label: 'Site sur mesure' },
-      { href: '/abonnement', label: 'Abonnement' },
-      { href: '/audit-ia', label: 'Audit IA Express' },
-    ],
-  },
-  {
-    head: 'Agence',
-    items: [
-      { href: '/realisations', label: 'Réalisations' },
-      { href: '/a-propos', label: 'À propos' },
-      { href: '/contact', label: 'Contact et devis' },
-    ],
-  },
-  {
-    head: 'Informations',
-    items: [
-      { href: '/mentions-legales', label: 'Mentions légales' },
-      { href: '/confidentialite', label: 'Confidentialité' },
-    ],
-  },
+const links = [
+  { href: '/#audit', label: "Auditer mon site" },
+  { href: '/#offres', label: 'Les offres' },
+  { href: '/realisations', label: 'Réalisations' },
+  { href: '/contact', label: 'Préparer mon projet' },
+  { href: '/mentions-legales', label: 'Mentions légales' },
+  { href: '/confidentialite', label: 'Confidentialité' },
 ];
 
 export default function Footer() {
-  const tel = phoneDisplay(brand.phone);
-
   return (
-    <footer className="footer world-ink">
-      <div className="wrap footer-in">
-        <div className="footer-brand">
-          <Wordmark />
-          <p className="small body-muted">{brand.promise}</p>
-          <p className="small footer-area">
-            {brand.areas.map((a) => `${a.name} (${a.code})`).join(' · ')}
-          </p>
+    <footer className="footer">
+      <div className="wrap footer-inner">
+        <div>
+          <a href="/" aria-label={`${brand.name} — accueil`}>
+            <Wordmark />
+          </a>
+          <p>{manifesto.quote}</p>
         </div>
-
-        {columns.map((c) => (
-          <nav key={c.head} className="footer-col" aria-label={c.head}>
-            <h2 className="footer-head small">{c.head}</h2>
-            <ul>
-              {c.items.map((i) => (
-                <li key={i.href}>
-                  <Link href={i.href}>{i.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        ))}
-
-        <div className="footer-col">
-          <h2 className="footer-head small">Nous joindre</h2>
-          <ul>
-            <li>
-              <a href={`mailto:${brand.email}`}>{brand.email}</a>
-            </li>
-            {tel && brand.phone && (
-              <li>
-                <a className="data" href={`tel:${brand.phone}`}>
-                  {tel}
-                </a>
-              </li>
-            )}
-          </ul>
+        <nav className="footer-links" aria-label="Pied de page">
+          {links.map((l) => (
+            <a key={l.href} href={l.href}>
+              {l.label}
+            </a>
+          ))}
+        </nav>
+        <div className="footer-last">
+          <span>
+            © {new Date().getFullYear()} {brand.legalName} · {brand.areas.map((a) => a.name).join(' · ')}
+          </span>
+          <span>
+            <a href={`mailto:${brand.email}`}>{brand.email}</a>
+          </span>
         </div>
-      </div>
-
-      <div className="wrap footer-base small">
-        <p>
-          © {new Date().getFullYear()} {brand.legalName} — {brand.founder}
-        </p>
-        <p className="footer-made">Site conçu et développé par POLIVIA.</p>
       </div>
     </footer>
   );

@@ -1,58 +1,40 @@
-import Hero from '../hero/Hero';
-import Proof from '../sections/Proof';
-import Constat from '../sections/Constat';
-import System from '../sections/System';
-import Offers from '../sections/Offers';
+import Hero from '../sections/Hero';
+import BrandMarquee from '../sections/BrandMarquee';
+import FreeAudit from '../sections/FreeAudit';
 import Work from '../sections/Work';
-import AfterLaunch from '../sections/AfterLaunch';
-import AiBand from '../sections/AiBand';
-import Pact from '../sections/Pact';
-import Commitments from '../sections/Commitments';
-import FinalCta from '../sections/FinalCta';
+import Pricing from '../sections/Pricing';
+import Method from '../sections/Method';
+import Manifesto from '../sections/Manifesto';
+import Faq from '../sections/Faq';
 import Seo, { OrgSchema } from '../components/Seo';
 import { useReveal } from '../lib/useReveal';
-import { useScrub } from '../lib/useScrub';
 
 /**
- * Un seul monde — noir profond et or — comme la direction artistique validée.
- * Le rythme se fait par la lumière : les sections « relevées » portent un fond
- * légèrement plus clair et un halo, les autres restent dans le noir.
- *
- * L'ordre sert la vente : on impressionne, on nomme le problème, on montre la
- * méthode, on donne les prix, on prouve, on explique le suivi, on se présente,
- * on s'engage, on demande.
+ * Structure reprise du prototype V5 validé le 2026-11-20
+ * (references/polivia-v5-signature). Deux sections du prototype restent à
+ * construire : 05 "Le Studio POLIVIA" (configurateur multi-étapes avec
+ * aperçu live) et 06 "Déjà engagé ailleurs" (formulaire de transition
+ * concurrent) — des lots à part entière, pas branchés dans cette passe.
  */
 export default function Home() {
   useReveal();
-  useScrub();
   return (
     <>
       <Seo
         title="POLIVIA — Création de site internet dans l’Yonne et sur la Côte d’Azur"
-        description="Agence web et acquisition client pour artisans, commerçants et TPE/PME. Sites professionnels dès 1 490 €, référencement local, suivi mensuel, audit IA à 390 €. Yonne (89) et Alpes-Maritimes (06)."
+        description="Agence web et acquisition client pour artisans, commerçants et TPE/PME. Audit gratuit, sites premium dès 49 € HT/mois, référencement local. Yonne (89) et Alpes-Maritimes (06)."
         path="/"
       />
       <OrgSchema />
 
       <Hero />
-      <Proof />
-      <Constat />
-      <System />
-
-      <div className="seam-to-stone" aria-hidden="true" />
-      <Offers />
-
-      <div className="seam-to-ink" aria-hidden="true" />
+      <BrandMarquee />
+      <FreeAudit />
       <Work />
-      <AfterLaunch />
-      <AiBand />
-
-      <div className="seam-to-stone" aria-hidden="true" />
-      <Pact />
-
-      <div className="seam-to-ink" aria-hidden="true" />
-      <Commitments />
-      <FinalCta />
+      <Pricing />
+      <Method />
+      <Faq />
+      <Manifesto />
     </>
   );
 }

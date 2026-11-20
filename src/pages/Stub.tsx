@@ -21,8 +21,8 @@ export default function Stub({
   return (
     <>
       <Seo title={title} description={description} path={path} noindex />
-      <section className="world-ink band page-head">
-        <div className="wrap-tight stub">
+      <section className="page-head">
+        <div className="wrap-tight">
           <h1 className="t-h2">{title}</h1>
           <p className="lede">{lede}</p>
           <p className="body-muted">

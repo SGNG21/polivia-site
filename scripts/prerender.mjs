@@ -15,7 +15,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
 
 const mod = await import(path.join(root, 'dist-ssr/entry-server.js'));
-const { render, routes, brand, offers, audit, maintenance, STAGES } = mod;
+const { render, routes, brand, pricing, audit, STAGES } = mod;
 const template = await readFile(path.join(dist, 'index.html'), 'utf8');
 
 /* No font preloading here on purpose. Preloading the two latin faces was
@@ -100,11 +100,10 @@ Agence web et acquisition client fondée par ${brand.founder}, intervenant dans 
 
 ## Offres
 
-${offers
-  .map((o) => `- [${o.name}](${origin}/${o.slug}) : ${o.price.from ? 'dès ' : ''}${price(o.price.amount)}${o.price.then ? ` puis ${o.price.then}` : ''}. ${o.body}`)
+${pricing
+  .map((t) => `- ${t.name} : ${price(t.yearly)} HT/mois (12 mois${t.yearlyValidated ? '' : ', à confirmer'}) ou ${price(t.monthly)} HT/mois (sans engagement${t.monthlyValidated ? '' : ', à confirmer'}). ${t.body}`)
   .join('\n')}
 - [${audit.name}](${origin}/audit-ia) : ${price(audit.price)}. ${audit.body}
-${maintenance.map((m) => `- Maintenance ${m.name} : ${price(m.price)}/mois. ${m.body}`).join('\n')}
 
 ## Méthode
 

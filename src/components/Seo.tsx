@@ -1,4 +1,4 @@
-import { brand, offers, audit, maintenance } from '../content/site';
+import { brand, pricing, audit } from '../content/site';
 
 /**
  * React 19 hoists <title>, <meta> and <link> to <head> from anywhere in the
@@ -16,7 +16,7 @@ export default function Seo({
   path: string;
   noindex?: boolean;
 }) {
-  const url = `${brand.url}${path === '/' ? '' : path}`;
+  const url = `${brand.url}${path === '/' ? '/' : path}`;
   const full = path === '/' ? title : `${title} — ${brand.name}`;
 
   return (
@@ -53,7 +53,7 @@ export function OrgSchema() {
     email: brand.email,
     description: brand.promise,
     founder: { '@type': 'Person', name: brand.founder },
-    priceRange: '390 € – 2 200 €',
+    priceRange: '49 € – 329 €',
     ...(brand.phone ? { telephone: brand.phone } : {}),
     areaServed: brand.areas.map((a) => ({
       '@type': 'AdministrativeArea',
@@ -68,13 +68,18 @@ export function OrgSchema() {
       '@type': 'OfferCatalog',
       name: 'Prestations POLIVIA',
       itemListElement: [
-        ...offers.map((o) => ({
+        ...pricing.map((t) => ({
           '@type': 'Offer',
-          name: o.name,
-          description: o.body,
-          price: o.price.amount,
+          name: t.name,
+          description: t.body,
+          price: t.yearly,
           priceCurrency: 'EUR',
-          ...(o.price.from ? { priceSpecification: { '@type': 'PriceSpecification', minPrice: o.price.amount, priceCurrency: 'EUR' } } : {}),
+          priceSpecification: {
+            '@type': 'UnitPriceSpecification',
+            price: t.yearly,
+            priceCurrency: 'EUR',
+            unitCode: 'MON',
+          },
         })),
         {
           '@type': 'Offer',
@@ -83,19 +88,6 @@ export function OrgSchema() {
           price: audit.price,
           priceCurrency: 'EUR',
         },
-        ...maintenance.map((m) => ({
-          '@type': 'Offer',
-          name: `Maintenance ${m.name}`,
-          description: m.body,
-          price: m.price,
-          priceCurrency: 'EUR',
-          priceSpecification: {
-            '@type': 'UnitPriceSpecification',
-            price: m.price,
-            priceCurrency: 'EUR',
-            unitCode: 'MON',
-          },
-        })),
       ],
     },
   };

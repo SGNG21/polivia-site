@@ -1,51 +1,40 @@
 import { projects } from '../content/site';
 
 /**
- * Until a real screenshot exists for a project, `shot` is null and the card
- * renders a typographic plate. A fabricated browser mockup would be a lie
- * about work that was actually delivered, which is worse than no image.
+ * La preuve réelle plutôt que le comparateur fictif du prototype V5 : on a
+ * de vrais clients en ligne, mieux vaut les montrer qu'illustrer avec un
+ * "avant/après" imaginaire. `liveUrl` reste `null` tant qu'un site n'est pas
+ * vérifié en ligne.
  */
 export default function Work() {
   return (
-    <section className="world-ink band" id="realisations" aria-labelledby="work-h">
-      <div className="wrap">
-        <div className="section-head wide" data-reveal>
-          <h2 id="work-h" className="t-h2">
-            Du bâtiment à l’édition de luxe.
+    <section className="cases-section wrap" id="realisations" aria-labelledby="cases-title">
+      <div className="case-head">
+        <div>
+          <div className="eyebrow dark-eyebrow">
+            <span className="section-index">02 / LA PREUVE PAR LE DESIGN</span>
+          </div>
+          <h2 id="cases-title">
+            Moins cher ne veut pas dire <em>moins bien.</em>
           </h2>
-          <p className="lede">
-            Des univers qui n’ont rien en commun, le même travail de fond : comprendre le
-            métier, puis construire le parcours qui amène la demande.
-          </p>
         </div>
+        <p>Des sites réellement livrés, pas des maquettes. Chaque entreprise garde son identité propre.</p>
+      </div>
 
-        <ul className="work-grid">
-          {projects.map((p, i) => (
-            <li key={p.slug} className="work" data-reveal style={{ '--i': i % 3 } as React.CSSProperties}>
-              <div className="work-plate">
-                {p.shot ? (
-                  <img src={p.shot} alt={`Site réalisé pour ${p.name}`} loading="lazy" decoding="async" />
-                ) : (
-                  <span className="work-plate-name" aria-hidden="true">
-                    {p.name}
-                  </span>
-                )}
-              </div>
-              <div className="work-meta">
-                <h3 className="t-h3">{p.name}</h3>
-                <p className="work-sector small">{p.sector}</p>
-                <p className="work-obj">{p.objective}</p>
-                <p className="body-muted small">{p.body}</p>
-                {p.liveUrl && (
-                  <a className="work-link small" href={p.liveUrl} target="_blank" rel="noreferrer">
-                    Voir le site en ligne
-                  </a>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-
+      <div className="work-grid">
+        {projects.map((p) => (
+          <article className="work-card" key={p.slug}>
+            <span className="work-sector">{p.sector}</span>
+            <h3>{p.name}</h3>
+            <p className="work-obj">{p.objective}</p>
+            <p className="work-body">{p.body}</p>
+            {p.liveUrl && (
+              <a className="work-link" href={p.liveUrl} target="_blank" rel="noreferrer">
+                Voir le site en ligne ↗
+              </a>
+            )}
+          </article>
+        ))}
       </div>
     </section>
   );

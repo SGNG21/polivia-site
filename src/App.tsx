@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { Route, Switch, useLocation } from 'wouter';
-import Nav, { Dock } from './components/Nav';
+import Nav from './components/Nav';
 import Footer from './components/Footer';
+import { notice } from './content/site';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Terrain from './pages/Terrain';
@@ -10,24 +11,6 @@ import NotFound from './pages/NotFound';
 
 /** Pages still to be written, but routed so no advertised link 404s. */
 const stubs = [
-  {
-    path: '/site-essentiel',
-    title: 'Site Essentiel',
-    description: 'Le site professionnel dès 1 490 € : jusqu’à 5 pages sur-mesure, référencement local, mobile d’abord.',
-    lede: 'Le site qui vous sort du bricolage, dès 1 490 €.',
-  },
-  {
-    path: '/site-sur-mesure',
-    title: 'Site sur mesure',
-    description: 'Conception complète sans gabarit, dès 2 200 €. Pour les entreprises dont le site est le premier commercial.',
-    lede: 'Conception complète, sans gabarit, dès 2 200 €.',
-  },
-  {
-    path: '/abonnement',
-    title: 'Abonnement site',
-    description: 'Votre site pour 390 € puis 69 €/mois, hébergement et maintenance inclus, engagement 12 mois.',
-    lede: '390 € puis 69 €/mois, tout compris.',
-  },
   {
     path: '/audit-ia',
     title: 'Audit IA Express',
@@ -93,6 +76,13 @@ export default function App() {
       <a className="skip" href="#main">
         Aller au contenu
       </a>
+      <div className="notice">
+        <span className="signal" aria-hidden="true" />
+        <span>{notice.text}</span>
+        <a href={notice.href}>
+          {notice.linkLabel} <span aria-hidden="true">↗</span>
+        </a>
+      </div>
       <Nav />
       <main id="main">
         <Switch>
@@ -107,7 +97,6 @@ export default function App() {
         </Switch>
       </main>
       <Footer />
-      <Dock />
     </>
   );
 }

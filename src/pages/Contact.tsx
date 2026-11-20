@@ -17,7 +17,7 @@ export default function Contact() {
         description="Décrivez votre projet en deux lignes. Réponse sous 24 h avec un premier regard sur votre visibilité et un prix, sans engagement."
         path="/contact"
       />
-      <section className="world-ink band page-head">
+      <section className="page-head">
         <div className="wrap contact-in">
           <div className="contact-pitch">
             <h1 className="t-h2">

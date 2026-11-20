@@ -10,8 +10,8 @@ export default function NotFound() {
         path="/404"
         noindex
       />
-      <section className="world-ink band page-head">
-        <div className="wrap-tight stub">
+      <section className="page-head">
+        <div className="wrap-tight">
           <p className="marker">Erreur 404</p>
           <h1 className="t-h2">Cette page n’existe pas.</h1>
           <p className="lede">

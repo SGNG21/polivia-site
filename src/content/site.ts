@@ -17,8 +17,8 @@ export const brand = {
    */
   phone: null as string | null,
   founder: 'Geoffrey Nozza',
-  promise:
-    'Un site pro qui vous rend visible et vous rapporte des clients — sans jargon, sans engagement piégeux.',
+  promise: 'Le digital du côté de ceux qui travaillent.',
+  tagline: 'LE DIGITAL À SA JUSTE VALEUR',
   areas: [
     { code: '89', name: 'Yonne', seat: 'Auxerre' },
     { code: '06', name: 'Alpes-Maritimes', seat: 'Nice' },
@@ -33,85 +33,87 @@ export function phoneDisplay(e164: string | null): string | null {
   return national.match(/.{1,2}/g)?.join(' ') ?? null;
 }
 
-export type Offer = {
+export const notice = {
+  text: 'POLIVIA · On vous montre avant de vous vendre.',
+  linkLabel: 'Auditer mon site gratuitement',
+  href: '/audit-ia',
+};
+
+export const hero = {
+  overline: 'LE DIGITAL DU CÔTÉ DE CEUX QUI TRAVAILLENT',
+  title: ['Redevenez ', 'souverain', ' de votre digital'] as const,
+  sub: 'Assez de payer trop cher pour un site qui ne travaille pas assez pour vous. On audite, on repense et on construit du premium.',
+  foot: [
+    { n: '01.', label: 'Audit gratuit' },
+    { n: '02.', label: 'Maquette personnalisée' },
+    { n: '03.', label: 'Vous gardez la main' },
+  ],
+} as const;
+
+/**
+ * Tarification — catalogue V7 validé (docs/v8/references OFFER_CATALOG.json,
+ * `business_price_validated: true` pour les trois montants "yearly") et sa
+ * présentation dans le prototype V5 (references/polivia-v5-signature).
+ * Décision du propriétaire le 2026-11-20 : ce catalogue remplace l'ancien
+ * modèle (forfait ponctuel + maintenance séparée).
+ */
+export type PricingTier = {
   slug: string;
   name: string;
-  kicker: string;
-  price: { from?: boolean; amount: number; suffix?: string; then?: string };
-  commitment?: string;
+  cap: string;
+  yearly: number;
+  monthly: number;
+  yearlyValidated: boolean;
+  monthlyValidated: boolean;
   body: string;
   includes: string[];
   featured?: boolean;
-  audience: 'artisan' | 'pme' | 'both';
+  setupFeeMonthly?: { amount: number; approved: boolean };
 };
 
-export const offers: Offer[] = [
+export const pricing: PricingTier[] = [
   {
-    slug: 'site-essentiel',
-    name: 'Site Essentiel',
-    kicker: 'Pour exister proprement et vite',
-    price: { from: true, amount: 1490 },
-    audience: 'artisan',
-    body: 'Le site qui vous sort du bricolage : rapide, clair, trouvable, et conçu pour faire sonner le téléphone.',
-    includes: [
-      'Jusqu’à 5 pages sur-mesure, aucun thème revendu',
-      'Rédaction des textes à partir de votre métier',
-      'Référencement local de départ (89 ou 06)',
-      'Mobile d’abord, chargement immédiat',
-      'Formulaire de devis et appel en un geste',
-    ],
+    slug: 'essentiel',
+    name: 'Essentiel',
+    cap: 'Pour les indépendants',
+    yearly: 49,
+    monthly: 60,
+    yearlyValidated: true,
+    monthlyValidated: true,
+    body: 'Le site qui vous sort du bricolage, hébergement et maintenance compris.',
+    includes: ['Site vitrine premium', 'CRM simple', 'Devis et facturation', 'SEO technique', 'Hébergement & maintenance'],
   },
   {
-    slug: 'site-sur-mesure',
-    name: 'Site sur mesure',
-    kicker: 'Pour prendre un cran d’avance',
-    price: { from: true, amount: 2200 },
-    audience: 'both',
+    slug: 'croissance',
+    name: 'Croissance',
+    cap: 'Pour les entreprises qui grandissent',
+    yearly: 80,
+    monthly: 99,
+    yearlyValidated: true,
+    monthlyValidated: false,
     featured: true,
-    body: 'Conception complète, sans gabarit. Pour les entreprises dont le site est le premier commercial.',
-    includes: [
-      'Direction artistique propre à votre entreprise',
-      'Arborescence étendue, pages métiers et communes',
-      'Photos et captures de vos réalisations mises en scène',
-      'Structure de référencement local travaillée',
-      'Mesure des demandes entrantes',
-    ],
+    body: 'Tout Essentiel, avec un suivi SEO local et des automatisations en plus.',
+    includes: ['Tout Essentiel', 'CRM enrichi', 'SEO local avancé', 'Automatisations e-mail', 'Reporting et suivi'],
   },
   {
-    slug: 'abonnement',
-    name: 'Abonnement',
-    kicker: 'Pour lisser l’investissement',
-    price: { amount: 390, then: '69 €/mois' },
-    commitment: 'Engagement 12 mois',
-    audience: 'artisan',
-    body: 'Le même site, payé au rythme de votre trésorerie. Hébergement, maintenance et retouches comprises.',
-    includes: [
-      '390 € à la commande, puis 69 €/mois',
-      'Hébergement et nom de domaine inclus',
-      'Maintenance et mises à jour incluses',
-      'Retouches de contenu à la demande',
-      'Vous restez propriétaire de votre contenu',
-    ],
+    slug: 'partenaire-360',
+    name: 'Partenaire 360°',
+    cap: 'Pour aller plus loin',
+    yearly: 249,
+    monthly: 329,
+    yearlyValidated: false,
+    monthlyValidated: false,
+    setupFeeMonthly: { amount: 390, approved: false },
+    body: 'Pilotage digital complet, avec un accompagnement stratégique suivi.',
+    includes: ['Pilotage digital global', 'Accompagnement stratégique', 'Gestion Google Ads*', 'SEO et acquisition', 'Rencontre physique cadrée'],
   },
 ];
 
-export const maintenance = [
-  {
-    slug: 'serenite',
-    name: 'Sérénité',
-    price: 49,
-    body: 'Le site reste en ligne, à jour et sauvegardé. On surveille, vous n’y pensez plus.',
-    includes: ['Hébergement et sauvegardes', 'Mises à jour de sécurité', 'Surveillance de disponibilité', 'Assistance par e-mail'],
-  },
-  {
-    slug: 'evolution',
-    name: 'Évolution',
-    price: 99,
-    body: 'Tout Sérénité, plus du temps de travail chaque mois pour faire vivre le site.',
-    includes: ['Tout l’abonnement Sérénité', 'Modifications de contenu mensuelles', 'Nouvelles pages au fil de l’activité', 'Point de performance trimestriel'],
-  },
-] as const;
-
+/**
+ * Audit IA Express — prestation payante existante, distincte de l'audit
+ * gratuit mis en avant en page d'accueil (ce dernier n'est pas encore
+ * connecté à un vrai outil de mesure, voir `freeAudit`).
+ */
 export const audit = {
   slug: 'audit-ia',
   name: 'Audit IA Express',
@@ -125,6 +127,20 @@ export const audit = {
     'Plan d’action chiffré et priorisé',
     'Restitution d’une heure, en direct',
   ],
+} as const;
+
+/**
+ * Audit gratuit mis en avant en page d'accueil. Honnête sur son état réel :
+ * pas de connecteur de mesure technique branché pour l'instant, donc pas de
+ * faux score. Voir docs/v8/docs/03_SEO_INDEXATION_MAILLAGE.md.
+ */
+export const freeAudit = {
+  eyebrow: '01 / LE DÉFI POLIVIA',
+  title: ['Votre site actuel mérite peut-être mieux.', 'Votre entreprise, certainement.'] as const,
+  body: 'Vous avez déjà un site ? Mettez-nous au défi. On mesure ce qui se passe réellement, on identifie les freins et on vous montre comment lui donner le niveau qu’il mérite.',
+  points: ['Performance mobile', 'Référencement', 'Expérience client', 'Conversion'],
+  aside: 'PAS DE FAUX SCORES. PAS DE PROMESSES MAGIQUES. DES FAITS, PUIS DES SOLUTIONS.',
+  status: 'La mesure technique automatisée n’est pas encore connectée : un audit réel se fait aujourd’hui en direct, via le formulaire de devis.',
 } as const;
 
 /**
@@ -150,7 +166,7 @@ export const projects: Project[] = [
     objective: 'Présence premium et prise de contact',
     body: 'Un site à l’image du service : haut de gamme, rassurant, orienté demande de prestation.',
     shot: null,
-    liveUrl: null,
+    liveUrl: 'https://la-belle-intendance.fr',
   },
   {
     slug: 'lds-renov',
@@ -159,7 +175,7 @@ export const projects: Project[] = [
     objective: 'Vitrine et captation de chantiers',
     body: 'Mise en avant des réalisations, parcours pensé pour générer des demandes de devis.',
     shot: null,
-    liveUrl: null,
+    liveUrl: 'https://www.lds-renov.fr',
   },
   {
     slug: 'editions-du-mecene',
@@ -168,7 +184,7 @@ export const projects: Project[] = [
     objective: 'Image de marque d’exception',
     body: 'Un écrin numérique à la hauteur d’un éditeur haut de gamme et de ses campagnes.',
     shot: null,
-    liveUrl: null,
+    liveUrl: 'https://editions-du-mecene.vercel.app',
   },
   {
     slug: 'vs-agri',
@@ -177,7 +193,7 @@ export const projects: Project[] = [
     objective: 'Crédibilité et clarté de l’offre',
     body: 'Un site clair qui structure l’activité et met en confiance les partenaires.',
     shot: null,
-    liveUrl: null,
+    liveUrl: 'https://sas-vsagri.vercel.app',
   },
   {
     slug: 'institut-de-charlene',
@@ -195,30 +211,56 @@ export const projects: Project[] = [
     objective: 'Réservation locale simplifiée',
     body: 'Un site direct, mobile d’abord, pensé pour l’appel et la réservation immédiate.',
     shot: null,
-    liveUrl: null,
+    liveUrl: 'https://www.saint-julien-taxi.fr',
   },
 ];
 
 export const method = [
   {
-    name: 'On se rencontre',
-    body: 'Sur place ou en visio. On regarde votre métier, votre zone, vos concurrents — et ce que vous cherchez vraiment à obtenir.',
-    note: 'Sans engagement',
+    step: '01 / DÉCOUVRIR',
+    name: 'On analyse.',
+    body: 'Votre métier, votre site actuel et vos opportunités. Sans inventer de chiffres.',
   },
   {
-    name: 'On conçoit',
-    body: 'Vous voyez la maquette avant la première ligne de code. On ajuste jusqu’à ce que ce soit juste.',
-    note: null,
+    step: '02 / CONSTRUIRE',
+    name: 'On vous montre.',
+    body: 'Une vraie direction artistique à découvrir et modifier avant validation.',
   },
   {
-    name: 'On met en ligne',
-    body: 'Site livré, référencement local en place, formulaires testés. Vous êtes trouvable et joignable.',
-    note: null,
+    step: '03 / FAIRE GRANDIR',
+    name: 'On reste.',
+    body: 'Maintenance, visibilité et améliorations dans la durée, selon votre forfait.',
+  },
+] as const;
+
+export const manifesto = {
+  eyebrow: '08 / NOTRE MANIFESTE',
+  title: ['Nous ne sommes rien ', 'sans vous.'] as const,
+  body: 'Vous travaillez dur pour votre entreprise. Nous pensons que le numérique doit vous aider à avancer, pas vous enfermer dans des coûts absurdes et des contrats incompréhensibles.',
+  quote: '« L’IA fait le travail. Le bon sens reste aux commandes. »',
+  pillars: [
+    { n: '01', name: 'Votre liberté', body: 'Votre domaine à votre nom. Vos données exportables. Des conditions lisibles.' },
+    { n: '02', name: 'Un prix juste', body: 'Pas de frais cachés. Des prestations claires et des options annoncées.' },
+    { n: '03', name: 'La fidélité se mérite', body: 'Des améliorations concrètes, de la transparence et un suivi réel.' },
+  ],
+} as const;
+
+export const faq = [
+  {
+    q: 'Mon domaine et mes données restent-ils à moi ?',
+    a: 'Oui : le nom de domaine reste à votre nom et vos contenus sont exportables sur simple demande. Les modalités précises de portabilité sont décrites dans le contrat de chaque offre.',
   },
   {
-    name: 'On suit',
-    body: 'On mesure les demandes entrantes et on corrige ce qui freine. Mois après mois.',
-    note: 'Abonnements Sérénité et Évolution',
+    q: 'Pourquoi des prix aussi accessibles ?',
+    a: 'Nous mutualisons les composants techniques et automatisons les tâches répétitives, sans transiger sur la qualité de chaque site livré.',
+  },
+  {
+    q: 'Puis-je conserver mon prestataire actuel ?',
+    a: 'Oui. Vous pouvez préparer votre projet pendant votre engagement actuel. Nous ne lançons jamais une migration sans votre autorisation expresse.',
+  },
+  {
+    q: 'Le devis en ligne engage-t-il à quelque chose ?',
+    a: 'Non. Le formulaire envoie une demande, vous recevez une réponse humaine sous 24 h avec un prix, sans engagement de votre part.',
   },
 ] as const;
 
