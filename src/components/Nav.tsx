@@ -38,7 +38,7 @@ export default function Nav() {
 
   return (
     <header className="nav wrap">
-      <Link href="/" aria-label={`${brand.name} — accueil`}>
+      <Link href="/">
         <Wordmark />
       </Link>
 

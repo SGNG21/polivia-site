@@ -16,7 +16,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="wrap footer-inner">
         <div>
-          <a href="/" aria-label={`${brand.name} — accueil`}>
+          <a href="/">
             <Wordmark />
           </a>
           <p>{manifesto.quote}</p>
