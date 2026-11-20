@@ -1,0 +1,20 @@
+{
+  "name": "digitalos-quality-gate",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Gate déterministe qui compile la doctrine DigitalOS (STANDARD-003 SEO/GEO, STANDARD-005 Sécurité) en checks pass/fail sur le site rendu. Zéro token.",
+  "bin": {
+    "quality-gate": "run.mjs"
+  },
+  "scripts": {
+    "gate": "node run.mjs",
+    "gate:lh": "lhci autorun"
+  },
+  "dependencies": {
+    "node-html-parser": "^6.1.13"
+  },
+  "devDependencies": {
+    "@lhci/cli": "^0.14.0"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "$doc": "Seuils DigitalOS — encodent STANDARD-003 (SEO/GEO) et STANDARD-005 (Sécurité/RGPD). Éditables par site. Une exception se déclare dans 'waivers' (= Derogation-Template) : elle transforme un BLOCK en WARN, tracée et datée.",
+
+  "buildDir": "dist",
+  "indexableOnly": true,
+
+  "site": {
+    "baseUrl": "https://polivia.fr",
+    "business": {
+      "@type": "ProfessionalService",
+      "name": "POLIVIA",
+      "areaServed": ["Yonne (89)", "Alpes-Maritimes (06)"]
+    }
+  },
+
+  "seo": {
+    "titleMinLen": 20,
+    "titleMaxLen": 70,
+    "metaDescMinLen": 70,
+    "metaDescMaxLen": 165,
+    "requireSingleH1": true,
+    "requireCanonical": true,
+    "canonicalMustBeAbsolute": true,
+    "requireRobotsIndexFollow": true,
+    "minWordsStrategicPages": 150,
+    "strategicPages": ["index.html", "contact.html"],
+    "requireAltOnImages": true,
+    "requireOpenGraph": ["og:title", "og:description", "og:image", "og:url"],
+    "requireSitemap": true,
+    "requireRobotsTxt": true,
+    "urlHygiene": true
+  },
+
+  "geo": {
+    "requireJsonLd": true,
+    "requireLocalBusiness": false,
+    "localBusinessRequiredProps": ["name", "address", "areaServed"],
+    "napConsistency": true
+  },
+
+  "aeo": {
+    "faqPage": "warn",
+    "requireHeadingsAnswerStructure": "warn"
+  },
+
+  "security": {
+    "forbidViteSecrets": true,
+    "forbidServiceRole": true,
+    "forbidAnthropicKeyLiteral": true,
+    "forbidHardcodedSupabaseJwt": true,
+    "scanBuiltBundle": true,
+    "requireSecurityHeaders": true,
+    "securityHeaders": ["Content-Security-Policy", "Strict-Transport-Security", "X-Content-Type-Options", "X-Frame-Options", "Referrer-Policy"],
+    "headersFile": "vercel.json"
+  },
+
+  "lighthouse": {
+    "performance": 90,
+    "seo": 100,
+    "accessibility": 95,
+    "best-practices": 95
+  },
+
+  "waivers": [
+    { "check": "EX-SEO-010", "reason": "Le titre de l'accueil commence par la marque (\"POLIVIA — ...\"), donc l'heuristique extrait \"polivia\" comme mot-clé attendu dans le H1 ; répéter la marque dans le H1 dégraderait la rédaction sans bénéfice SEO réel, la cohérence titre/H1/contenu porte déjà sur le vrai sujet de la page (audit, visibilité, site premium).", "until": "2027-02-01" }
+  ]
+}

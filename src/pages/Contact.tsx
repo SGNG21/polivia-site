@@ -13,7 +13,7 @@ export default function Contact() {
   return (
     <>
       <Seo
-        title="Demander un devis"
+        title="Demander un devis de site internet"
         description="Décrivez votre projet en deux lignes. Réponse sous 24 h avec un premier regard sur votre visibilité et un prix, sans engagement."
         path="/contact"
       />

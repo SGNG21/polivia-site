@@ -1,0 +1,18 @@
+{
+  "$doc": "Lighthouse CI — budgets premium DigitalOS. lhci lit ce fichier, build servi en statique, échoue si un score passe sous le seuil. Aligné sur quality-gate.config.json → lighthouse.",
+  "ci": {
+    "collect": {
+      "staticDistDir": "dist",
+      "numberOfRuns": 3
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.9 }],
+        "categories:seo": ["error", { "minScore": 1.0 }],
+        "categories:accessibility": ["error", { "minScore": 0.95 }],
+        "categories:best-practices": ["error", { "minScore": 0.95 }]
+      }
+    },
+    "upload": { "target": "temporary-public-storage" }
+  }
+}

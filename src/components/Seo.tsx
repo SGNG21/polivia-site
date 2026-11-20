@@ -1,4 +1,4 @@
-import { brand, pricing, audit } from '../content/site';
+import { brand, pricing, audit, faq } from '../content/site';
 
 /**
  * React 19 hoists <title>, <meta> and <link> to <head> from anywhere in the
@@ -90,6 +90,27 @@ export function OrgSchema() {
         },
       ],
     },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
+
+/** Real questions/answers from content/site.ts — never invented. */
+export function FaqSchema() {
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
   };
 
   return (

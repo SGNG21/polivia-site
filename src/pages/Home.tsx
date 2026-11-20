@@ -8,7 +8,7 @@ import Studio from '../sections/Studio';
 import Transition from '../sections/Transition';
 import Manifesto from '../sections/Manifesto';
 import Faq from '../sections/Faq';
-import Seo, { OrgSchema } from '../components/Seo';
+import Seo, { OrgSchema, FaqSchema } from '../components/Seo';
 import { useReveal } from '../lib/useReveal';
 
 /** Structure complète reprise du prototype V5 validé le 2026-11-20 (references/polivia-v5-signature). */
@@ -18,10 +18,11 @@ export default function Home() {
     <>
       <Seo
         title="POLIVIA — Création de site internet dans l’Yonne et sur la Côte d’Azur"
-        description="Agence web et acquisition client pour artisans, commerçants et TPE/PME. Audit gratuit, sites premium dès 49 € HT/mois, référencement local. Yonne (89) et Alpes-Maritimes (06)."
+        description="Agence web pour artisans et TPE/PME : audit gratuit, sites premium dès 49 € HT/mois, référencement local. Yonne (89) et Alpes-Maritimes (06)."
         path="/"
       />
       <OrgSchema />
+      <FaqSchema />
 
       <Hero />
       <BrandMarquee />
