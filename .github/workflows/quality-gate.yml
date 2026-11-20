@@ -3,11 +3,10 @@ name: DigitalOS Quality Gate
 # Le juge automatique. Tourne à chaque push/PR.
 # Si un BLOCK subsiste (secret exposé, SEO/GEO non conforme, Lighthouse sous seuil),
 # le job échoue → le deploy Vercel branché sur ce workflow ne part pas.
-# C'est ici que « jamais 100% vérifié » devient « impossible de livrer non conforme ».
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, da-validee]
   pull_request:
 
 jobs:
@@ -16,25 +15,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.9.1
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: 24
+          cache: pnpm
 
-      # 1. Build du site (adapter si le script diffère : next build && next export, vite build, etc.)
       - name: Install & build
         run: |
-          npm ci
-          npm run build
+          pnpm install --frozen-lockfile
+          pnpm run build
 
-      # 2. Dépendances du gate (isolées, n'alourdissent pas le site)
+      # Dépendances du gate, isolées du site.
       - name: Install gate deps
-        run: npm --prefix quality-gate ci || npm --prefix quality-gate install
+        run: npm --prefix quality-gate ci
 
-      # 3. Checks déterministes : sécurité + SEO/GEO/AEO (0 token)
+      # Checks déterministes : sécurité + SEO/GEO/AEO (0 token).
       - name: Deterministic checks
         run: node quality-gate/run.mjs --config quality-gate/quality-gate.config.json --root .
 
-      # 4. Lighthouse CI : perf / seo / a11y / best-practices avec budgets bloquants
+      # Lighthouse CI : perf / seo / a11y / best-practices avec budgets bloquants.
       - name: Lighthouse CI
         run: npx --prefix quality-gate lhci autorun --config=quality-gate/lighthouserc.json
+
+      # Rapports conservés dans GitHub, jamais sur un stockage public tiers.
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          if-no-files-found: ignore
