@@ -1,0 +1,44 @@
+{
+  "site_id": "EXAMPLE-DO-NOT-PUBLISH",
+  "tenant_id": "demo-tenant",
+  "status": "DRAFT",
+  "company_facts_approved": false,
+  "brand_profile": {
+    "approved": false,
+    "visual_direction": "specific-to-client-not-polivia-v5"
+  },
+  "urls": [
+    {
+      "path": "/",
+      "intent": "home + main service",
+      "indexability_desired": true,
+      "canonical": "https://example.invalid/",
+      "primary_cta": "contact",
+      "internal_links": []
+    },
+    {
+      "path": "/contact",
+      "intent": "contact",
+      "indexability_desired": true,
+      "canonical": "https://example.invalid/contact",
+      "primary_cta": "form_submit",
+      "internal_links": []
+    }
+  ],
+  "seo": {
+    "search_console_verified": false,
+    "search_console_status": "NOT_VERIFIED",
+    "sitemap_submitted": false,
+    "migration_mapping": [],
+    "link_graph_version": "DRAFT"
+  },
+  "consent": {
+    "required_purposes": [],
+    "client_legal_approval": false
+  },
+  "release": {
+    "owner_approved": false,
+    "qa_gate": "NO_GO",
+    "environment": "staging"
+  }
+}

@@ -1,0 +1,243 @@
+﻿id,module,criticality,requirement,expected_evidence,owner_role,method,status,site_id,environment,commit_sha,evidence_ref,verified_at_utc,reviewer,na_reason,scope,phase
+Q001,FONDEMENTS,P0,"Existence client, activité et responsable du contenu confirmés",brief client signé et sources,Product/SEO,PRD + preuves métier,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q002,FONDEMENTS,P0,Objectifs métier et données factuelles vérifiés,fiche BusinessFacts avec approbateur,Product/SEO,PRD + preuves métier,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q003,FONDEMENTS,P1,Audience/ICP et besoins priorisés,brief audience/personas,Product/SEO,PRD + preuves métier,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q004,FONDEMENTS,P1,"Secteurs et territoires réels, sans localité inventée",adresses/zones confirmées,Product/SEO,PRD + preuves métier,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q005,FONDEMENTS,P1,"Inventaire des preuves : photos, avis, références, qualifications",registre droits et preuves,Product/SEO,PRD + preuves métier,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q006,FONDEMENTS,P1,Intention SEO par page,carte intentions et URL map,Product/SEO,PRD + preuves métier,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q007,FONDEMENTS,P1,Offre retenue et inclusions contractuelles identifiées,contrat/version catalogue,Product/SEO,PRD + preuves métier,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q008,FONDEMENTS,P1,Propriétaire domaine et contacts administratifs,fiche domaine vérifiée,Product/SEO,PRD + preuves métier,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q009,FONDEMENTS,P1,Références du site ancien et pages à conserver,crawl source autorisé,Product/SEO,PRD + preuves métier,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q010,FONDEMENTS,P1,Critères de conversion et événements définis,conversion plan,Product/SEO,PRD + preuves métier,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q011,ARBO_URLS,P0,Pages publiées correspondent à une URLMap approuvée,export URLMap diff signé,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q012,ARBO_URLS,P0,Aucune page à forte valeur ne retourne 404/5xx,crawl HTTP complet,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q013,ARBO_URLS,P1,"URL stables lisibles, convention slash/majuscules",crawl URL + canonicals,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q014,ARBO_URLS,P1,Architecture accueil → services → preuves → contact cohérente,arborescence revue,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q015,ARBO_URLS,P1,Pages et sections orientées intention utilisateur,matrice service-intention,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q016,ARBO_URLS,P1,Pas de pages doublons sans stratégie de fusion/canonical,rapport duplications,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q017,ARBO_URLS,P1,Une page pour une intention suffisamment distincte,arbitrage cannibalisation,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q018,ARBO_URLS,P1,Pages locales justifiées par service dans zone réelle,preuves territoire,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q019,ARBO_URLS,P1,"Pages blog utiles, pas de pages vides auto-générées",audit contenu,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q020,ARBO_URLS,P1,Navigation principale desktop/mobile compatible SEO,exploration HTML,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q021,ARBO_URLS,P1,Page 404 personnalisée renvoyant un vrai 404,test statut et UX,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q022,ARBO_URLS,P1,Hreflang absent si site mono-langue,inspection source,SEO/Frontend,Crawl et URLMap,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q023,INDEXABILITE,P0,Production indexable par choix sans noindex accidentel,HTTP + meta robots + X-Robots-Tag,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q024,INDEXABILITE,P0,Préproduction non indexable et effectivement protégée,auth preview + robots/noindex revus,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q025,INDEXABILITE,P0,Canonical production pointe vers l'URL publique correcte,crawl canonical par URL,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q026,INDEXABILITE,P0,Pas de canonical général vers accueil,rapport cohérence canonical,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q027,INDEXABILITE,P0,Contenu critique disponible dans HTML rendu pour robots,source HTML contrôlée,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q028,INDEXABILITE,P1,Robots.txt permet les pages indexables et exclut bonnes zones,tests robots directives,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q029,INDEXABILITE,P1,Sitemap XML valide et URLs canoniques indexables seulement,validator XML + compare URLMap,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q030,INDEXABILITE,P1,Sitemap accessible et déclaré dans robots.txt si pertinent,fetch robots sitemap,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q031,INDEXABILITE,P1,Sitemap soumis Search Console lorsque propriétaire autorise,preuve soumission ou BLOCKED,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q032,INDEXABILITE,P1,lastmod exact et non systématiquement date du jour,comparaison version contenu,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q033,INDEXABILITE,P1,HTTP/HTTPS et www/non-www redirigent vers l'origine canonique,tests matrix redirections,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q034,INDEXABILITE,P1,"Pas de pages privées, paniers, back-office dans sitemap",revue URL exclusions,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q035,INDEXABILITE,P1,Inspection Search Console échantillon URLs réelles si accès,capture GSC datée,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q036,INDEXABILITE,P1,404 vs soft 404 correctement gérés,sondes HTTP + HTML,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q037,INDEXABILITE,P1,Indexation observée uniquement si preuves Search Console,rapport externe daté,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q038,INDEXABILITE,P1,Pas d'usage abusif de l'Indexing API sur pages vitrines,config audit API,SEO/SRE,Crawler + Search Console selon accès,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q039,MAILLAGE,P0,Aucune page de service stratégique orpheline,crawl graphe des liens,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q040,MAILLAGE,P0,Navigation accessible via véritables ancres HTML href,inspection DOM sans JS,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q041,MAILLAGE,P1,Liens contextuels entre services réellement complémentaires,revue maillage,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q042,MAILLAGE,P1,Réalisations renvoient vers services associés,graphe service-proof,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q043,MAILLAGE,P1,Articles utiles renvoient vers page métier pertinente,audit blog-maillage,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q044,MAILLAGE,P1,Pages territoriales renvoient vers offre réelle,graphe territorial vérifié,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q045,MAILLAGE,P1,Page accueil oriente vers grands services et CTA,crawl chemins critiques,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q046,MAILLAGE,P1,Navigation fil d'Ariane utile et exacte,test breadcrumbs,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q047,MAILLAGE,P1,Ancre descriptive sans bourrage de mots-clés,extraction textes d'ancre,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q048,MAILLAGE,P1,Pas de liens internes cassés 4xx/5xx,crawl interne complet,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q049,MAILLAGE,P1,Redirections internes inutiles signalées,rapport hop count,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q050,MAILLAGE,P1,Zéro lien vers domaines staging/localhost en production,crawl URLs externes,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q051,MAILLAGE,P1,Pages stratégiques accessibles idéalement en <=3 clics,rapport depth (objectif interne),SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q052,MAILLAGE,P1,Maillage mis à jour lors ajout/suppression page,test mutation SiteSpec,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q053,MAILLAGE,P1,Absence de réseau artificiel de liens cachés,revue DOM et navigation,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q054,MAILLAGE,P1,Graphe liens exporté et conservé par version,link_graph.json + hash,SEO/Frontend,LinkGraph versionné,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q055,SEO_ONPAGE,P0,Chaque page stratégique possède un title unique utile,extraction meta diff,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q056,SEO_ONPAGE,P1,"Description meta cohérente, non dupliquée",extraction meta,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q057,SEO_ONPAGE,P1,H1 pertinent et hiérarchie H2/H3 logique,audit headings,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q058,SEO_ONPAGE,P1,"Termes métier naturels, pas bourrage de mots-clés",revue rédactionnelle,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q059,SEO_ONPAGE,P1,Contenus factuels authentiques validés par propriétaire,approval BusinessFacts,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q060,SEO_ONPAGE,P1,Contenu apporte une valeur propre et non dupliquée,comparaison sémantique/review,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q061,SEO_ONPAGE,P1,Pages service répondent prix/méthode/zone/bénéfice selon réalité,checklist service,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q062,SEO_ONPAGE,P1,Images alt pertinentes et non répétitives,crawl alt & review,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q063,SEO_ONPAGE,P1,Liens sortants utiles sans spam,revue URLs externes,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q064,SEO_ONPAGE,P1,Publication/auteur/actualisation indiqués si pertinents,metadata éditoriales,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q065,SEO_ONPAGE,P1,Page Contact contient NAP réels et cohérents,contrôle coordonnées,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q066,SEO_ONPAGE,P1,OpenGraph et aperçu social corrects,screenshot social debug,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q067,SEO_ONPAGE,P1,Aucune revendication de ranking garantie,revue juridique copy,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q068,SEO_ONPAGE,P1,Aucun contenu IA en masse sans valeur ajoutée,rapport éditorial,SEO/Éditorial,Crawl + revue humaine,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q069,LOCAL_GEO,P0,"Aucune adresse, qualification ou établissement inventé",vérification sources client,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q070,LOCAL_GEO,P1,Nom/adresse/téléphone cohérents partout si publiés,NAP review,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q071,LOCAL_GEO,P1,Zones desservies effectivement proposées,BusinessFacts signed,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q072,LOCAL_GEO,P1,Fiche Google Business Profile avec consentement si utilisée,preuve propriété/accès,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q073,LOCAL_GEO,P1,"Horaires, périodes et prise de contact cohérents",validation propriétaire,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q074,LOCAL_GEO,P1,Schéma LocalBusiness uniquement si réel et applicable,revue JSON-LD,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q075,LOCAL_GEO,P1,Témoignages vérifiés et publiables,consentement + lien source,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q076,LOCAL_GEO,P1,Pages locales différentes et réellement utiles,revue anti-doorway,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q077,LOCAL_GEO,P1,Référencement local suivi sur observations sourcées,GSC/GBP si autorisé,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q078,LOCAL_GEO,P1,Services géographiques priorisés par intention commerciale,plan zone/service,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q079,LOCAL_GEO,P1,Photos de réalisations associées au vrai chantier,source photo/date/accord,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q080,LOCAL_GEO,P1,Compatibilité mobiles et numéros locaux cliquables,test action tel mobile,SEO/Client,Business facts + GBP si autorisé,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q081,SCHEMA_GEO,P0,Aucune donnée structurée mensongère/faux avis,vérification JSON-LD factuelle,SEO/Dev,Schema validation,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q082,SCHEMA_GEO,P1,Schéma Organization ou LocalBusiness pertinent,JSON-LD test,SEO/Dev,Schema validation,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q083,SCHEMA_GEO,P1,BreadcrumbList correspond navigation visible si utilisé,parse DOM + schema,SEO/Dev,Schema validation,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q084,SCHEMA_GEO,P1,Service schema seulement pour services réels si utilisé,BusinessFacts compare,SEO/Dev,Schema validation,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q085,SCHEMA_GEO,P1,Schema validé et sans champs interdits si Google éligible,Rich Results Test réel,SEO/Dev,Schema validation,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q086,SCHEMA_GEO,P1,Absence schema FAQ abusif/non conforme,revue typologie,SEO/Dev,Schema validation,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q087,SCHEMA_GEO,P1,Nom de marque et mentions entreprise cohérents,site+schema+GBP,SEO/Dev,Schema validation,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q088,SCHEMA_GEO,P1,Réponses FAQ utiles pour humains,contrôle éditorial,SEO/Dev,Schema validation,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q089,SCHEMA_GEO,P1,Visibilité dans IA présentée comme potentielle non garantie,revue message,SEO/Dev,Schema validation,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q090,SCHEMA_GEO,P1,Sources et preuves visibles pour revendications sensibles,lien sources,SEO/Dev,Schema validation,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q091,SCHEMA_GEO,P1,Aucune installation llms.txt décrite comme requis Google,contrôle claims,SEO/Dev,Schema validation,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q092,DESIGN,P0,"Direction artistique de ce client unique, pas copie brute V5",reviewer indépend. + captures comparées,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q093,DESIGN,P0,Tous les parcours principaux lisibles mobile,tests viewport & captures,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q094,DESIGN,P1,"Typographie, échelle, grille et contrastes harmonisés",design tokens + review,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q095,DESIGN,P1,"Hero explique activité, zone, avantage, CTA",review 5-second test,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q096,DESIGN,P1,Footer complet et crédible,test visuel/footer,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q097,DESIGN,P1,"États erreur, vide, chargement et succès travaillés",captures d'états,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q098,DESIGN,P1,Menu mobile utilisable tactile et clavier,E2E menu,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q099,DESIGN,P1,Couleurs/visuels cohérents avec métier,BrandProfile validé,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q100,DESIGN,P1,Illustrations non artificiellement trompeuses,licences et review,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q101,DESIGN,P1,Pas de scroll horizontal 320/375/390/768/1024/1440,Playwright viewport,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q102,DESIGN,P1,Formulaires au même niveau visuel que site,captures formulaire,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q103,DESIGN,P1,Trois pilotes sectoriels visuellement distincts,revue intersites,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q104,DESIGN,P1,Finition hover/focus/active cohérente,snapshots states,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q105,DESIGN,P1,"Pied de page, favicon, icône partage de qualité",asset screenshots,Design reviewer,Screenshots multi-breakpoints,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q106,MOTION_MEDIA,P0,Aucun contenu crucial rendu inaccessible par animations,tests disable JS/reduced motion,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q107,MOTION_MEDIA,P1,Respect prefers-reduced-motion,E2E media query,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q108,MOTION_MEDIA,P1,Aucune animation de type scroll-hijack,revue UX mobile,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q109,MOTION_MEDIA,P1,Médias disposent de licences/consentements,licence registry,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q110,MOTION_MEDIA,P1,Photos personnelles publiées avec droits requis,preuve consentement,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q111,MOTION_MEDIA,P1,Pas de faux avant/après ou réalisations client,revue éthique,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q112,MOTION_MEDIA,P1,Dimensions images/vidéos explicites anti-CLS,audit dimensions,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q113,MOTION_MEDIA,P1,AVIF/WebP/responsive quand avantage mesuré,inspect sizes/srcset,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q114,MOTION_MEDIA,P1,Sous-titres/transcription pour vidéos pertinentes,revue média,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q115,MOTION_MEDIA,P1,Fallback statique si vidéo ou 3D échoue,test offline/slow,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q116,MOTION_MEDIA,P1,Animations mesurées CPU/JS mobile,trace perf,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q117,MOTION_MEDIA,P1,3D acceptée uniquement si gains et performances justifiés,ADR A/B,Design/A11y,Licence + perf traces,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q118,PERFORMANCE,P0,Aucun défaut majeur de chargement ou crash mobile,navigateur mobile trace,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q119,PERFORMANCE,P1,Lighthouse mobile >=90 en labo standard ou écart justifié,3 runs device version,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q120,PERFORMANCE,P1,LCP terrain <=2.5s au p75 si volume suffisant,CrUX/RUM segment mobile,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q121,PERFORMANCE,P1,INP terrain <=200ms au p75 si données suffisantes,CrUX/RUM,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q122,PERFORMANCE,P1,CLS terrain <=0.1 au p75 si données suffisantes,CrUX/RUM,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q123,PERFORMANCE,P1,JS tiers minimisé et chargé au bon moment,bundle analyzer,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q124,PERFORMANCE,P1,Images hero LCP optimisées,Lighthouse LCP element,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q125,PERFORMANCE,P1,Fonts locales/licenciées et sous-ensembles,font license + waterfall,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q126,PERFORMANCE,P1,Cache CDN cohérent et non contaminé entre tenants,headers+cross tenant,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q127,PERFORMANCE,P1,TTFB mesuré et surveillé,HTTP metrics,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q128,PERFORMANCE,P1,Test cold/warm cache en mobile contraint,bench runs,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q129,PERFORMANCE,P1,Régression performance après cookie banner bloquée,before/after Lighthouse,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q130,PERFORMANCE,P1,Aucune 3D ou Motion introduisant CPU excessif,perf profile,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q131,PERFORMANCE,P1,Poids images et vidéos justifié par qualité,asset budget,Perf reviewer,Lighthouse + CrUX si disponible,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q132,ACCESSIBILITE,P0,Parcours contact et menu entièrement au clavier,test manuel + Playwright,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q133,ACCESSIBILITE,P0,Contraste essentiel et libellés formulaires corrects,axe + review manuelle,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q134,ACCESSIBILITE,P1,Cible d'ingénierie WCAG 2.2 AA évaluée,checklist WCAG 2.2,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q135,ACCESSIBILITE,P1,Focus visible et ordre logique,e2e Tab,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q136,ACCESSIBILITE,P1,Zoom 200% sans perte de service essentiel,capture zoom,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q137,ACCESSIBILITE,P1,Liens/boutons ont noms accessibles,axe and sr test,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q138,ACCESSIBILITE,P1,Messages erreur et succès annoncés correctement,tests aria-live,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q139,ACCESSIBILITE,P1,Tailles cibles tactiles suffisantes,audit tappable,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q140,ACCESSIBILITE,P1,Images informatives ont alt; décoratives alt vide,audit alt,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q141,ACCESSIBILITE,P1,Respect réduction mouvement,test reduced motion,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q142,ACCESSIBILITE,P1,Lecteur écran testé sur contact/cookies/navigation,session assistive,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q143,ACCESSIBILITE,P1,Obligations RGAA propres au client déterminées,note applicabilité juridique,A11y reviewer,axe + clavier + manuel,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q144,CONVERSION,P0,CTA principal mène à une action réelle,Playwright click path,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q145,CONVERSION,P0,Formulaire de contact peut être soumis et reçu,preuve e-mail/CRM sandbox,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q146,CONVERSION,P0,Échec formulaire visible et récupérable,test fault injection,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q147,CONVERSION,P1,Boutons tel:/mailto: corrects,mobile deep links,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q148,CONVERSION,P1,Formulaire sans champs superflus,privacy review,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q149,CONVERSION,P1,CTA lisible au premier écran mobile,screenshot 390,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q150,CONVERSION,P1,Événements conversion marqués après succès réel,analytics event trace,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q151,CONVERSION,P1,Témoignages authentiques et contextuels,source + autorisation,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q152,CONVERSION,P1,Coordonnées/contact trouvables sans navigation complexe,usability test,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q153,CONVERSION,P1,Message clair en 5 secondes sur activité réelle,mini user review,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q154,CONVERSION,P1,Formulaire anti-spam sans pénaliser clients,test honeypot/rate limit,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q155,CONVERSION,P1,Consentement marketing séparé si applicable,privacy form test,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q156,CONVERSION,P1,Confirmation email sans promesse impossible,email template review,QA/Marketing,E2E + réception,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q157,RGPD_LEGAL,P0,Mentions légales complètes et adaptées activité,revue jurid. + sources client,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q158,RGPD_LEGAL,P0,Politique confidentialité adaptée aux traitements réels,revue juridique/DPA,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q159,RGPD_LEGAL,P0,Traceurs non essentiels ne partent pas avant consentement,network trace refusal,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q160,RGPD_LEGAL,P0,Refus de cookies aussi simple qu'acceptation si traceurs requis,E2E cookies,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q161,RGPD_LEGAL,P0,Aucun formulaire n'expose données entre tenants,pentest tenant forms,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q162,RGPD_LEGAL,P1,Consentement peut être retiré facilement,E2E preference center,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q163,RGPD_LEGAL,P1,Registre finalités et conservation documenté,data inventory,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q164,RGPD_LEGAL,P1,Responsables/sous-traitants identifiés,DPA/Subprocessors,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q165,RGPD_LEGAL,P1,Mentions spécifiques activité réglementée vérifiées,legal checklist sector,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q166,RGPD_LEGAL,P1,CGV/CGU applicables selon offre,document validation,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q167,RGPD_LEGAL,P1,Export/suppression données selon politique,GDPR request runbook,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q168,RGPD_LEGAL,P1,Journal de consentement sans excès de données,audit consent store,Privacy/Owner,Revue documents + réseau,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q169,SECURITE,P0,HTTPS et certificat valide sur domaine final,TLS probe,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q170,SECURITE,P0,"Aucune donnée cross-tenant (API, cache, media, forms)",test tenant A/B,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q171,SECURITE,P0,"Aucun secret dans le client, code ou logs",secrets scans,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q172,SECURITE,P0,Pas d'exécution arbitrary JS/HTML injecté via studio,tests payload,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q173,SECURITE,P0,Rôle publication réservé et traçable,RBAC API test,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q174,SECURITE,P1,Headers sécurité adaptés CSP/HSTS/CORS,header scan,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q175,SECURITE,P1,Protection SSRF sur audit URL et redirections,suite SSRF (local),Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q176,SECURITE,P1,Upload filtré type MIME/taille/sanitation,tests uploads,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q177,SECURITE,P1,Anti brute force et rate-limits actifs,rate limit test,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q178,SECURITE,P1,Backups chiffrés/récupérables,restore evidence,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q179,SECURITE,P1,Dependabot/SCA/versions maîtrisés,SBOM/scanner,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q180,SECURITE,P1,Domaine prouvé avant binding,domain proof,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q181,SECURITE,P1,"Webhooks signés, rejoués sans double effet",E2E event inbox,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q182,SECURITE,P1,MFA sur comptes admin,auth settings evidence,Security reviewer,Tests sécurité + menace,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q183,EMAIL_DOMAINE,P0,Domaine appartient au titulaire autorisé,document propriétaire,Infra/Support,DNS/TLS/Mail tests,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q184,EMAIL_DOMAINE,P0,Site répond HTTPS final et www redirection choisie,probe DNS/TLS,Infra/Support,DNS/TLS/Mail tests,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q185,EMAIL_DOMAINE,P0,Formulaire e-mail arrive réellement en boîte cible,message id de test masqué,Infra/Support,DNS/TLS/Mail tests,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q186,EMAIL_DOMAINE,P1,SPF/DKIM/DMARC des emails transactionnels vérifiés,DNS/email auth checks,Infra/Support,DNS/TLS/Mail tests,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q187,EMAIL_DOMAINE,P1,Modification DNS ne casse pas les enregistrements MX,before/after DNS diff,Infra/Support,DNS/TLS/Mail tests,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q188,EMAIL_DOMAINE,P1,Sender/Reply-To cohérent et autorisé,email headers,Infra/Support,DNS/TLS/Mail tests,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q189,EMAIL_DOMAINE,P1,Éviter email depuis adresse usurpée,DMARC alignment,Infra/Support,DNS/TLS/Mail tests,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q190,EMAIL_DOMAINE,P1,Retours SMTP/bounces traités,webhook receipt test,Infra/Support,DNS/TLS/Mail tests,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q191,EMAIL_DOMAINE,P1,Textes mails sans faux délais promus,email QA,Infra/Support,DNS/TLS/Mail tests,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q192,EMAIL_DOMAINE,P1,Expiration domaine/SSL surveillée,alert sample,Infra/Support,DNS/TLS/Mail tests,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q193,EMAIL_DOMAINE,P1,Guide transfert domaine et export fourni,customer handover,Infra/Support,DNS/TLS/Mail tests,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q194,PRODUCTION_QA,P0,SiteSpec et contenu approuvés liés à version SHA,signed approval artifact,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q195,PRODUCTION_QA,P0,12/12 contrôles critiques DigitalOS réussis,DigitalOS QA evidence,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q196,PRODUCTION_QA,P0,QA score DigitalOS >=90/100,DigitalOS score report,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q197,PRODUCTION_QA,P0,Aucun test critique E2E rouge,Playwright CI trace,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q198,PRODUCTION_QA,P0,Reviewer indépendant approuve commit précis,PR review,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q199,PRODUCTION_QA,P0,Rollback staging ou prod testé,rollback event log,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q200,PRODUCTION_QA,P0,Pas de publication depuis preview sans approbation owner,protected workflow proof,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q201,PRODUCTION_QA,P1,Test compatibilité Chromium/Firefox/WebKit,CI browser matrix,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q202,PRODUCTION_QA,P1,Captures responsive + diff approuvés,screenshot archive,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q203,PRODUCTION_QA,P1,Décisions de nouvelles dépendances documentées,ADR,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q204,PRODUCTION_QA,P1,CI linters/types/unit/build/test green,CI run with SHA,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q205,PRODUCTION_QA,P1,Browser preview pas d'URL non indexable dans sitemap final,crawl target diff,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q206,PRODUCTION_QA,P1,Fonctionnement indépendant de Claude/n8n/IA,fault injection,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q207,PRODUCTION_QA,P1,Site accessible pendant queue/back-office indisponible,outage drill,QA indépendant,CI + DigitalOS + rollback,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q208,CRM_N8N,P0,Aucune modification n8n active sans sauvegarde/approbation,n8n audit changelog,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q209,CRM_N8N,P0,Paiements/droits/versions ne dépendent pas de n8n,architecture test,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q210,CRM_N8N,P1,Frappe reçoit lead sans doublon par retry,event mapping test,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q211,CRM_N8N,P1,"Frappe opérationnel comme CRM de POLIVIA, pas du client",data model review,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q212,CRM_N8N,P1,Webhook n8n authentifié et scope minimal,webhook validation,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q213,CRM_N8N,P1,Source d'événement fiable outbox vers n8n,event delivery proof,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q214,CRM_N8N,P1,Workflows n8n isolés par environnement,n8n project inspect,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q215,CRM_N8N,P1,Automatismes ne divulguent pas de secrets dans logs,log sample,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q216,CRM_N8N,P1,Notifications audit/preview/publish testées,sample event outputs,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q217,CRM_N8N,P1,SEO hebdo crawl limité domaine autorisé,scheduled job evidence,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q218,CRM_N8N,P1,Rapports GSC uniquement si autorisés,OAuth grant and report,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q219,CRM_N8N,P1,Kill switch et retries bornés par workflow,workflow config proof,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q220,CRM_N8N,P1,Incident email/forme mène à ticket/alerte,fault simulation,Backend/Automation,Sandbox events,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q221,COMMERCE_FINOPS,P0,"Prix, contrat et droits d'offre approuvés",catalog SHA + signature,Finance/Backend,Stripe TEST + ledger,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q222,COMMERCE_FINOPS,P0,Stripe TEST webhook valide et double event sans double effet,signed event tests,Finance/Backend,Stripe TEST + ledger,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q223,COMMERCE_FINOPS,P0,Pas de facturation réelle avant GO owner,permissions audit,Finance/Backend,Stripe TEST + ledger,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q224,COMMERCE_FINOPS,P1,Coût IA par audit et génération mesuré,ledger sample,Finance/Backend,Stripe TEST + ledger,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q225,COMMERCE_FINOPS,P1,Coût stockage/CDN build et support par site,unit economics table,Finance/Backend,Stripe TEST + ledger,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q226,COMMERCE_FINOPS,P1,Limites IA et anti-abus sur audit gratuit,rate-limit/budget tests,Finance/Backend,Stripe TEST + ledger,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q227,COMMERCE_FINOPS,P1,Abonnement et facture rapprochés backend,reconcile report,Finance/Backend,Stripe TEST + ledger,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q228,COMMERCE_FINOPS,P1,Résiliation/export selon contrat testés,cancellation e2e,Finance/Backend,Stripe TEST + ledger,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q229,COMMERCE_FINOPS,P1,Marge contributive mesurable par formule,finance report,Finance/Backend,Stripe TEST + ledger,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q230,COMMERCE_FINOPS,P1,Billing failure n'interrompt pas immédiatement site sans règle,resilience test,Finance/Backend,Stripe TEST + ledger,UNKNOWN,,,,,,,,PLATFORM_RELEASE,PRE_RELEASE
+Q231,SUIVI_POST_LIVE,P0,"Monitoring uptime, formulaire et alertes opérationnel",alert test,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q232,SUIVI_POST_LIVE,P0,Restauration et retour arrière documentés/testés,restore/rollback evidence,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,PRE_RELEASE
+Q233,SUIVI_POST_LIVE,P1,"Rapport J+7 état crawl, indexabilité et erreurs",dated report,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q234,SUIVI_POST_LIVE,P1,Rapport J+14 GSC si accès consentis,GSC snapshot,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q235,SUIVI_POST_LIVE,P1,Rapport J+30 visibilité et conversions observables,factual dashboard,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q236,SUIVI_POST_LIVE,P1,Crawl hebdo liens/sitemap/canonicals,scheduled report,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q237,SUIVI_POST_LIVE,P1,Alertes baisse trafic validées avant action,anomaly triage,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q238,SUIVI_POST_LIVE,P1,Modifications SEO sensibles passent review,PR approvals,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q239,SUIVI_POST_LIVE,P1,Certificats et domaine suivis,monitoring proof,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q240,SUIVI_POST_LIVE,P1,"Livraison guide client, export et support",customer pack,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q241,SUIVI_POST_LIVE,P1,"Boucles de feedback client, correction priorisée",ticket history,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE
+Q242,SUIVI_POST_LIVE,P1,Historique versions site et validation conservés,version audit,Ops/SEO,Observabilité et audits datés,UNKNOWN,,,,,,,,SITE_RELEASE,POST_LIVE

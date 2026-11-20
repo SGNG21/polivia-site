@@ -1,0 +1,44 @@
+{
+  "version": "2026-11-20",
+  "gate": "ALL_APPLICABLE_P0_PASS",
+  "total": 242,
+  "per_severity": {
+    "P0": 50,
+    "P1": 192
+  },
+  "per_module": {
+    "FONDEMENTS": 10,
+    "ARBO_URLS": 12,
+    "INDEXABILITE": 16,
+    "MAILLAGE": 16,
+    "SEO_ONPAGE": 14,
+    "LOCAL_GEO": 12,
+    "SCHEMA_GEO": 11,
+    "DESIGN": 14,
+    "MOTION_MEDIA": 12,
+    "PERFORMANCE": 14,
+    "ACCESSIBILITE": 12,
+    "CONVERSION": 13,
+    "RGPD_LEGAL": 12,
+    "SECURITE": 14,
+    "EMAIL_DOMAINE": 11,
+    "PRODUCTION_QA": 14,
+    "CRM_N8N": 13,
+    "COMMERCE_FINOPS": 10,
+    "SUIVI_POST_LIVE": 12
+  },
+  "notes": [
+    "UNKNOWN is not PASS",
+    "NOT_APPLICABLE requires na_reason and reviewer and approval in evidence",
+    "These are requirements, not site tests passed",
+    "P1/P2 subject to documented handling; DigitalOS critical gates remain mandatory"
+  ],
+  "phase_count": {
+    "PRE_RELEASE": 225,
+    "POST_LIVE": 17
+  },
+  "scope_count": {
+    "SITE_RELEASE": 219,
+    "PLATFORM_RELEASE": 23
+  }
+}

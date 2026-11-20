@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://polivia.example/schemas/site-acceptance-evidence.v8.json",
+  "title": "POLIVIA Site Acceptance Evidence V8",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "site_id",
+    "environment",
+    "release_sha",
+    "site_spec_sha256",
+    "checked_at_utc",
+    "reviewer_id",
+    "owner_go",
+    "checks",
+    "digitalos_critical_12_pass",
+    "digitalos_quality_score",
+    "author_id"
+  ],
+  "properties": {
+    "site_id": {
+      "type": "string",
+      "minLength": 2
+    },
+    "environment": {
+      "enum": [
+        "local",
+        "development",
+        "staging",
+        "production"
+      ]
+    },
+    "release_sha": {
+      "type": "string",
+      "minLength": 7
+    },
+    "site_spec_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "checked_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reviewer_id": {
+      "type": "string",
+      "minLength": 2
+    },
+    "owner_go": {
+      "type": "boolean"
+    },
+    "digitalos_critical_12_pass": {
+      "type": "boolean"
+    },
+    "digitalos_quality_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^Q[0-9]{3}$"
+          },
+          "status": {
+            "enum": [
+              "UNKNOWN",
+              "PASS",
+              "FAIL",
+              "BLOCKED",
+              "NOT_APPLICABLE"
+            ]
+          },
+          "evidence_ref": {
+            "type": "string"
+          },
+          "checked_at_utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reviewer_id": {
+            "type": "string"
+          },
+          "na_reason": {
+            "type": "string"
+          },
+          "phase": {
+            "enum": [
+              "PRE_RELEASE",
+              "POST_LIVE"
+            ]
+          },
+          "scope": {
+            "enum": [
+              "SITE_RELEASE",
+              "PLATFORM_RELEASE"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "PASS"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "evidence_ref",
+                "checked_at_utc",
+                "reviewer_id"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "NOT_APPLICABLE"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "na_reason",
+                "evidence_ref",
+                "reviewer_id"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "release_notes": {
+      "type": "string"
+    },
+    "approval_id": {
+      "type": "string"
+    },
+    "author_id": {
+      "type": "string",
+      "minLength": 2
+    },
+    "p1_waivers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "reason",
+          "approved_by",
+          "reviewer_id",
+          "expires_at_utc",
+          "evidence_ref"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^Q[0-9]{3}$"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 15
+          },
+          "approved_by": {
+            "type": "string",
+            "minLength": 2
+          },
+          "reviewer_id": {
+            "type": "string",
+            "minLength": 2
+          },
+          "expires_at_utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "evidence_ref": {
+            "type": "string",
+            "minLength": 3
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,280 @@
+{
+  "mission": "POLIVIA_V8_SITE_FIRST_PREMIUM_FACTORY",
+  "icos_excluded": true,
+  "business_scope": "premium-website-production-first",
+  "source": "V8 addendum > V7 no-ICOS > V7 master",
+  "work_packages": [
+    {
+      "id": "V8-00",
+      "title": "Continuité / inventaire différentiel",
+      "dependencies": [],
+      "deliverables": [
+        "repo-truth POLIVIA",
+        "baseline CI",
+        "interfaces existantes"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-01",
+      "title": "Spécifications site + BusinessFacts + brief client",
+      "dependencies": [
+        "V8-00"
+      ],
+      "deliverables": [
+        "SiteSpec v8",
+        "brief",
+        "approval facts"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-02",
+      "title": "SEO architecture et URLMap",
+      "dependencies": [
+        "V8-01"
+      ],
+      "deliverables": [
+        "page intent map",
+        "URLMap",
+        "cannibalisation review"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-03",
+      "title": "Maillage et crawl link graph",
+      "dependencies": [
+        "V8-02"
+      ],
+      "deliverables": [
+        "link graph",
+        "no orphans",
+        "internal crawl tests"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-04",
+      "title": "SEO technique et publication indexable",
+      "dependencies": [
+        "V8-02"
+      ],
+      "deliverables": [
+        "sitemap/robots/canonical/redirect",
+        "staging noindex",
+        "SEO regression suite"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-05",
+      "title": "Design variants + Motion + accessibilité",
+      "dependencies": [
+        "V8-01"
+      ],
+      "deliverables": [
+        "3 brand variants",
+        "mobile visual evidence",
+        "a11y checks"
+      ],
+      "risk_class": "P1",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-06",
+      "title": "CMS/Puck + édition contenu fiable",
+      "dependencies": [
+        "V8-01",
+        "V8-05"
+      ],
+      "deliverables": [
+        "editor safely sandboxed",
+        "publish approval hash",
+        "structured content"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-07",
+      "title": "Site Factory pilot builds",
+      "dependencies": [
+        "V8-03",
+        "V8-04",
+        "V8-06"
+      ],
+      "deliverables": [
+        "3 pilot websites",
+        "independent visual QA",
+        "staging builds"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-08",
+      "title": "Formulaires + email deliverability + RGPD",
+      "dependencies": [
+        "V8-01",
+        "V8-07"
+      ],
+      "deliverables": [
+        "E2E form delivery",
+        "consent tests",
+        "DNS safe diff"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-09",
+      "title": "CRM interne Frappe + n8n workflows périphériques",
+      "dependencies": [
+        "V8-00",
+        "V8-08"
+      ],
+      "deliverables": [
+        "sandbox events",
+        "idempotency tests",
+        "workflow isolated"
+      ],
+      "risk_class": "P1",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-10",
+      "title": "Commerce, abonnements et support site-first",
+      "dependencies": [
+        "V8-00",
+        "V8-01"
+      ],
+      "deliverables": [
+        "Stripe TEST",
+        "client site portal",
+        "support lifecycle"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-11",
+      "title": "Matrice de certification branchée à CI",
+      "dependencies": [
+        "V8-03",
+        "V8-04",
+        "V8-07",
+        "V8-08",
+        "V8-10"
+      ],
+      "deliverables": [
+        "per-site evidence",
+        "DigitalOS 12/12",
+        "independent review"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-12",
+      "title": "Migration témoin et redirections",
+      "dependencies": [
+        "V8-04",
+        "V8-07"
+      ],
+      "deliverables": [
+        "old URLs map",
+        "redirect proof",
+        "rollback migration"
+      ],
+      "risk_class": "P1",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-13",
+      "title": "Monitoring, Search Console consentie, exploitation",
+      "dependencies": [
+        "V8-07",
+        "V8-09"
+      ],
+      "deliverables": [
+        "uptime/form alerts",
+        "SEO reporting",
+        "J+7/14/30 plan"
+      ],
+      "risk_class": "P1",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-14",
+      "title": "Pilote end-to-end staging",
+      "dependencies": [
+        "V8-09",
+        "V8-10",
+        "V8-11",
+        "V8-12",
+        "V8-13"
+      ],
+      "deliverables": [
+        "3 sites evidenced",
+        "payments sandbox",
+        "fault injection",
+        "unit costs"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    },
+    {
+      "id": "V8-15",
+      "title": "GO production limité après validation",
+      "dependencies": [
+        "V8-14"
+      ],
+      "deliverables": [
+        "owner approval",
+        "legal approvals",
+        "restore+rollback",
+        "live monitoring"
+      ],
+      "risk_class": "P0",
+      "requires_review_independent": true,
+      "human_approval_for_prod": true,
+      "status": "NOT_STARTED"
+    }
+  ]
+}
