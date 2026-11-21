@@ -148,7 +148,7 @@ Condensé du mandat du 2026-11-20, pour ne pas le relire en entier à chaque ses
   → install → build → tests (liens, orphelins, canonicals, sitemap) → gate → Lighthouse → rapport,
   avec reprise des étapes échouées. Pilote = entreprise fictive marquée démo, domaine `.example`,
   aucun téléphone ni adresse de rue inventés.
-- **État au 2026-11-21 (commit `e5febd4`, branche `polivia/factory-pilot`, non poussée)** :
+- **État au 2026-11-21 (commit `c680096`, branche `polivia/factory-pilot`, non poussée)** :
   - Entrée = dossier client `factory/clients/<slug>/` (`brief.json` + `media/` + `design/` propre à
     l'entreprise). `factory/studio.mjs` fait un brouillon depuis la charge utile du Studio.
   - Sites multipages : savoir-faire, zones, pages communes anti-doublon, à propos, réalisations (photos
@@ -158,8 +158,8 @@ Condensé du mandat du 2026-11-20, pour ne pas le relire en entier à chaque ses
   - Livraison fiable (file persistante, reprises 1→64 min, dead + alerte), anti-spam persistant (SQLite
     intégré), prospect POLIVIA Business v1 dans l'événement n8n. Hébergement prévu sur le VPS existant
     (systemd + Caddy, sans dépense), secrets générés dans le trousseau macOS (service `polivia-intake`).
-  - **Bloquants ouverts** : identifiant Basic Auth à créer dans n8n (authentification portée par le webhook
-    n8n), SMTP, accès CRM (Frappe/ERPNext), sous-domaine + installation sur le VPS — tous soumis à accord.
+  - **Bloquants ouverts** : identifiant « JWT Auth » à créer dans n8n (signature HS256 vérifiée par le
+    webhook n8n), SMTP, accès CRM (Frappe/ERPNext), sous-domaine + installation sur le VPS — tous soumis à accord.
     Parcours et critères de publication : `factory/PARCOURS.md` (dépôt usine).
   - Local : `INTAKE_ENV=local node intake/server.mjs` (entrée `factory-intake` de `.claude/launch.json`).
 - **CI polivia-site** : réelle depuis le 2026-11-20. Gate déterministe : PASS en CI. Lighthouse :
