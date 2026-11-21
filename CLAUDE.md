@@ -95,11 +95,13 @@ rôle "reviewer" ne modifie jamais le code qu'il évalue. Rien n'existait avant 
   poster via `VITE_FORM_ENDPOINT`, mais la variable n'est configurée nulle part dans cette session.
 - **n8n** : connecté le 2026-11-20 (instance `n8n.audit-ia-pro.fr`, projet personnel unique, 0 credential
   au départ). Workflow `POLIVIA — Intake formulaire site` créé, testé (3 cas synthétiques), **activé** —
-  URL de prod `https://n8n.audit-ia-pro.fr/webhook/polivia-site-intake`, mais **inaccessible depuis
-  l'extérieur** : un Basic Auth Caddy en amont de n8n répond 403 avant même d'atteindre le workflow.
-  `VITE_FORM_ENDPOINT` ne peut donc pas être câblé tant que ce mot de passe applicatif n'est pas levé ou
-  transmis — en dehors de ma main, à traiter avec le propriétaire. Trois workflows préexistants, inactifs,
-  nommés "Workflow de preuve ICOS × n8n local" (17/11) : hors périmètre, non touchés.
+  URL de prod `https://n8n.audit-ia-pro.fr/webhook/polivia-site-intake`. **Corrigé le 2026-11-21** (audit
+  lecture seule du VPS) : il n'y a **pas** de Basic Auth Caddy ; le 403 vu le 20/11 vient très probablement d'une
+  option du webhook qui rejette les clients non navigateurs. Constats de sécurité détaillés et plan d'hébergement :
+  dépôt **privé** de l'usine, `intake/deploy/README.md` — ne pas les recopier ici (**ce dépôt est public**).
+  Ne pas câbler `VITE_FORM_ENDPOINT` sur ce webhook avant d'avoir traité ces constats avec le propriétaire.
+  Trois workflows préexistants, inactifs, "Workflow de preuve ICOS × n8n local" (17/11) : hors périmètre, non
+  touchés. Workflow de TEST isolé `POLIVIA — Intake devis (TEST isolé, inactif)` importé inactif le 2026-11-21.
 - **Frappe CRM** et **ERPNext** : annoncés "déjà installés" par le propriétaire le 2026-11-20. Vérifié
   (`ToolSearch` sur "frappe erpnext crm") : **aucun MCP ni accès API pour l'un ou l'autre dans cette
   session**. Statut réel : **non vérifiable depuis cette session**, pas "non vérifié par oubli" — il
@@ -146,18 +148,19 @@ Condensé du mandat du 2026-11-20, pour ne pas le relire en entier à chaque ses
   → install → build → tests (liens, orphelins, canonicals, sitemap) → gate → Lighthouse → rapport,
   avec reprise des étapes échouées. Pilote = entreprise fictive marquée démo, domaine `.example`,
   aucun téléphone ni adresse de rue inventés.
-- **État au 2026-11-21 (commit `49a04df`, branche `polivia/factory-pilot`)** :
+- **État au 2026-11-21 (commit `e5febd4`, branche `polivia/factory-pilot`, non poussée)** :
   - Entrée = dossier client `factory/clients/<slug>/` (`brief.json` + `media/` + `design/` propre à
     l'entreprise). `factory/studio.mjs` fait un brouillon depuis la charge utile du Studio.
   - Sites multipages : savoir-faire, zones, pages communes anti-doublon, à propos, réalisations (photos
     client seulement), demande envoyée.
   - Service `intake/` (devis + photos, contrôles serveur, stockage privé, purge) : le formulaire n'est
     activé que si l'étape `intake` a sondé le parcours réel.
-  - **Bloquant ouvert** : aucune notification de production. n8n est derrière la Basic Auth Caddy (à
-    conserver) ; l'intake attend `N8N_INTAKE_URL`, `N8N_BASIC_USER`, `N8N_BASIC_PASS` et
-    `INTAKE_N8N_HMAC_SECRET` côté serveur. Le workflow actif doit vérifier la signature (modification
-    soumise à accord).
-  - POLIVIA Business = simulation seulement (aucune API).
+  - Livraison fiable (file persistante, reprises 1→64 min, dead + alerte), anti-spam persistant (SQLite
+    intégré), prospect POLIVIA Business v1 dans l'événement n8n. Hébergement prévu sur le VPS existant
+    (systemd + Caddy, sans dépense), secrets générés dans le trousseau macOS (service `polivia-intake`).
+  - **Bloquants ouverts** : identifiant Basic Auth à créer dans n8n (authentification portée par le webhook
+    n8n), SMTP, accès CRM (Frappe/ERPNext), sous-domaine + installation sur le VPS — tous soumis à accord.
+    Parcours et critères de publication : `factory/PARCOURS.md` (dépôt usine).
   - Local : `INTAKE_ENV=local node intake/server.mjs` (entrée `factory-intake` de `.claude/launch.json`).
 - **CI polivia-site** : réelle depuis le 2026-11-20. Gate déterministe : PASS en CI. Lighthouse :
   premier run en échec, causé par un vrai bug d'hydratation en 404 sur les URLs `.html` (corrigé
