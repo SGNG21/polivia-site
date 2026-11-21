@@ -146,6 +146,19 @@ Condensé du mandat du 2026-11-20, pour ne pas le relire en entier à chaque ses
   → install → build → tests (liens, orphelins, canonicals, sitemap) → gate → Lighthouse → rapport,
   avec reprise des étapes échouées. Pilote = entreprise fictive marquée démo, domaine `.example`,
   aucun téléphone ni adresse de rue inventés.
+- **État au 2026-11-21 (commit `49a04df`, branche `polivia/factory-pilot`)** :
+  - Entrée = dossier client `factory/clients/<slug>/` (`brief.json` + `media/` + `design/` propre à
+    l'entreprise). `factory/studio.mjs` fait un brouillon depuis la charge utile du Studio.
+  - Sites multipages : savoir-faire, zones, pages communes anti-doublon, à propos, réalisations (photos
+    client seulement), demande envoyée.
+  - Service `intake/` (devis + photos, contrôles serveur, stockage privé, purge) : le formulaire n'est
+    activé que si l'étape `intake` a sondé le parcours réel.
+  - **Bloquant ouvert** : aucune notification de production. n8n est derrière la Basic Auth Caddy (à
+    conserver) ; l'intake attend `N8N_INTAKE_URL`, `N8N_BASIC_USER`, `N8N_BASIC_PASS` et
+    `INTAKE_N8N_HMAC_SECRET` côté serveur. Le workflow actif doit vérifier la signature (modification
+    soumise à accord).
+  - POLIVIA Business = simulation seulement (aucune API).
+  - Local : `INTAKE_ENV=local node intake/server.mjs` (entrée `factory-intake` de `.claude/launch.json`).
 - **CI polivia-site** : réelle depuis le 2026-11-20. Gate déterministe : PASS en CI. Lighthouse :
   premier run en échec, causé par un vrai bug d'hydratation en 404 sur les URLs `.html` (corrigé
   dans `src/main.tsx`) ; mesuré en local après correctif : perf 1, best-practices 1, SEO 1,
