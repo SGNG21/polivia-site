@@ -9,3 +9,6 @@ dist-ssr
 .vercel
 tsconfig.tsbuildinfo
 .lighthouseci
+
+# notes opérationnelles locales (jamais publiées)
+CLAUDE.local.md

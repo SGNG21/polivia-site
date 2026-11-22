@@ -82,34 +82,27 @@ rôle "reviewer" ne modifie jamais le code qu'il évalue. Rien n'existait avant 
   affiché aujourd'hui — à statuer si le propriétaire veut l'ajouter comme option flexible de Sérénité.
 
 ## État réel des outils (vérifié le 2026-11-20, pas supposé)
-- **GitHub** : MCP indisponible cette session ; `gh` CLI opérationnel, authentifié `SGNG21` (scopes
-  repo/workflow). L'utiliser pour tout travail GitHub tant que le MCP ne reconnecte pas.
-- **Vercel** : CLI 54.18.6 installée (mise à jour dispo, 66.6.0), authentifiée `geoffreynozza-3139`. Ce
-  dépôt n'a pas de `.vercel/` local (pas de link), mais le projet `polivia-site` existe côté Vercel et
-  se déploie via l'intégration Git. Au moins 7 autres projets clients réels sont déployés sous ce compte
-  (`la-belle-intendance.fr`, `lds-renov.fr`, `saint-julien-taxi.fr`, `editions-du-mecene.vercel.app`,
-  `sas-vsagri.vercel.app`, `benelec.vercel.app`, `auto-charge-89.fr`) — vérifiés en ligne (HTTP 200,
-  titres correspondants) le 2026-11-20. `src/content/site.ts` liste 5 de ces clients avec `liveUrl: null`
-  alors que l'URL réelle existe désormais.
-- **Supabase** : CLI non installée, aucun projet lié dans ce dépôt. `QuoteForm.tsx` est câblé pour y
-  poster via `VITE_FORM_ENDPOINT`, mais la variable n'est configurée nulle part dans cette session.
-- **n8n** : connecté le 2026-11-20 (instance `n8n.audit-ia-pro.fr`, projet personnel unique, 0 credential
-  au départ). Workflow `POLIVIA — Intake formulaire site` créé, testé (3 cas synthétiques), **activé** —
-  URL de prod `https://n8n.audit-ia-pro.fr/webhook/polivia-site-intake`. **Corrigé le 2026-11-21** (audit
-  lecture seule du VPS) : il n'y a **pas** de Basic Auth Caddy ; le 403 vu le 20/11 vient très probablement d'une
-  option du webhook qui rejette les clients non navigateurs. Constats de sécurité détaillés et plan d'hébergement :
-  dépôt **privé** de l'usine, `intake/deploy/README.md` — ne pas les recopier ici (**ce dépôt est public**).
-  Ne pas câbler `VITE_FORM_ENDPOINT` sur ce webhook avant d'avoir traité ces constats avec le propriétaire.
-  Trois workflows préexistants, inactifs, "Workflow de preuve ICOS × n8n local" (17/11) : hors périmètre, non
-  touchés. Workflow de TEST isolé `POLIVIA — Intake devis (TEST isolé, inactif)` importé inactif le 2026-11-21.
-- **Frappe CRM** et **ERPNext** : annoncés "déjà installés" par le propriétaire le 2026-11-20. Vérifié
-  (`ToolSearch` sur "frappe erpnext crm") : **aucun MCP ni accès API pour l'un ou l'autre dans cette
-  session**. Statut réel : **non vérifiable depuis cette session**, pas "non vérifié par oubli" — il
-  manque une URL d'instance + un jeton, que je ne dois ni deviner ni demander à saisir moi-même (accès
-  sensible, cf. `docs/v8/docs/06_FRAPPE_N8N_FACTURATION_SUPPORT.md` pour la politique déjà écrite). Pas
-  de CRM concurrent à construire tant que ce point n'est pas résolu avec le propriétaire ; le payload du
-  formulaire studio/devis (`src/sections/Studio.tsx`, `QuoteForm.tsx`) est déjà structuré pour pouvoir
-  alimenter un futur pipeline `prospect → opportunité → devis` sans réécriture, le jour où l'accès existe.
+> Ce dépôt est **public**. Adresses d'instance, comptes, noms d'identifiants, état d'authentification et plans
+> d'hébergement **ne figurent pas ici** : ils sont dans le dépôt **privé** de l'usine (`intake/deploy/README.md`)
+> et, sur le poste du propriétaire, dans `CLAUDE.local.md` (non versionné, chargé automatiquement par Claude Code).
+> Ne jamais les recopier dans un fichier versionné de ce dépôt.
+
+- **GitHub** : passer par le CLI `gh` (authentifié) quand le MCP GitHub n'est pas disponible.
+- **Vercel** : le projet `polivia-site` se déploie par l'intégration Git (pas de `.vercel/` local). Le même compte
+  héberge des sites clients. `src/content/site.ts` liste certains de ces clients avec `liveUrl: null` alors qu'une
+  URL publique existe : à mettre à jour seulement avec l'accord du propriétaire (règle « aucune donnée inventée »).
+- **Formulaire devis/audit** : `QuoteForm.tsx` poste vers **`VITE_FORM_ENDPOINT`** (variable d'environnement de
+  build). Elle n'est **définie nulle part** aujourd'hui. **Ne pas la renseigner** tant que le point de réception
+  (n8n auto-hébergé ou service `intake/` de l'usine) n'est pas authentifié et validé par le propriétaire. Aucun
+  secret ne doit apparaître côté client : une valeur `VITE_*` est publique une fois construite.
+- **Supabase** : CLI non installée, aucun projet lié à ce dépôt.
+- **n8n** : instance auto-hébergée du propriétaire (détails hors de ce dépôt, voir l'encadré). Règles : aucune
+  activation, aucune modification de workflow existant et aucun import en production sans accord explicite ; les
+  essais se font sur l'instance de test isolée de la bibliothèque POLIVIA.
+- **Frappe CRM** et **ERPNext** : annoncés installés par le propriétaire ; **aucun accès API depuis les sessions
+  Claude** (il manque une URL d'instance + un jeton, à ne jamais deviner ni demander à saisir). Politique :
+  `docs/v8/docs/06_FRAPPE_N8N_FACTURATION_SUPPORT.md`. Le payload studio/devis (`src/sections/Studio.tsx`,
+  `QuoteForm.tsx`) est déjà structuré pour un futur pipeline `prospect → opportunité → devis`.
 - **Stripe** : aucune clé, aucune intégration dans ce dépôt. TEST uniquement si/quand construit.
 
 ## Politique de sélection des outils (ECC / Agentic Council / Superpowers)
@@ -133,14 +126,13 @@ Condensé du mandat du 2026-11-20, pour ne pas le relire en entier à chaque ses
   publication publique.
 
 ## Site Factory — état (mis à jour le 2026-11-20)
-- **Où** : moteur en construction dans un worktree isolé de Digitalos2,
-  `~/Documents/Geoffrey Pro/repos/Digitalos2-factory-pilot` (branche locale `polivia/factory-pilot`,
-  non poussée). La copie principale de Digitalos2 (branche `deploy/vercel`) et son `premium-starter`
-  ne sont pas touchés : l'ancien pipeline et le cockpit en dépendent.
+- **Où** : moteur en construction dans un worktree isolé du dépôt privé Digitalos2 (branche locale
+  `polivia/factory-pilot`, non poussée ; chemin local dans `CLAUDE.local.md`). La copie principale de Digitalos2
+  (branche `deploy/vercel`) et son `premium-starter` ne sont pas touchés : l'ancien pipeline et le cockpit en dépendent.
 - **Défauts trouvés dans l'usine Digitalos2 existante** (à ne pas réutiliser tels quels) :
   monopage seulement ; `run-pipeline.mjs` réécrit le starter partagé à chaque run (aucune isolation
   par projet) ; `public/hero.jpg` et `og.jpg` sont des fichiers texte, pas des images (image cassée
-  + og:image invalide, invisible pour le gate) ; `next@15.1.6` vulnérable ; données d'exemple avec
+  + og:image invalide, invisible pour le gate) ; une version de Next connue vulnérable ; données d'exemple avec
   téléphone/adresse d'apparence réelle et mention « Artisan certifié » inventée ; aucune
   persistance de job ni historique. Le cockpit simule l'avancement sans Supabase.
 - **Cible du pilote** : `factory/` (moteur) + `factory/template/` (gabarit Next multi-pages) :
@@ -156,10 +148,10 @@ Condensé du mandat du 2026-11-20, pour ne pas le relire en entier à chaque ses
   - Service `intake/` (devis + photos, contrôles serveur, stockage privé, purge) : le formulaire n'est
     activé que si l'étape `intake` a sondé le parcours réel.
   - Livraison fiable (file persistante, reprises 1→64 min, dead + alerte), anti-spam persistant (SQLite
-    intégré), prospect POLIVIA Business v1 dans l'événement n8n. Hébergement prévu sur le VPS existant
-    (systemd + Caddy, sans dépense), secrets générés dans le trousseau macOS (service `polivia-intake`).
-  - **Bloquants ouverts** : identifiant « JWT Auth » à créer dans n8n (signature HS256 vérifiée par le
-    webhook n8n), SMTP, accès CRM (Frappe/ERPNext), sous-domaine + installation sur le VPS — tous soumis à accord.
+    intégré), prospect POLIVIA Business v1 dans l'événement n8n. Secrets gérés hors dépôt (jamais dans le code
+    ni dans un fichier versionné) ; hébergement et configuration documentés dans le dépôt privé de l'usine.
+  - **Bloquants ouverts** : authentification signée de la livraison vers n8n, SMTP, accès CRM (Frappe/ERPNext),
+    hébergement du service — tous soumis à accord.
     Parcours et critères de publication : `factory/PARCOURS.md` (dépôt usine).
   - Local : `INTAKE_ENV=local node intake/server.mjs` (entrée `factory-intake` de `.claude/launch.json`).
 - **CI polivia-site** : réelle depuis le 2026-11-20. Gate déterministe : PASS en CI. Lighthouse :

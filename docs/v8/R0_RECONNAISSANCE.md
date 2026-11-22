@@ -9,8 +9,8 @@ Trois dépôts candidats ont été inspectés (remote, `CLAUDE.md`, structure, d
 | Dépôt | Remote | Rôle réel |
 |---|---|---|
 | **`polivia-site`** (ce dépôt, branche `da-validee`) | `SGNG21/polivia-site` | **Site commercial POLIVIA** — la vitrine de l'agence elle-même. Vite + React 19 + Three.js, SSR prerender maison, zéro backend. Pas de `CLAUDE.md` avant ce commit. |
-| `~/Documents/Geoffrey Pro/repos/DigitalOS-v0.1` | `SGNG21/DigitalOS` | L'« usine » V7 : gouvernance, standards, agents, templates, pilotes (`00_Foundation` … `13_Pilots`). C'est le système qui *fabrique* des sites clients, pas le site POLIVIA. A son propre `CLAUDE.md`. Vérifié : aucune mention d'ICOS dans sa documentation — DigitalOS n'est pas ICOS sous un autre nom, et n'est donc pas automatiquement hors périmètre à ce titre ; il reste cependant **hors du périmètre actif de cette session**, qui porte sur le site commercial POLIVIA. |
-| `~/Documents/Geoffrey Pro/repos/pilot-004-site-test-du-sol-au-toit` | `SGNG21/pilot-004-site-test-du-sol-au-toit` | Un site pilote produit *par* DigitalOS pour un métier de couverture/rénovation (« Du sol au toit »). Artefact de sortie, pas une plateforme. |
+| `<repos>/DigitalOS-v0.1` | `SGNG21/DigitalOS` | L'« usine » V7 : gouvernance, standards, agents, templates, pilotes (`00_Foundation` … `13_Pilots`). C'est le système qui *fabrique* des sites clients, pas le site POLIVIA. A son propre `CLAUDE.md`. Vérifié : aucune mention d'ICOS dans sa documentation — DigitalOS n'est pas ICOS sous un autre nom, et n'est donc pas automatiquement hors périmètre à ce titre ; il reste cependant **hors du périmètre actif de cette session**, qui porte sur le site commercial POLIVIA. |
+| `<repos>/pilot-004-site-test-du-sol-au-toit` | `SGNG21/pilot-004-site-test-du-sol-au-toit` | Un site pilote produit *par* DigitalOS pour un métier de couverture/rénovation (« Du sol au toit »). Artefact de sortie, pas une plateforme. |
 
 **Conclusion** : `polivia-site` est le dépôt canonique pour le travail de cette session, parce que
 c'est le « site commercial POLIVIA » explicitement nommé en tête du périmètre actif de la directive V8,
