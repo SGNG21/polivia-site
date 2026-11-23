@@ -335,7 +335,14 @@ html{scroll-padding-top:92px}body{background:#f8f8f5;color:var(--ink);font-famil
 .commit-grid dd{margin:0;color:#51704e;font-size:14px;line-height:1.6}
 .commit-grid .commit-v{font-size:34px;font-weight:800;letter-spacing:-.05em;color:#17221b;margin:10px 0 6px}
 @media(max-width:880px){.audit-express,.stance-grid{grid-template-columns:1fr}.commit-grid{grid-template-columns:1fr 1fr}.legal-dl{grid-template-columns:1fr;gap:2px}.legal-dl dd{margin-bottom:12px}}
-@media(max-width:480px){.commit-grid{grid-template-columns:1fr}.page-block{padding:52px 0}}
+@media(max-width:480px){.commit-grid{grid-template-columns:1fr}}
 /* La section qui suit un en-tête de page n'ajoute pas sa propre marge haute (évite deux marges empilées). */
 .page-head+.page-block,.page-head+.audit-section,.page-head+.cases-section{padding-top:0}
 .page-block.prose{padding-bottom:72px}
+/* Revue AD indépendante du 2026-11-23. */
+.page-head-lg .t-h2{font-size:clamp(40px,5vw,66px);letter-spacing:-.065em;line-height:1.05}
+.audit-express .final-form{max-width:none}
+.form .field{margin:0}
+.field-hint,.form-legal{color:#5b6b70}
+.final-contact .fc-k{color:#5d6b5f}
+@media(max-width:760px){.wrap-tight{width:min(100% - 30px,620px)}.page-block{padding:48px 0}}

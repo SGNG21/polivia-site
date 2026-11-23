@@ -13,8 +13,8 @@ export default function AuditIa() {
         description={`Un premier regard gratuit sur votre site, ou l’Audit IA Express à ${audit.price} € : visibilité, demandes perdues, tâches automatisables, plan chiffré.`}
         path="/audit-ia"
       />
-      <section className="page-head">
-        <div className="wrap-tight">
+      <section className="page-head page-head-lg">
+        <div className="wrap">
           <h1 className="t-h2">Faites auditer votre site.</h1>
           <p className="lede">
             Deux formats : un premier regard gratuit pour savoir où vous en êtes, et l’{audit.name} à {audit.price} € pour

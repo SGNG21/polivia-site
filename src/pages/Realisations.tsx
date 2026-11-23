@@ -12,7 +12,7 @@ export default function Realisations() {
         path="/realisations"
       />
       <section className="page-head">
-        <div className="wrap-tight">
+        <div className="wrap">
           <h1 className="t-h2">Réalisations.</h1>
           <p className="lede">
             Des sites réellement livrés, pas des maquettes. Chaque entreprise garde son identité propre ; les liens ouvrent le
