@@ -28,7 +28,7 @@ const SAMPLE_BRIEF: Brief = {
   city: 'Auxerre',
   services: 'Dépannage, installations, salle de bain',
   positioning: 'Professionnel, rassurant, accessible',
-  email: 'contact@atelier-martin.fr',
+  email: 'contact@atelier-martin.example',
 };
 
 function deriveEdit(b: Brief): EditState {
