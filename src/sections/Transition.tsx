@@ -3,8 +3,9 @@ import { brand, transition } from '../content/site';
 
 /**
  * Formulaire de transition concurrent — même discipline que QuoteForm.tsx :
- * honeypot + délai minimal, repli mailto honnête tant qu'aucun
- * VITE_FORM_ENDPOINT n'est configuré, jamais de faux succès.
+ * honeypot + délai minimal, repli mailto tant qu'aucun VITE_FORM_ENDPOINT
+ * n'est configuré, qui garde le formulaire rempli et ne s'affiche jamais
+ * comme un succès (ouvrir la messagerie n'envoie rien).
  */
 const ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT as string | undefined;
 const MIN_FILL_MS = 2500;
@@ -21,8 +22,11 @@ export default function Transition() {
     const data = new FormData(form);
 
     if (String(data.get('company_url') ?? '')) return; // honeypot
-    if (Date.now() - mounted.current < MIN_FILL_MS) return;
-    if (!data.get('contact_consent')) return;
+    if (Date.now() - mounted.current < MIN_FILL_MS) {
+      setStatus({ kind: 'error', message: 'Envoi trop rapide : vérifiez vos informations puis renvoyez.' });
+      return;
+    }
+    if (!data.get('contact_consent')) return; // the browser already refused it (required checkbox)
 
     const payload = {
       intent: 'transition',
@@ -58,7 +62,7 @@ export default function Transition() {
         .filter(Boolean)
         .join('\n');
       window.location.href = `mailto:${brand.email}?subject=${encodeURIComponent('Préparer ma transition')}&body=${encodeURIComponent(body)}`;
-      setStatus({ kind: 'sent', message: 'Votre messagerie s’ouvre avec la demande déjà rédigée. Envoyez-la et nous revenons vers vous.' });
+      setStatus({ kind: 'error', message: `Votre messagerie devrait s’ouvrir avec la demande déjà rédigée : rien ne nous parvient tant que vous ne l’avez pas envoyée. Si rien ne s’ouvre, écrivez-nous à ${brand.email}.` });
       return;
     }
 
@@ -106,7 +110,7 @@ export default function Transition() {
               <p>{status.message}</p>
             </div>
           ) : (
-            <form className="transition-form" onSubmit={onSubmit} noValidate>
+            <form className="transition-form" onSubmit={onSubmit}>
               <div className="transition-form-row">
                 <label htmlFor="tr-company">
                   Entreprise *

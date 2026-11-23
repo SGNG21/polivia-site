@@ -6,8 +6,9 @@ import { brand } from '../content/site';
  *
  * Delivery: posts JSON to VITE_FORM_ENDPOINT (a Supabase Edge Function or any
  * HTTPS collector). When that variable is absent — which is the case until the
- * endpoint is provisioned — it falls back to opening a prefilled e-mail rather
- * than silently dropping the lead. A form that looks like it worked and did
+ * endpoint is provisioned — it opens a prefilled e-mail and keeps the form as
+ * typed: opening a mail client proves nothing was sent (it may not even open),
+ * so it is never shown as a success. A form that looks like it worked and did
  * not is the worst outcome for a site whose only job is to generate requests.
  *
  * Anti-spam without a third-party captcha: a honeypot field no human can see
@@ -57,7 +58,11 @@ export default function QuoteForm({ intent = 'devis' }: { intent?: 'devis' | 'au
     const data = new FormData(form);
 
     if (String(data.get('company_url') ?? '')) return; // honeypot tripped
-    if (Date.now() - mounted.current < MIN_FILL_MS) return;
+    if (Date.now() - mounted.current < MIN_FILL_MS) {
+      // A human with autofill can be this fast: say so instead of doing nothing.
+      setStatus({ kind: 'error', message: 'Envoi trop rapide : vérifiez vos informations puis renvoyez.' });
+      return;
+    }
 
     const found = validate(data);
     setErrors(found);
@@ -97,9 +102,8 @@ export default function QuoteForm({ intent = 'devis' }: { intent?: 'devis' | 'au
         subject,
       )}&body=${encodeURIComponent(body)}`;
       setStatus({
-        kind: 'sent',
-        message:
-          'Votre messagerie s’ouvre avec la demande déjà rédigée. Envoyez-la et nous revenons vers vous sous 24 h.',
+        kind: 'error',
+        message: `Votre messagerie devrait s’ouvrir avec la demande déjà rédigée : rien ne nous parvient tant que vous ne l’avez pas envoyée. Si rien ne s’ouvre, écrivez-nous à ${brand.email}.`,
       });
       return;
     }

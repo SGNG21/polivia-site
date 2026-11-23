@@ -6,7 +6,8 @@ import { brand, pricing } from '../content/site';
  * d'après la section 05 du prototype V5. Contrairement au prototype (qui
  * n'envoie rien nulle part), l'étape commande envoie une vraie demande par
  * le même circuit honnête que QuoteForm.tsx : repli mailto tant qu'aucun
- * VITE_FORM_ENDPOINT n'est configuré, jamais de faux succès.
+ * VITE_FORM_ENDPOINT n'est configuré, qui reste sur l'étape commande (ouvrir
+ * la messagerie n'envoie rien), jamais de faux succès.
  *
  * Règles locales déterministes pour générer la maquette (pas de génération
  * IA connectée) : on reformule simplement ce que l'utilisateur a saisi.
@@ -142,7 +143,7 @@ export default function Studio() {
       ].join('\n');
       window.location.href = `mailto:${brand.email}?subject=${encodeURIComponent('Ma maquette POLIVIA — ' + payload.business)}&body=${encodeURIComponent(body)}`;
       setSending(false);
-      setStep('done');
+      setSendError(`Votre messagerie devrait s’ouvrir avec la demande déjà rédigée : rien ne nous parvient tant que vous ne l’avez pas envoyée. Si rien ne s’ouvre, écrivez-nous à ${brand.email}.`);
       return;
     }
 
