@@ -28,6 +28,7 @@ jobs:
         run: |
           pnpm install --frozen-lockfile
           pnpm run build
+          pnpm test
 
       # Dépendances du gate, isolées du site.
       - name: Install gate deps
