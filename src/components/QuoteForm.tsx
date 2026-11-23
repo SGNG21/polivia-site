@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react';
 import { brand } from '../content/site';
+import { CONSENT_TEXT, intakeErrors, intakeFields, postToIntake } from '../lib/intake';
 
 /**
  * Quote request form.
  *
- * Delivery: posts JSON to VITE_FORM_ENDPOINT (a Supabase Edge Function or any
- * HTTPS collector). When that variable is absent — which is the case until the
+ * Delivery: a native multipart POST to VITE_FORM_ENDPOINT, the factory intake
+ * (src/lib/intake.ts), which redirects to /demande-envoyee once the request is
+ * stored. When that variable is absent — which is the case until the
  * endpoint is provisioned — it opens a prefilled e-mail and keeps the form as
  * typed: opening a mail client proves nothing was sent (it may not even open),
  * so it is never shown as a success. A form that looks like it worked and did
@@ -28,8 +30,8 @@ const sectors = [
   'Autre',
 ];
 
-type Status = { kind: 'idle' | 'sending' | 'sent' | 'error'; message?: string };
-type Errors = Partial<Record<'name' | 'email' | 'sector', string>>;
+type Status = { kind: 'idle' | 'sending' | 'error'; message?: string };
+type Errors = Partial<Record<'name' | 'email' | 'sector' | 'consent', string>>;
 
 export default function QuoteForm({ intent = 'devis' }: { intent?: 'devis' | 'audit' }) {
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
@@ -49,6 +51,7 @@ export default function QuoteForm({ intent = 'devis' }: { intent?: 'devis' | 'au
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))
       next.email = 'Cette adresse ne permettrait pas de vous répondre.';
     if (!sector) next.sector = 'Choisissez votre activité.';
+    if (!data.get('consent')) next.consent = 'Cochez la case pour que nous puissions vous recontacter.';
     return next;
   }
 
@@ -108,36 +111,21 @@ export default function QuoteForm({ intent = 'devis' }: { intent?: 'devis' | 'au
       return;
     }
 
-    try {
-      const res = await fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) throw new Error(String(res.status));
-      form.reset();
-      setStatus({
-        kind: 'sent',
-        message: `Demande reçue. Vous avez une réponse sous ${brand.responseTime}.`,
-      });
-    } catch {
-      setStatus({
-        kind: 'error',
-        message: `L’envoi a échoué. Écrivez-nous directement à ${brand.email} — la demande ne sera pas perdue.`,
-      });
+    const fields = intakeFields({
+      service: intent,
+      name: payload.name,
+      email: payload.email,
+      phone: payload.phone,
+      consent: true, // checked by validate()
+      lines: [`Activité : ${payload.sector}`, payload.message && `\n${payload.message}`, `Page : ${payload.page}`],
+    });
+    const refused = intakeErrors(fields);
+    if (refused.length) {
+      setStatus({ kind: 'error', message: refused.join(' ') });
+      return;
     }
-  }
-
-  if (status.kind === 'sent') {
-    return (
-      <div className="form-done" role="status">
-        <h3 className="t-h3">C’est noté.</h3>
-        <p className="body-muted">{status.message}</p>
-        <p className="small">
-          Une urgence ? <a className="inline-link" href={`mailto:${brand.email}`}>{brand.email}</a>
-        </p>
-      </div>
-    );
+    // The browser leaves the page: the intake answers with /demande-envoyee or an error page.
+    postToIntake(ENDPOINT, fields, () => setStatus({ kind: 'idle' }));
   }
 
   return (
@@ -176,6 +164,15 @@ export default function QuoteForm({ intent = 'devis' }: { intent?: 'devis' | 'au
         <label htmlFor="company_url">Ne pas remplir</label>
         <input id="company_url" name="company_url" type="text" tabIndex={-1} autoComplete="off" />
       </div>
+
+      <p className="field">
+        <label className="transition-checkline">
+          <input id="consent" name="consent" type="checkbox" required
+            aria-invalid={!!errors.consent} aria-describedby={errors.consent ? 'consent-err' : undefined} />{' '}
+          {CONSENT_TEXT}
+        </label>
+        {errors.consent && <span className="field-err small" id="consent-err">{errors.consent}</span>}
+      </p>
 
       <button type="submit" className="btn btn-primary btn-lg btn-block" disabled={status.kind === 'sending'}>
         {status.kind === 'sending'

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { brand, transition } from '../content/site';
+import { CONSENT_TEXT, intakeErrors, intakeFields, postToIntake } from '../lib/intake';
 
 /**
  * Formulaire de transition concurrent — même discipline que QuoteForm.tsx :
@@ -10,7 +11,7 @@ import { brand, transition } from '../content/site';
 const ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT as string | undefined;
 const MIN_FILL_MS = 2500;
 
-type Status = { kind: 'idle' | 'sending' | 'sent' | 'error'; message?: string };
+type Status = { kind: 'idle' | 'sending' | 'error'; message?: string };
 
 export default function Transition() {
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
@@ -66,14 +67,29 @@ export default function Transition() {
       return;
     }
 
-    try {
-      const res = await fetch(ENDPOINT, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
-      if (!res.ok) throw new Error(String(res.status));
-      form.reset();
-      setStatus({ kind: 'sent', message: `Demande reçue. Vous avez une réponse sous ${brand.responseTime}.` });
-    } catch {
-      setStatus({ kind: 'error', message: `L’envoi a échoué. Écrivez-nous directement à ${brand.email}.` });
+    const yes = (b: boolean) => (b ? 'oui' : 'non');
+    const fields = intakeFields({
+      service: 'transition',
+      name: payload.name,
+      email: payload.email,
+      phone: payload.phone,
+      consent: true, // required checkbox, checked above
+      lines: [
+        `Entreprise : ${payload.company}`,
+        payload.website && `Site actuel : ${payload.website}`,
+        payload.provider && `Prestataire actuel : ${payload.provider}`,
+        payload.contractEnd && `Fin de contrat estimée : ${payload.contractEnd}`,
+        `Rappel avant la fin du contrat : ${yes(payload.followupOptin)}`,
+        `Nouveautés et offres POLIVIA : ${yes(payload.marketingOptin)}`,
+        payload.message && `\n${payload.message}`,
+      ],
+    });
+    const refused = intakeErrors(fields);
+    if (refused.length) {
+      setStatus({ kind: 'error', message: refused.join(' ') });
+      return;
     }
+    postToIntake(ENDPOINT, fields, () => setStatus({ kind: 'idle' }));
   }
 
   return (
@@ -104,83 +120,76 @@ export default function Transition() {
           <h3>{transition.cardTitle}</h3>
           <p className="transition-note">{transition.cardNote}</p>
 
-          {status.kind === 'sent' ? (
-            <div className="form-done" role="status">
-              <h3>C'est noté.</h3>
-              <p>{status.message}</p>
+          <form className="transition-form" onSubmit={onSubmit}>
+            <div className="transition-form-row">
+              <label htmlFor="tr-company">
+                Entreprise *
+                <input id="tr-company" name="company" autoComplete="organization" maxLength={120} minLength={2} required />
+              </label>
+              <label htmlFor="tr-name">
+                Votre nom *
+                <input id="tr-name" name="name" autoComplete="name" maxLength={120} minLength={2} required />
+              </label>
             </div>
-          ) : (
-            <form className="transition-form" onSubmit={onSubmit}>
-              <div className="transition-form-row">
-                <label htmlFor="tr-company">
-                  Entreprise *
-                  <input id="tr-company" name="company" autoComplete="organization" maxLength={120} minLength={2} required />
-                </label>
-                <label htmlFor="tr-name">
-                  Votre nom *
-                  <input id="tr-name" name="name" autoComplete="name" maxLength={120} minLength={2} required />
-                </label>
-              </div>
-              <div className="transition-form-row">
-                <label htmlFor="tr-email">
-                  E-mail professionnel *
-                  <input id="tr-email" name="email" type="email" autoComplete="email" maxLength={254} required />
-                </label>
-                <label htmlFor="tr-phone">
-                  Téléphone (facultatif)
-                  <input id="tr-phone" name="phone" type="tel" autoComplete="tel" maxLength={35} />
-                </label>
-              </div>
-              <label htmlFor="tr-website">
-                Votre site actuel (facultatif)
-                <input id="tr-website" name="website" type="url" autoComplete="url" maxLength={2048} placeholder="https://www.votre-site.fr" />
+            <div className="transition-form-row">
+              <label htmlFor="tr-email">
+                E-mail professionnel *
+                <input id="tr-email" name="email" type="email" autoComplete="email" maxLength={254} required />
               </label>
-              <div className="transition-form-row">
-                <label htmlFor="tr-provider">
-                  Prestataire actuel (facultatif)
-                  <input id="tr-provider" name="provider" maxLength={120} />
-                </label>
-                <label htmlFor="tr-contract-end">
-                  Fin de contrat estimée (si connue)
-                  <input id="tr-contract-end" name="contract_end" type="date" />
-                </label>
-              </div>
-              <label htmlFor="tr-message">
-                Votre besoin (facultatif)
-                <textarea id="tr-message" name="message" rows={3} maxLength={1500} placeholder="Refonte, meilleure visibilité Google, CRM, facturation…" />
+              <label htmlFor="tr-phone">
+                Téléphone (facultatif)
+                <input id="tr-phone" name="phone" type="tel" autoComplete="tel" maxLength={35} />
               </label>
+            </div>
+            <label htmlFor="tr-website">
+              Votre site actuel (facultatif)
+              <input id="tr-website" name="website" type="url" autoComplete="url" maxLength={2048} placeholder="https://www.votre-site.fr" />
+            </label>
+            <div className="transition-form-row">
+              <label htmlFor="tr-provider">
+                Prestataire actuel (facultatif)
+                <input id="tr-provider" name="provider" maxLength={120} />
+              </label>
+              <label htmlFor="tr-contract-end">
+                Fin de contrat estimée (si connue)
+                <input id="tr-contract-end" name="contract_end" type="date" />
+              </label>
+            </div>
+            <label htmlFor="tr-message">
+              Votre besoin (facultatif)
+              <textarea id="tr-message" name="message" rows={3} maxLength={1500} placeholder="Refonte, meilleure visibilité Google, CRM, facturation…" />
+            </label>
 
-              <div className="hp" aria-hidden="true">
-                <label htmlFor="tr-company-url">Ne pas remplir</label>
-                <input id="tr-company-url" name="company_url" type="text" tabIndex={-1} autoComplete="off" />
-              </div>
+            <div className="hp" aria-hidden="true">
+              <label htmlFor="tr-company-url">Ne pas remplir</label>
+              <input id="tr-company-url" name="company_url" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
 
-              <label className="transition-checkline">
-                <input id="tr-contact-consent" name="contact_consent" type="checkbox" required />
-                <span>
-                  Je demande à POLIVIA de me recontacter au sujet de ce projet. <strong>*</strong>
-                </span>
-              </label>
-              <label className="transition-checkline">
-                <input id="tr-followup-optin" name="followup_optin" type="checkbox" />
-                <span>Je souhaite recevoir un rappel à l'approche de la fin de mon contrat.</span>
-              </label>
-              <label className="transition-checkline">
-                <input id="tr-marketing-optin" name="marketing_optin" type="checkbox" />
-                <span>Je souhaite recevoir des nouveautés et offres POLIVIA (facultatif).</span>
-              </label>
+            <label className="transition-checkline">
+              <input id="tr-contact-consent" name="contact_consent" type="checkbox" required />
+              <span>
+                {CONSENT_TEXT} <strong>*</strong>
+              </span>
+            </label>
+            <label className="transition-checkline">
+              <input id="tr-followup-optin" name="followup_optin" type="checkbox" />
+              <span>Je souhaite recevoir un rappel à l'approche de la fin de mon contrat.</span>
+            </label>
+            <label className="transition-checkline">
+              <input id="tr-marketing-optin" name="marketing_optin" type="checkbox" />
+              <span>Je souhaite recevoir des nouveautés et offres POLIVIA (facultatif).</span>
+            </label>
 
-              <button type="submit" className="btn btn-primary btn-full" disabled={status.kind === 'sending'}>
-                {status.kind === 'sending' ? 'Envoi…' : 'Préparer ma transition ↗'}
-              </button>
-              <p className="transition-mini">
-                Vos informations servent uniquement à vous répondre. Aucune résiliation ni migration n'est lancée sans votre accord explicite.
-              </p>
-              <div className="transition-result" role="status" aria-live="polite">
-                {status.kind === 'error' ? status.message : ''}
-              </div>
-            </form>
-          )}
+            <button type="submit" className="btn btn-primary btn-full" disabled={status.kind === 'sending'}>
+              {status.kind === 'sending' ? 'Envoi…' : 'Préparer ma transition ↗'}
+            </button>
+            <p className="transition-mini">
+              Vos informations servent uniquement à vous répondre. Aucune résiliation ni migration n'est lancée sans votre accord explicite.
+            </p>
+            <div className="transition-result" role="status" aria-live="polite">
+              {status.kind === 'error' ? status.message : ''}
+            </div>
+          </form>
         </div>
       </div>
     </section>

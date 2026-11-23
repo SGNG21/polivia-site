@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import Terrain from './pages/Terrain';
 import Stub from './pages/Stub';
 import NotFound from './pages/NotFound';
+import Sent from './pages/Sent';
 
 /** Pages still to be written, but routed so no advertised link 404s. */
 const stubs = [
@@ -88,6 +89,7 @@ export default function App() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/contact" component={Contact} />
+          <Route path="/demande-envoyee" component={Sent} />
           {stubs.map((s) => (
             <Route key={s.path} path={s.path}>
               <Stub {...s} />
@@ -101,4 +103,4 @@ export default function App() {
   );
 }
 
-export const routes = ['/', '/contact', '/terrain', ...stubs.map((s) => s.path)];
+export const routes = ['/', '/contact', '/demande-envoyee', '/terrain', ...stubs.map((s) => s.path)];

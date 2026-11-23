@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { brand, pricing } from '../content/site';
+import { CONSENT_TEXT, intakeErrors, intakeFields, postToIntake } from '../lib/intake';
 
 /**
  * Le Studio POLIVIA — parcours brief → maquette → validation → commande,
@@ -15,7 +16,7 @@ import { brand, pricing } from '../content/site';
 
 const ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT as string | undefined;
 
-type Step = 'brief' | 'edit' | 'approve' | 'order' | 'done';
+type Step = 'brief' | 'edit' | 'approve' | 'order';
 
 type Brief = { business: string; sector: string; city: string; services: string; positioning: string; email: string };
 type EditState = { title: string; subtitle: string; cta: string; services: string; palette: 'azur' | 'sauge' | 'charbon' | 'terracotta' };
@@ -62,6 +63,7 @@ export default function Studio() {
   const [device, setDevice] = useState<'desktop' | 'mobile'>('desktop');
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
+  const [consent, setConsent] = useState(false);
 
   const steps: { key: Step; label: string }[] = [
     { key: 'brief', label: 'Votre activité' },
@@ -80,6 +82,7 @@ export default function Studio() {
     setPlan('essentiel');
     setTerm('yearly');
     setSendError(null);
+    setConsent(false);
   }
 
   function onBriefSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -147,15 +150,26 @@ export default function Studio() {
       return;
     }
 
-    try {
-      const res = await fetch(ENDPOINT, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
-      if (!res.ok) throw new Error(String(res.status));
-      setStep('done');
-    } catch {
-      setSendError(`L’envoi a échoué. Écrivez-nous directement à ${brand.email} — votre maquette version ${version} est prête, nous la retrouvons avec les informations ci-dessus.`);
-    } finally {
+    const fields = intakeFields({
+      service: 'studio',
+      name: payload.business, // le Studio ne demande que le nom de l'entreprise
+      email: payload.email,
+      consent,
+      lines: [
+        `Entreprise : ${payload.business} (${payload.sector}, ${payload.city})`,
+        `Prestations : ${payload.services}`,
+        `Positionnement : ${payload.positioning}`,
+        `Formule souhaitée : ${payload.planName} — ${payload.amount} € HT/mois (${term === 'yearly' ? '12 mois' : 'sans engagement'})`,
+        `Maquette version ${version}.`,
+      ],
+    });
+    const refused = intakeErrors(fields);
+    if (refused.length) {
       setSending(false);
+      setSendError(refused.join(' '));
+      return;
     }
+    postToIntake(ENDPOINT, fields, () => setSending(false));
   }
 
   const e = edit ?? deriveEdit(EMPTY_BRIEF);
@@ -342,6 +356,10 @@ export default function Studio() {
                   </strong>
                 </div>
                 <p className="small-note">Il s'agit d'une demande, pas d'un engagement : un devis précis et un contrat suivent un échange humain.</p>
+                <label className="transition-checkline">
+                  <input id="st-consent" type="checkbox" checked={consent} onChange={(ev) => setConsent(ev.target.checked)} />
+                  <span>{CONSENT_TEXT}</span>
+                </label>
                 {sendError && <p className="form-error">{sendError}</p>}
                 <button type="button" className="btn btn-primary btn-full" disabled={sending} onClick={onOrderConfirm}>
                   {sending ? 'Envoi…' : 'Préparer ma commande ↗'}
@@ -349,22 +367,6 @@ export default function Studio() {
               </div>
             )}
 
-            {step === 'done' && (
-              <div className="panel">
-                <div className="completion-mark">✓</div>
-                <span className="step-label">DEMANDE ENVOYÉE</span>
-                <h3>Votre projet est prêt pour la prochaine étape.</h3>
-                <p className="panel-sub">Votre maquette et votre choix commercial ont été transmis. Un contrat et un paiement réel ne sont jamais engagés automatiquement : la suite se discute avec vous.</p>
-                <div className="summary-list">
-                  <strong>{brief.business}</strong> — {brief.sector}, {brief.city}
-                  <br />
-                  Formule : {pricing.find((t) => t.slug === plan)?.name} ({term === 'yearly' ? '12 mois' : 'sans engagement'})
-                </div>
-                <button type="button" className="btn btn-muted btn-full" onClick={reset}>
-                  Créer un autre projet →
-                </button>
-              </div>
-            )}
           </div>
 
           <div className="preview-space">
