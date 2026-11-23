@@ -348,3 +348,56 @@ export const transition = {
   cardTitle: 'Parlons de votre projet.',
   cardNote: 'Remplissez ces quelques champs. Aucune résiliation automatique de votre prestataire actuel.',
 } as const;
+
+/**
+ * Mentions légales et confidentialité. Règle « aucune donnée inventée » : chaque information administrative
+ * encore inconnue reste `null` ; la page l'affiche comme « à compléter », la garde ne l'indexe pas, et
+ * `scripts/check-legal.mjs` la liste (bloquant avec REQUIRE_LEGAL=1, voir le plan de mise en service).
+ */
+export const legal = {
+  publisher: {
+    name: brand.legalName,
+    /** Forme juridique, ex. « Entreprise individuelle » ou « SASU ». */
+    legalForm: null as string | null,
+    /** Capital social : sociétés seulement (laisser null pour une entreprise individuelle). */
+    shareCapital: null as string | null,
+    /** SIREN, 9 chiffres. */
+    siren: null as string | null,
+    /** Immatriculation, ex. « RCS de Sens » ou « Registre national des entreprises ». */
+    registration: null as string | null,
+    /** N° de TVA intracommunautaire, ou « TVA non applicable, art. 293 B du CGI ». */
+    vat: null as string | null,
+    /** Adresse du siège ou de domiciliation. */
+    address: null as string | null,
+  },
+  /** Directeur ou directrice de la publication (personne physique). */
+  publicationDirector: null as string | null,
+  /** Vérifié le 2026-11-23 sur vercel.com/legal/privacy-policy et vercel.com/legal/dpa ; Vercel ne publie pas de téléphone. */
+  host: {
+    name: 'Vercel Inc.',
+    address: '440 N Barranca Ave #4133, Covina, CA 91723, États-Unis',
+    contact: 'https://vercel.com/help',
+  },
+  /** Durée de conservation des demandes (décision du propriétaire ; référentiel CNIL : 3 ans après le dernier contact). */
+  requestRetention: null as string | null,
+  /** Hébergeur et pays du serveur de réception des formulaires : requis seulement quand VITE_FORM_ENDPOINT est défini. */
+  intakeHosting: null as string | null,
+  updated: '23 novembre 2026',
+};
+
+/** Informations légales encore manquantes, avec leur libellé. `intakeActive` : formulaires reçus par le serveur. */
+export function missingLegal(intakeActive: boolean): string[] {
+  const p = legal.publisher;
+  const required: [unknown, string][] = [
+    [p.legalForm, 'Forme juridique'],
+    [p.siren, 'SIREN'],
+    [p.registration, 'Immatriculation (RCS ou RNE)'],
+    [p.vat, 'TVA intracommunautaire ou mention d’exonération'],
+    [p.address, 'Adresse du siège'],
+    [brand.phone, 'Téléphone de l’éditeur'],
+    [legal.publicationDirector, 'Directeur de la publication'],
+    [legal.requestRetention, 'Durée de conservation des demandes'],
+  ];
+  if (intakeActive) required.push([legal.intakeHosting, 'Hébergeur et pays du serveur de réception']);
+  return required.filter(([v]) => v == null || v === '').map(([, label]) => label);
+}

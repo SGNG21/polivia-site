@@ -30,7 +30,7 @@ export default function FreeAudit() {
         <div className="audit-result" role="status">
           <p className="audit-status">{freeAudit.status}</p>
         </div>
-        <a className="btn btn-primary btn-full" href="/contact?intent=audit">
+        <a className="btn btn-primary btn-full" href="/contact">
           Demander mon audit ↗
         </a>
         <p className="audit-legal">Aucun score inventé, aucune collecte commerciale automatisée.</p>

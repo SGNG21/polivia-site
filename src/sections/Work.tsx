@@ -6,20 +6,23 @@ import { projects } from '../content/site';
  * "avant/après" imaginaire. `liveUrl` reste `null` tant qu'un site n'est pas
  * vérifié en ligne.
  */
-export default function Work() {
+/** `head={false}` : sur la page Réalisations, le titre de page remplace l'en-tête de section de l'accueil. */
+export default function Work({ head = true }: { head?: boolean }) {
   return (
-    <section className="cases-section wrap" id="realisations" aria-labelledby="cases-title">
-      <div className="case-head">
-        <div>
-          <div className="eyebrow dark-eyebrow">
-            <span className="section-index">02 / LA PREUVE PAR LE DESIGN</span>
+    <section className="cases-section wrap" id="realisations" aria-labelledby={head ? 'cases-title' : undefined}>
+      {head && (
+        <div className="case-head">
+          <div>
+            <div className="eyebrow dark-eyebrow">
+              <span className="section-index">02 / LA PREUVE PAR LE DESIGN</span>
+            </div>
+            <h2 id="cases-title">
+              Moins cher ne veut pas dire <em>moins bien.</em>
+            </h2>
           </div>
-          <h2 id="cases-title">
-            Moins cher ne veut pas dire <em>moins bien.</em>
-          </h2>
+          <p>Des sites réellement livrés, pas des maquettes. Chaque entreprise garde son identité propre.</p>
         </div>
-        <p>Des sites réellement livrés, pas des maquettes. Chaque entreprise garde son identité propre.</p>
-      </div>
+      )}
 
       <div className="work-grid">
         {projects.map((p) => (

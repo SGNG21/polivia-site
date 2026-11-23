@@ -6,43 +6,13 @@ import { notice } from './content/site';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Terrain from './pages/Terrain';
-import Stub from './pages/Stub';
+import AuditIa from './pages/AuditIa';
+import Realisations from './pages/Realisations';
+import About from './pages/About';
+import { MentionsLegales, Confidentialite } from './pages/Legal';
 import NotFound from './pages/NotFound';
 import Sent from './pages/Sent';
 
-/** Pages still to be written, but routed so no advertised link 404s. */
-const stubs = [
-  {
-    path: '/audit-ia',
-    title: 'Audit IA Express',
-    description: 'Un audit à 390 € : où partent vos demandes, ce que captent vos concurrents, quelles tâches automatiser. Plan chiffré à la clé.',
-    lede: 'Le diagnostic à 390 € qui ouvre les projets.',
-  },
-  {
-    path: '/realisations',
-    title: 'Réalisations',
-    description: 'Les sites livrés par POLIVIA pour des entreprises de l’Yonne et de la Côte d’Azur.',
-    lede: 'Les entreprises qui nous ont fait confiance.',
-  },
-  {
-    path: '/a-propos',
-    title: 'À propos',
-    description: 'POLIVIA, agence web et IA fondée par Geoffrey Nozza, entre l’Yonne et la Côte d’Azur.',
-    lede: 'Une agence, un interlocuteur, deux territoires.',
-  },
-  {
-    path: '/mentions-legales',
-    title: 'Mentions légales',
-    description: 'Mentions légales de POLIVIA.',
-    lede: 'Informations légales.',
-  },
-  {
-    path: '/confidentialite',
-    title: 'Confidentialité',
-    description: 'Comment POLIVIA traite vos données personnelles.',
-    lede: 'Ce que nous faisons de vos données.',
-  },
-] as const;
 
 /**
  * Restores the top of the page between routes, and honours a #hash coming
@@ -90,11 +60,11 @@ export default function App() {
           <Route path="/" component={Home} />
           <Route path="/contact" component={Contact} />
           <Route path="/demande-envoyee" component={Sent} />
-          {stubs.map((s) => (
-            <Route key={s.path} path={s.path}>
-              <Stub {...s} />
-            </Route>
-          ))}
+          <Route path="/audit-ia" component={AuditIa} />
+          <Route path="/realisations" component={Realisations} />
+          <Route path="/a-propos" component={About} />
+          <Route path="/mentions-legales" component={MentionsLegales} />
+          <Route path="/confidentialite" component={Confidentialite} />
           <Route component={NotFound} />
         </Switch>
       </main>
@@ -103,4 +73,4 @@ export default function App() {
   );
 }
 
-export const routes = ['/', '/contact', '/demande-envoyee', '/terrain', ...stubs.map((s) => s.path)];
+export const routes = ['/', '/contact', '/demande-envoyee', '/terrain', '/audit-ia', '/realisations', '/a-propos', '/mentions-legales', '/confidentialite'];
