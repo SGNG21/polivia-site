@@ -22,7 +22,11 @@ export default function Transition() {
     const form = e.currentTarget;
     const data = new FormData(form);
 
-    if (String(data.get('company_url') ?? '')) return; // honeypot
+    if (String(data.get('company_url') ?? '')) {
+      // Hidden anti-spam field filled: a bot, or a browser autofill. Never silent, never a fake success.
+      setStatus({ kind: 'error', message: `Envoi impossible depuis ce formulaire. Écrivez-nous à ${brand.email}.` });
+      return;
+    }
     if (Date.now() - mounted.current < MIN_FILL_MS) {
       setStatus({ kind: 'error', message: 'Envoi trop rapide : vérifiez vos informations puis renvoyez.' });
       return;
